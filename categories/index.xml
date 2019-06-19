@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Ryan Tolboom</title>
-    <link>http://using.tech/categories/</link>
+    <link>https://using.tech/categories/</link>
     <description>Recent content in Categories on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	<atom:link href="http://using.tech/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://using.tech/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
