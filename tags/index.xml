@@ -6,9 +6,64 @@
     <description>Recent content in Tags on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
+    <lastBuildDate>Tue, 18 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://using.tech/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>emacs</title>
+      <link>https://using.tech/tags/emacs/</link>
+      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/emacs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>evil mode</title>
+      <link>https://using.tech/tags/evil-mode/</link>
+      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/evil-mode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>neovim</title>
+      <link>https://using.tech/tags/neovim/</link>
+      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/neovim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>spacemacs</title>
+      <link>https://using.tech/tags/spacemacs/</link>
+      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/spacemacs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>text editors</title>
+      <link>https://using.tech/tags/text-editors/</link>
+      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/text-editors/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vim</title>
+      <link>https://using.tech/tags/vim/</link>
+      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/vim/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
