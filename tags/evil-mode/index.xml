@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>evil mode on Ryan Tolboom</title>
@@ -17,7 +17,7 @@
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/posts/spacemacs/</guid>
-      <description>Intro In high school, I was given a Sun 3&amp;frasl;60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&amp;rsquo;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&amp;rsquo;ll never find a better editing concept, and that&amp;rsquo;s modal editing.
+      <description>Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&#39;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&#39;ll never find a better editing concept, and that&#39;s modal editing.
 Developers spend far more time reading than they do typing. Breaking reading and writing (or inserting) into two discrete modes seems natural after you take a moment to get used to it.</description>
     </item>
     

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Ryan Tolboom</title>
-    <link>https://using.tech/posts/</link>
-    <description>Recent content in Posts on Ryan Tolboom</description>
+    <title>secure scuttlebutt on Ryan Tolboom</title>
+    <link>https://using.tech/tags/secure-scuttlebutt/</link>
+    <description>Recent content in secure scuttlebutt on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 18 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://using.tech/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://using.tech/tags/secure-scuttlebutt/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,16 +18,6 @@
       
       <guid>https://using.tech/posts/jr_1/</guid>
       <description>Intro A friend of mine, John R., has been extolling the virtues of Clojure for years now. At one point, I bought Clojure for the Brave and True, read it, and implemented a few toy programs. It&#39;s an excellent book. Recently I found myself looking for a language to implement a project to measure analyze a Secure Scuttlebutt style social network. While trying to decide between Guile, Chicken Scheme, and Racket I remembered John&#39;s advice and instead went with Clojure.</description>
-    </item>
-    
-    <item>
-      <title>Trying Out Spacemacs</title>
-      <link>https://using.tech/posts/spacemacs/</link>
-      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://using.tech/posts/spacemacs/</guid>
-      <description>Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&#39;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&#39;ll never find a better editing concept, and that&#39;s modal editing.
-Developers spend far more time reading than they do typing. Breaking reading and writing (or inserting) into two discrete modes seems natural after you take a moment to get used to it.</description>
     </item>
     
   </channel>

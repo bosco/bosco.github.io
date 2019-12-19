@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ryan Tolboom</title>
@@ -6,10 +6,19 @@
     <description>Recent content on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 18 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 18 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://using.tech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Introducing jr: A Peer-to-Peer Social Network</title>
+      <link>https://using.tech/posts/jr_1/</link>
+      <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/posts/jr_1/</guid>
+      <description>Intro A friend of mine, John R., has been extolling the virtues of Clojure for years now. At one point, I bought Clojure for the Brave and True, read it, and implemented a few toy programs. It&#39;s an excellent book. Recently I found myself looking for a language to implement a project to measure analyze a Secure Scuttlebutt style social network. While trying to decide between Guile, Chicken Scheme, and Racket I remembered John&#39;s advice and instead went with Clojure.</description>
+    </item>
     
     <item>
       <title>Trying Out Spacemacs</title>
@@ -17,7 +26,7 @@
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/posts/spacemacs/</guid>
-      <description>Intro In high school, I was given a Sun 3&amp;frasl;60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&amp;rsquo;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&amp;rsquo;ll never find a better editing concept, and that&amp;rsquo;s modal editing.
+      <description>Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&#39;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&#39;ll never find a better editing concept, and that&#39;s modal editing.
 Developers spend far more time reading than they do typing. Breaking reading and writing (or inserting) into two discrete modes seems natural after you take a moment to get used to it.</description>
     </item>
     
@@ -27,7 +36,7 @@ Developers spend far more time reading than they do typing. Breaking reading and
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/about/</guid>
-      <description>I am a father of two, living in New Jersey and working as a university lecturer. I&amp;rsquo;ve been fortunate enough to work in several technological fields throughout my life with a significant amount of experience in the education realm. This site is meant to serve as a personal space to post information about what I&amp;rsquo;m currently working on with the hope being that other people can benefit from my posts as much as I&amp;rsquo;ve benefited from theirs.</description>
+      <description>I am a father of two, living in New Jersey and working as a university lecturer. I&#39;ve been fortunate enough to work in several technological fields throughout my life with a significant amount of experience in the education realm. This site is meant to serve as a personal space to post information about what I&#39;m currently working on with the hope being that other people can benefit from my posts as much as I&#39;ve benefited from theirs.</description>
     </item>
     
     <item>

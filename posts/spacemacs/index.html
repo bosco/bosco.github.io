@@ -6,21 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="author" content="Ryan Tolboom">
-    <meta name="description" content="Ryan Tolboom&#39;s personal website">
-    <meta name="keywords" content="edtech,professor,blog,developer,personal">
+    <meta name="description" content="Ryan Tolboom&#39;s website">
+    <meta name="keywords" content="edtech,professor,blog,developer">
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Trying Out Spacemacs"/>
-<meta name="twitter:description" content="Intro In high school, I was given a Sun 3&frasl;60 workstation and given instructions to set everything up and learn how to use vi. &ldquo;You&rsquo;ll never find a better editor&rdquo; my boss told me. In retrospect, I think you&rsquo;ll never find a better editing concept, and that&rsquo;s modal editing.
+<meta name="twitter:description" content="Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &ldquo;You&#39;ll never find a better editor&rdquo; my boss told me. In retrospect, I think you&#39;ll never find a better editing concept, and that&#39;s modal editing.
 Developers spend far more time reading than they do typing. Breaking reading and writing (or inserting) into two discrete modes seems natural after you take a moment to get used to it."/>
 
     <meta property="og:title" content="Trying Out Spacemacs" />
-<meta property="og:description" content="Intro In high school, I was given a Sun 3&frasl;60 workstation and given instructions to set everything up and learn how to use vi. &ldquo;You&rsquo;ll never find a better editor&rdquo; my boss told me. In retrospect, I think you&rsquo;ll never find a better editing concept, and that&rsquo;s modal editing.
+<meta property="og:description" content="Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &ldquo;You&#39;ll never find a better editor&rdquo; my boss told me. In retrospect, I think you&#39;ll never find a better editing concept, and that&#39;s modal editing.
 Developers spend far more time reading than they do typing. Breaking reading and writing (or inserting) into two discrete modes seems natural after you take a moment to get used to it." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://using.tech/posts/spacemacs/" />
-<meta property="article:published_time" content="2019-06-18T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-06-18T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2019-06-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-06-18T00:00:00+00:00" />
 
 
     
@@ -57,7 +57,7 @@ Developers spend far more time reading than they do typing. Breaking reading and
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.61.0" />
   </head>
 
   <body class=" ">
@@ -135,79 +135,58 @@ Developers spend far more time reading than they do typing. Breaking reading and
       </header>
 
       <div>
-        
-
-<p><img alt="Spacemacs Logo" src="https://using.tech/spacemacs_logo.svg" style="width:25%;height:25%;"/></p>
-
+        <!-- raw HTML omitted -->
 <h2 id="intro">Intro</h2>
-
-<p>In high school, I was given a <a href="https://en.wikipedia.org/wiki/Sun-3">Sun <sup>3</sup>&frasl;<sub>60</sub></a>
+<p>In high school, I was given a <a href="https://en.wikipedia.org/wiki/Sun-3">Sun 3/60</a>
 workstation and given instructions to set everything up and learn how to use vi.
-&ldquo;You&rsquo;ll never find a better editor&rdquo; my boss told me. In retrospect, I think
-you&rsquo;ll never find a better editing <em>concept</em>, and that&rsquo;s modal editing.</p>
-
+&ldquo;You'll never find a better editor&rdquo; my boss told me. In retrospect, I think
+you'll never find a better editing <em>concept</em>, and that's modal editing.</p>
 <p>Developers spend far more time reading than they do typing. Breaking reading and
 writing (or inserting) into two discrete modes seems natural after you take a
-moment to get used to it. Once you&rsquo;re used to it, there&rsquo;s no going back and
-that&rsquo;s what always kept me from trying <a href="https://www.gnu.org/software/emacs/">emacs</a>.</p>
-
+moment to get used to it. Once you're used to it, there's no going back and
+that's what always kept me from trying <a href="https://www.gnu.org/software/emacs/">emacs</a>.</p>
 <h2 id="why-even-try-emacs">Why Even Try Emacs?</h2>
-
 <p>Emacs has several advantages over vim including&hellip;</p>
-
 <ul>
 <li>A cleaner, easier to update code base</li>
 <li>Amazing customization options</li>
 <li>Beautiful lisp syntax</li>
 </ul>
-
 <p>Now for all those advantages it is hampered by a finger-breaking, chorded input
 methodology. Sure you can
 <a href="https://vintagecomputer.ca/lear-siegler-adm-3a-terminal/">remap</a> <code>CAPSLOCK</code> to
 <code>CTRL</code> (and really I should remap it to <code>ESCAPE</code>) but it still lacks modal
 editing.</p>
-
-<h2 id="enter-evil-mode-https-github-com-emacs-evil-evil">Enter <a href="https://github.com/emacs-evil/evil">evil mode</a></h2>
-
+<h2 id="enter-evil-modehttpsgithubcomemacs-evilevil">Enter <a href="https://github.com/emacs-evil/evil">evil mode</a></h2>
 <p>This provides most of the vi shortcuts you are used to <em>and</em> modes. For many
 people, this is a good place to stop. They already know the key combinations,
 they have modal editing, and they have all the advantages of emacs.</p>
-
-<h2 id="spacemacs-https-spacemacs-org"><a href="https://spacemacs.org">Spacemacs</a></h2>
-
+<h2 id="spacemacshttpsspacemacsorg"><a href="https://spacemacs.org">Spacemacs</a></h2>
 <p>If you want to take it a step further, spacemacs may be for you. Spacemacs is
 built around a leader key (<code>SPC</code>) that starts commands in normal mode. Commands
 are built from easy to remember, consistent <em>mnemonics</em> like <code>b</code> for buffer, <code>w</code>
 for window, <code>f</code> for file, etc. Typically repeating the key brings up the most
 used option:</p>
-
 <ul>
 <li><code>SPC b b</code> gives a helm buffer dialog to choose which buffer you want to edit</li>
 <li><code>SPC f f</code> gives a helm file dialog to choose which file you want to edit</li>
 </ul>
-
-<p>Don&rsquo;t know a command? That&rsquo;s OK, spacemacs is <em>discoverable</em>. Type <code>SPC</code> and a
+<p>Don't know a command? That's OK, spacemacs is <em>discoverable</em>. Type <code>SPC</code> and a
 list of the most common commands comes up. Type another character and the most
 common commands for that section come up. If you want to learn, all you have to
 do is read.</p>
-
 <h2 id="the-downsides">The Downsides</h2>
-
 <p>Spacemacs is huge (especially with the options I chose) and slow to start up.
 Optimally I would like to run emacs in daemon mode, use it for session
-management, and spawn all my terminals from inside it. I haven&rsquo;t gotten there
+management, and spawn all my terminals from inside it. I haven't gotten there
 yet though.</p>
-
 <p>Also I have encountered at least one
 <a href="https://github.com/syl20bnr/spacemacs/issues/10779#issuecomment-427712967">issue</a>
 that required me to change my <code>init.el</code> to get things to work.</p>
-
 <h2 id="conclusion">Conclusion</h2>
-
-<p>I&rsquo;m currently using spacemacs and enjoying it. This is how I got here:</p>
-
+<p>I'm currently using spacemacs and enjoying it. This is how I got here:</p>
 <ol>
-<li><em>vi</em> - I&rsquo;ll run <a href="https://repo.or.cz/w/nvi.git">nvi</a> if I&rsquo;m feeling nostalgic.</li>
+<li><em>vi</em> - I'll run <a href="https://repo.or.cz/w/nvi.git">nvi</a> if I'm feeling nostalgic.</li>
 <li><em>vim</em> - Know it, loved it, helped children in Uganda.</li>
 <li><em>neovim</em> - Appreciated the cleaner code, taught me to love terminals in my text editor.</li>
 <li><em>spacemacs</em></li>
@@ -219,26 +198,7 @@ that required me to change my <code>init.el</code> to get things to work.</p>
         
 
 
-        <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
       </footer>
     </article>
 
