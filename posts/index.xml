@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 18 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://using.tech/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Extended Network Growth in jr - Part 1</title>
+      <link>https://using.tech/posts/jr_2/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/posts/jr_2/</guid>
+      <description>Goal With the basics of the jr network established (see Introducing jr: A Peer-to-Peer Social Network), I wanted to simulate the growth of the extended network and find a mathematical model that describes this growth.
+core/extended-network-test builds a test network of 100 nodes each following 10 random nodes. It then performs 1000 random syncs (two nodes chosen at random sync with each other) and records the average extended network size at each iteration.</description>
+    </item>
     
     <item>
       <title>Introducing jr: A Peer-to-Peer Social Network</title>

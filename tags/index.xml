@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 18 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://using.tech/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,27 +14,63 @@
     <item>
       <title>clojure</title>
       <link>https://using.tech/tags/clojure/</link>
-      <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/tags/clojure/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>generalized logistic function</title>
+      <link>https://using.tech/tags/generalized-logistic-function/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/generalized-logistic-function/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gradient descent</title>
+      <link>https://using.tech/tags/gradient-descent/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/gradient-descent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>jr</title>
       <link>https://using.tech/tags/jr/</link>
-      <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/tags/jr/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>logistic</title>
+      <link>https://using.tech/tags/logistic/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/logistic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>secure scuttlebutt</title>
       <link>https://using.tech/tags/secure-scuttlebutt/</link>
-      <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/tags/secure-scuttlebutt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sigmoid</title>
+      <link>https://using.tech/tags/sigmoid/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/sigmoid/</guid>
       <description></description>
     </item>
     
