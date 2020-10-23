@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Debian on Ryan Tolboom</title>
+    <link>https://using.tech/tags/debian/</link>
+    <description>Recent content in Debian on Ryan Tolboom</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 22 Oct 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://using.tech/tags/debian/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Automating a Debian Install and Tracking Config Changes</title>
+      <link>https://using.tech/posts/autodeb/</link>
+      <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/posts/autodeb/</guid>
+      <description>Purpose My original homelab consisted of a Dell R710 which was a ton of fun to play with, but ultimately the turbojet noises and utility bill led me to bring it in to work and purchase a couple of broken Dell R610s. Between the two of them, I made one working one which has served (pun intended) me well.
+ In an effort to further lower my utility bill, move the level of ambient noise from annoying to quiet, and play with some new hardware I&amp;#8217;ve decided to migrate to a small form factor (SFF) enterprise workstation.</description>
+    </item>
+    
+  </channel>
+</rss>
