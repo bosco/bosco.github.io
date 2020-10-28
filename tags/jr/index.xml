@@ -6,11 +6,7 @@
     <description>Recent content in jr on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://using.tech/tags/jr/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/jr/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Extended Network Growth in jr - Part 1</title>
       <link>https://using.tech/posts/jr_2/</link>
@@ -27,7 +23,7 @@ core/extended-network-test builds a test network of 100 nodes each following 10 
       <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/posts/jr_1/</guid>
-      <description>Intro A friend of mine, John R., has been extolling the virtues of Clojure for years now. At one point, I bought Clojure for the Brave and True, read it, and implemented a few toy programs. It&#39;s an excellent book. Recently I found myself looking for a language to implement a project to measure analyze a Secure Scuttlebutt style social network. While trying to decide between Guile, Chicken Scheme, and Racket I remembered John&#39;s advice and instead went with Clojure.</description>
+      <description>Intro A friend of mine, John R., has been extolling the virtues of Clojure for years now. At one point, I bought Clojure for the Brave and True, read it, and implemented a few toy programs. It&amp;rsquo;s an excellent book. Recently I found myself looking for a language to implement a project to measure analyze a Secure Scuttlebutt style social network. While trying to decide between Guile, Chicken Scheme, and Racket I remembered John&amp;rsquo;s advice and instead went with Clojure.</description>
     </item>
     
   </channel>

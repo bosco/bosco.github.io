@@ -12,11 +12,11 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Automating a Debian Install and Tracking Config Changes"/>
 <meta name="twitter:description" content="Purpose My original homelab consisted of a Dell R710 which was a ton of fun to play with, but ultimately the turbojet noises and utility bill led me to bring it in to work and purchase a couple of broken Dell R610s. Between the two of them, I made one working one which has served (pun intended) me well.
- In an effort to further lower my utility bill, move the level of ambient noise from annoying to quiet, and play with some new hardware I&#8217;ve decided to migrate to a small form factor (SFF) enterprise workstation."/>
+ In an effort to further lower my utility bill, move the level of ambient noise from annoying to quiet, and play with some new hardware I’ve decided to migrate to a small form factor (SFF) enterprise workstation."/>
 
     <meta property="og:title" content="Automating a Debian Install and Tracking Config Changes" />
 <meta property="og:description" content="Purpose My original homelab consisted of a Dell R710 which was a ton of fun to play with, but ultimately the turbojet noises and utility bill led me to bring it in to work and purchase a couple of broken Dell R610s. Between the two of them, I made one working one which has served (pun intended) me well.
- In an effort to further lower my utility bill, move the level of ambient noise from annoying to quiet, and play with some new hardware I&#8217;ve decided to migrate to a small form factor (SFF) enterprise workstation." />
+ In an effort to further lower my utility bill, move the level of ambient noise from annoying to quiet, and play with some new hardware I’ve decided to migrate to a small form factor (SFF) enterprise workstation." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://using.tech/posts/autodeb/" />
 <meta property="article:published_time" content="2020-10-22T00:00:00+00:00" />
@@ -57,7 +57,7 @@
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.76.5" />
   </head>
 
   <body class=" ">
@@ -132,7 +132,7 @@
 
       <div>
         <div class="sect1">
-<h2 id="_purpose">Purpose</h2>
+<h2 id="_purpose"><a class="anchor" href="#_purpose"></a><a class="link" href="#_purpose">Purpose</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>My original homelab consisted of a
@@ -145,7 +145,7 @@ Dell R610s</a>. Between the two of them, I made one working one which has served
 </div>
 <div class="paragraph">
 <p>In an effort to further lower my utility bill, move the level of ambient noise
-from annoying to quiet, and play with some new hardware I&#8217;ve decided to migrate
+from annoying to quiet, and play with some new hardware I’ve decided to migrate
 to a small form factor (SFF) enterprise workstation. I also decided to automate
 as much of the install as possible and to come up with a better system for
 keeping track of the changes I make to configuration files.</p>
@@ -153,11 +153,11 @@ keeping track of the changes I make to configuration files.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_debian_preseed">Debian Preseed</h2>
+<h2 id="_debian_preseed"><a class="anchor" href="#_debian_preseed"></a><a class="link" href="#_debian_preseed">Debian Preseed</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Fortunately my distro of choice, Debian GNU/Linux, has the ability to
-pre-answer the installer&#8217;s questions via a preseed file. You can read more
+pre-answer the installer’s questions via a preseed file. You can read more
 about it <a href="https://wiki.debian.org/DebianInstaller/Preseed">here</a>. A few minutes
 of paring down the <a href="https://www.debian.org/releases/stable/example-preseed.txt">
 default preseed file</a> led me to this:</p>
@@ -165,7 +165,7 @@ default preseed file</a> led me to this:</p>
 <div class="listingblock">
 <div class="title"><a href="https://git.sr.ht/~bosco/dungeonman/tree/master/preseed.cfg">preseed.cfg</a></div>
 <div class="content">
-<pre class="highlight"><code class="language-text" data-lang="text"># localization
+<pre class="rouge highlight"><code data-lang="plaintext"># localization
 d-i debian-installer/locale string en_US
 d-i keyboard-configuration/xkb-keymap select us
 d-i netcfg/choose_interface select auto
@@ -229,8 +229,22 @@ and it has an invalid password. This allows me to put my preseed file in a
 public repo without having to worry about having an exposed password hash.
 Initially, the only way to log in is via SSH as the <code>authorized_keys</code> files are
 set in the script that performs the final configuration. Once the system is up,
-I can SSH in as root to set a password for my user account so that sudo and local
-logins work appropriately.</p>
+I can SSH in as root to set a password for my user account so that sudo and
+local logins work appropriately.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+I change the <code>/etc/issue</code> file in my config repo (second half of this
+post) so that it prints out the IP of my machine. You don’t want to have to go
+digging through DHCP logs to find out the IP of your new install.
+</td>
+</tr>
+</tbody></table>
 </div>
 <div class="paragraph">
 <p>The final configuration script simply performs a few git commands in a chroot
@@ -241,21 +255,21 @@ now lets take a look at the script:</p>
 <div class="listingblock">
 <div class="title"><a href="https://git.sr.ht/~bosco/dungeonman/tree/master/preseed.sh">preseed.sh</a></div>
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">#!/bin/sh
+<pre class="rouge highlight"><code data-lang="shell"><span class="c">#!/bin/sh</span>
 
-chroot /target /bin/bash &lt;&lt;"EOT"
+<span class="nb">chroot</span> /target /bin/bash <span class="o">&lt;&lt;</span><span class="sh">&#34;</span><span class="no">EOT</span><span class="sh">&#34;
 
 cd /tmp
 git clone https://git.sr.ht/~bosco/dungeonman
 cp -r dungeonman/. /
 chown -R ryan.ryan /home/ryan
 
-EOT</code></pre>
+EOT</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You can&#8217;t easily clone into and existing directory and overwrite files, hence
-the recursive copy. It&#8217;s also worth observing that the Debian installer uses
+<p>You can’t easily clone into and existing directory and overwrite files, hence
+the recursive copy. It’s also worth observing that the Debian installer uses
 the BusyBox shell, so the interpreter for the script is <code>/bin/sh</code> instead of
 <code>/bin/bash</code>.</p>
 </div>
@@ -266,8 +280,8 @@ passing parameters as kernel options, or having the installer prompt you. I
 chose the latter so that I could use the regular installer I already had on a
 USB stick and just add my <code>preseed.cfg</code> and <code>preseed.sh</code> files to the root
 directory. It took some exploring at the installer console to figure out where
-the USB stick gets mounted (hint, it&#8217;s <code>/cdrom</code>) but once I did I was able to
-select <code>Advanced Options &#8594; Automated Install</code> at the GRUB splash screen and
+the USB stick gets mounted (hint, it’s <code>/cdrom</code>) but once I did I was able to
+select <code>Advanced Options → Automated Install</code> at the GRUB splash screen and
 enter <code><a href="file:///cdrom/preseed.cfg" class="bare">file:///cdrom/preseed.cfg</a></code> when prompted.</p>
 </div>
 <div class="paragraph">
@@ -279,14 +293,14 @@ system. Not bad for a handful of key presses.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_git_for_config_files">Git for Config Files</h2>
+<h2 id="_git_for_config_files"><a class="anchor" href="#_git_for_config_files"></a><a class="link" href="#_git_for_config_files">Git for Config Files</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A Linux system is largely a collection of configuration files in the right
 places. Knowing what to put in the files and where to put them keeps Linux
 sysadmins employed. The best way I can think of to <em>keep track</em> of files as I
 change and adjust them is with <a href="https://git-scm.com/">git</a>, so I decided to make
-the root the filesystem on my new server a
+the root the file system on my new server a
 <a href="https://git.sr.ht/~bosco/dungeonman/tree">git repository</a>.
 <a href="https://superuser.com/questions/1037211/is-it-a-good-idea-to-use-git-for-configuration-file-version-controlling">
 I am definitely not the first or last person to have this idea.</a></p>
@@ -299,7 +313,7 @@ This way you only track the files you want:</p>
 <div class="listingblock">
 <div class="title"><a href="https://git.sr.ht/~bosco/dungeonman/tree/master/.gitignore">.gitignore</a></div>
 <div class="content">
-<pre class="highlight"><code class="language-gitignore" data-lang="gitignore">*
+<pre class="rouge highlight"><code data-lang="gitignore">*
 !.gitignore
 !preseed.cfg
 !preseed.sh
@@ -315,17 +329,17 @@ This way you only track the files you want:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>I realize this does clutter my root directory a bit, but it&#8217;s a price I&#8217;m
+<p>I realize this does clutter my root directory a bit, but it’s a price I’m
 willing to pay to make the location of the preseed files obvious to anyone
 who looks at it. Now when I build the system, I add my new SSH key to SourceHut
 and I can use git to track any changes that I make to my configs. Just looking
-at the <code>.gitignore</code> file, you can see exactly what I&#8217;ve set up so far. There&#8217;s a
+at the <code>.gitignore</code> file, you can see exactly what I’ve set up so far. There’s a
 lot more work to be done, so expect a few more posts.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_resources">Resources</h2>
+<h2 id="_resources"><a class="anchor" href="#_resources"></a><a class="link" href="#_resources">Resources</a></h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -355,6 +369,8 @@ lot more work to be done, so expect a few more posts.</p>
 
     
     
+    <link rel="stylesheet" href="https://using.tech/css/syntax.css">
+<link rel="stylesheet" href="https://using.tech/css/asciidoc.css">
   </section>
 
       </div>

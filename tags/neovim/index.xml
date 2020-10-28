@@ -6,18 +6,14 @@
     <description>Recent content in neovim on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 18 Jun 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://using.tech/tags/neovim/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 18 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/neovim/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Trying Out Spacemacs</title>
       <link>https://using.tech/posts/spacemacs/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/posts/spacemacs/</guid>
-      <description>Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&#39;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&#39;ll never find a better editing concept, and that&#39;s modal editing.
+      <description>Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&amp;rsquo;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&amp;rsquo;ll never find a better editing concept, and that&amp;rsquo;s modal editing.
 Developers spend far more time reading than they do typing. Breaking reading and writing (or inserting) into two discrete modes seems natural after you take a moment to get used to it.</description>
     </item>
     

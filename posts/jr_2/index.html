@@ -57,7 +57,7 @@ core/extended-network-test builds a test network of 100 nodes each following 10 
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.61.0" />
+    <meta name="generator" content="Hugo 0.76.5" />
   </head>
 
   <body class=" ">
@@ -212,7 +212,7 @@ achieves its maximum growth rate earlier.</p>
 <p>To get a more precise model, we can also use our gradient descent
 implementation to calculate $ B $ and $ M $ for networks grown with differing
 values of $ f $. This is implemented in <code>core/multi-descent</code>. Unfortunately
-there aren't a lot of values of $ f $ that we can work with. If we extend our
+there aren&rsquo;t a lot of values of $ f $ that we can work with. If we extend our
 range of $ t $ values to $ 3000 $ we can fit the curve down to $ f = 3 $. The
 maximum $ f $ we can work with is around $ 60 $ if we still want to have
 enough of a curve to do a decent fit. Using <code>core/multi-extended-growth</code> and
@@ -238,11 +238,11 @@ should approach $ 0 $ as the following list, $ f $, increases and it should
 start at infinity for an impossible following list size of zero.</p>
 <p>$ B $ does not appear to change that much as $ f $ varies, with only a slight
 linear upward trend with a slope of $ 0.0003 $.</p>
-<p>If this conclusion seems underwhelming it's because it is. Even as I write
+<p>If this conclusion seems underwhelming it&rsquo;s because it is. Even as I write
 this I have partially implemented ideas for improvement. Before I expand this
 and see if that $ 5000 $ constant can be expressed in terms of $ n $
-($ \frac{n^2}{2} $ perhaps?) I'd like to tighten up the results. I've labeled
-this post <em>Part 1</em> as I'm planning on taking a better look soon.</p>
+($ \frac{n^2}{2} $ perhaps?) I&rsquo;d like to tighten up the results. I&rsquo;ve labeled
+this post <em>Part 1</em> as I&rsquo;m planning on taking a better look soon.</p>
 <h2 id="functional-programming-clojure-and-optimizing-gradient-descent">Functional Programming, Clojure, and Optimizing Gradient Descent</h2>
 <p>The purpose of this project is not only to learn more about gossip protocols as
 used by Secure Scuttlebutt, but also to learn more about functional
@@ -278,20 +278,20 @@ arbitrary length vectors representing the parameters to a function that is
 passed as a parameter. Thus, Clojure seems to nudge you in the direction of
 creating a more general purpose gradient descent implementation and sometimes
 punishes you for being too specific. My gut tells me the generalized solution
-is the better way and if I were to do it again, I'd make it less specific.</p>
+is the better way and if I were to do it again, I&rsquo;d make it less specific.</p>
 <h2 id="prior-work">Prior Work</h2>
 <p>Research does not occur in a vacuum and this project is no exception. There is
 an excellent thesis on message passing via gossip protocols by Mohsen
 Taghavianfar that can be found
 <a href="https://www.diva-portal.org/smash/get/diva2:829973/FULLTEXT01.pdf">here</a>. It
-has a fantastic quote that I'd like to address:</p>
+has a fantastic quote that I&rsquo;d like to address:</p>
 <blockquote>
 <p>Most investigations done in this field just assume that a logistic function is
 necessarily involved, however, according to the best of my knowledge none of
 them explain why we need such an assumption.<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup></p>
 </blockquote>
 <p>In my case I started with the simulation, saw that the analysis was going to
-be complex (remember we're simulating Secure Scuttlebutt meaning we have to
+be complex (remember we&rsquo;re simulating Secure Scuttlebutt meaning we have to
 simulate the friend-of-friend nature of message passing <em>as well as</em> the
 establishment of the friend-of-friend network), generated growth output for the
 first part of my problem (network establishment), and saw that it looked like
@@ -380,6 +380,7 @@ differences can be found
       }
     });
   </script>
+    
     
   </section>
 
