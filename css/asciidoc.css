@@ -23,6 +23,10 @@ li > p {
   margin: 3.2rem 0 1.0rem 0;
 }
 
+.sect2 > h3 {
+  margin: 0;
+}
+
 .paragraph > p {
   margin: 1.5rem 0 1.5rem 0;
 }
@@ -90,6 +94,7 @@ table {
   border-right: 0;
   border-top: 0;
   border-bottom: 0;
+  padding: 0.5rem;
 }
 
 .conum[data-value] {
@@ -126,13 +131,32 @@ pre .conum[data-value] {
 }
 
 .colist table {
-  margin-top: -4.5rem;
+  margin-top: -3.5rem;
+  margin-bottom: 3.5rem;
 }
 
 b.conum *{
   color: inherit!important
 }
 
-.conum:not([data-value]):empty{
-  display:none
+.conum:not([data-value]):empty {
+  display: none;
+}
+
+.tableblock caption {
+  font-weight: bold;
+}
+
+th.tableblock, td.tableblock {
+  padding: 0.5rem;
+  border: 2px solid #e8e8e8;
+}
+
+p.tableblock {
+  margin: 0;
+}
+
+table.tableblock {
+  margin-left: auto;
+  margin-right: auto;
 }

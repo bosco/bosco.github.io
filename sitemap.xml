@@ -3,17 +3,57 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://using.tech/posts/eap225/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://using.tech/tags/automation/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://using.tech/tags/eap225/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://using.tech/posts/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://using.tech/tags/python/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://using.tech/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://using.tech/tags/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://using.tech/tags/tp-link/</loc>
+    <lastmod>2020-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://using.tech/posts/autodeb/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://using.tech/tags/automation/</loc>
+    <loc>https://using.tech/tags/debian/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://using.tech/tags/debian/</loc>
+    <loc>https://using.tech/tags/dungeonman/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url>
   
@@ -24,21 +64,6 @@
   
   <url>
     <loc>https://using.tech/tags/homelab/</loc>
-    <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://using.tech/posts/</loc>
-    <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://using.tech/</loc>
-    <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://using.tech/tags/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url>
   
