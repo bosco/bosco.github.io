@@ -76,7 +76,7 @@
     <text fill='#000000' font-family='sans-serif' font-size='13' font-weight='bold' lengthAdjust='spacingAndGlyphs' textLength='314' x='232' y='276.3794'>
       GotGroups (Result Http.Error (List Group))
     </text>
-    <!--MD5=[3485d2cd134276d31fc95d046dd15635]
+    <!--MD5=[0b300e1e69035f9947c6adfaac8b5e1c]
 @startuml
 
 title Message Passing (messages in bold)
@@ -93,7 +93,7 @@ PlantUML version 1.2020.06(Sun Apr 05 08:38:32 EDT 2020)
 (APACHE source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM
-Java Version: 1.8.0_265-8u265-b01-0ubuntu2~18.04-b01
+Java Version: 1.8.0_275-8u275-b01-0ubuntu1~18.04-b01
 Operating System: Linux
 Default Encoding: UTF-8
 Language: en
