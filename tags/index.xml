@@ -6,7 +6,70 @@
     <description>Recent content in Tags on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 29 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>automation</title>
+      <link>https://using.tech/tags/automation/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/automation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AWS</title>
+      <link>https://using.tech/tags/aws/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cloud</title>
+      <link>https://using.tech/tags/cloud/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cloud-init</title>
+      <link>https://using.tech/tags/cloud-init/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/cloud-init/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>IaaS</title>
+      <link>https://using.tech/tags/iaas/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/iaas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>virtual machines</title>
+      <link>https://using.tech/tags/virtual-machines/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/virtual-machines/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VM</title>
+      <link>https://using.tech/tags/vm/</link>
+      <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/vm/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>elm</title>
       <link>https://using.tech/tags/elm/</link>
@@ -40,15 +103,6 @@
       <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/tags/javascript/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>automation</title>
-      <link>https://using.tech/tags/automation/</link>
-      <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://using.tech/tags/automation/</guid>
       <description></description>
     </item>
     

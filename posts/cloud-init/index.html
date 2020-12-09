@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Ryan Tolboom">
+    <meta name="description" content="Ryan Tolboom&#39;s website">
+    <meta name="keywords" content="edtech,professor,blog,developer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hands On with Cloud-init"/>
+<meta name="twitter:description" content="I remember talking to a friend about AWS a few years after we had both finished our undergrad degrees. He described it to me like this:
+  Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
+  — Mike   At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway."/>
+
+    <meta property="og:title" content="Hands On with Cloud-init" />
+<meta property="og:description" content="I remember talking to a friend about AWS a few years after we had both finished our undergrad degrees. He described it to me like this:
+  Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
+  — Mike   At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://using.tech/posts/cloud-init/" />
+<meta property="article:published_time" content="2020-12-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-12-08T00:00:00+00:00" />
+
+
+    
+      <base href="https://using.tech/posts/cloud-init/">
+    
+    <title>
+  Hands On with Cloud-init · Ryan Tolboom
+</title>
+
+    
+      <link rel="canonical" href="https://using.tech/posts/cloud-init/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://using.tech/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://using.tech/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.76.5" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://using.tech">
+      Ryan Tolboom
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/consulting/">Consulting</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://github.com/rxt1077/resume">Resume</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Hands On with Cloud-init</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2020-12-08T00:00:00Z'>
+                December 8, 2020
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              6 minutes read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://using.tech/tags/cloud-init/">cloud-init</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/cloud/">cloud</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/automation/">automation</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/virtual-machines/">virtual machines</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/vm/">VM</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/aws/">AWS</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/iaas/">IaaS</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        <div class="imageblock">
+<div class="content">
+<img src="https://using.tech/cloud-init/cloud-init.png" alt="cloud init" width="60%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>I remember talking to a friend about AWS a few years after we had both finished
+our undergrad degrees. He described it to me like this:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Imagine you could take a Linux distro, install it, and set someone up with an
+SSH shell as soon as their credit card cleared. That’s AWS.</p>
+</div>
+</blockquote>
+<div class="attribution">
+— Mike
+</div>
+</div>
+<div class="paragraph">
+<p>At this point, mid 2000s, we had both had plenty of experience with SSH and I
+used to jokingly say that it didn’t matter what computer I used because I was
+just using it to get to something better anyway. So you can imagine my
+scepticism in employing new tools when I could typically get away with a dumb
+terminal and shell scripts to set up anything I want.</p>
+</div>
+<div class="paragraph">
+<p>Well I found myself in exactly that situation while working on a build system
+project. I needed to configure virtual machines.</p>
+</div>
+<div class="sect1">
+<h2 id="_surely_its_not_that_hard_to_automatically_configure_a_vm_right"><a class="anchor" href="#_surely_its_not_that_hard_to_automatically_configure_a_vm_right"></a><a class="link" href="#_surely_its_not_that_hard_to_automatically_configure_a_vm_right">Surely it’s not that hard to automatically configure a VM, right?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Well, configuring VMs provides some very unique challenges, many of which only
+apply to the first boot:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>What if you need to resize the root partition?</p>
+</li>
+<li>
+<p>What if you want to install extra packages?</p>
+</li>
+<li>
+<p>How are you going to install SSH keys?</p>
+</li>
+<li>
+<p>What additional services do you need?</p>
+</li>
+<li>
+<p>What order do you perform these operations in?</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Sure, you could script these things in BASH, and be very careful about what
+order they happen in, and set a flag so it only runs on first boot, and account
+for various differences between distros, and undoubtedly have to pipe some BS
+to stdin on a tool that is meant to be interactive, and…​ well you get the
+picture. You also have to figure out how you get the script running on the VM
+initially. You could make a custom VM to build custom VMs off of I suppose, but
+it seems like it would be double the work every time your base distro has a
+major change.</p>
+</div>
+<div class="paragraph">
+<p>On top of that, you’re usually not just configuring <em>one</em> VM, but hundreds that
+may be going up or coming down in response to some sort of scaling factor:
+traffic, demand, time-of-day, etc. Each of those may have slightly different
+requirements, services, mount points, etc.</p>
+</div>
+<div class="paragraph">
+<p>It’s a headache. If you don’t believe me, try it without any tools. You’ll
+quickly find yourself either building a tool or reaching for something like
+Ansible or…​</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cloud_init_what_does_it_do"><a class="anchor" href="#_cloud_init_what_does_it_do"></a><a class="link" href="#_cloud_init_what_does_it_do">Cloud-init. What does it do?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At its most basic, cloud-init solves the problem of how do you get your scripts
+onto a new, fresh VM. If the VM is cloud-init enabled, it will look for a
+cloud-config from a few different sources the first time it boots up.
+<a href="https://cloudinit.readthedocs.io/en/latest/topics/datasources.html">Your data
+source options can be seen here</a> and it suffices to say there are a lot of
+them.</p>
+</div>
+<div class="paragraph">
+<p>I know what you’re thinking, &#34;Maybe someday when my friends and family
+leave me and I find myself living in a sleeping bag in the cold aisle of a
+datacenter
+<a href="https://gizmodo.com/data-centers-will-be-manned-by-engineers-sleeping-in-th-5901369">
+(it isn’t that far fetched)</a> I’ll have the time to configure and run yet another
+service. Until then I don’t want to run yet another service for cloud-init
+data.&#34; Well fortunately for us, the
+<a href="https://cloudinit.readthedocs.io/en/latest/topics/datasources/nocloud.html">
+Nocloud data source</a> allows us to utilize cloud-init without running any extra
+services.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_practical_example"><a class="anchor" href="#_a_practical_example"></a><a class="link" href="#_a_practical_example">A practical example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For a build system that I’m creating I needed Debian QEMU images that
+automatically login root on <code>ttyS0</code>, have a few extra packages, and have
+enough room to actually build something. All this can be accomplished with two
+files, packaged in an ISO (with the volume label <code>cidata</code>), and passed as a CD
+drive to QEMU. Here are those files:</p>
+</div>
+<div class="listingblock">
+<div class="title">meta-data</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yml"><span class="na">instance-id</span><span class="pi">:</span> <span class="s">rob-run</span>
+<span class="na">local-hostname</span><span class="pi">:</span> <span class="s">rob-run</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It’s about as simple as it gets there. The <code>meta-data</code> file contains
+information about how we name our instance.</p>
+</div>
+<div class="listingblock">
+<div class="title">user-data</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yml"><span class="c1">#cloud-config</span>
+<span class="na">bootcmd</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">apt-get install -y gnupg</span>
+<span class="na">growpart</span><span class="pi">:</span>
+  <span class="na">mode</span><span class="pi">:</span> <span class="s">auto</span>
+  <span class="na">devices</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">&#39;</span><span class="s">/&#39;</span><span class="pi">]</span>
+  <span class="na">ignore_growroot_disabled</span><span class="pi">:</span> <span class="no">false</span>
+<span class="na">mounts</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="pi">[</span> <span class="nv">/dev/sr0</span><span class="pi">,</span> <span class="nv">/mnt</span> <span class="pi">]</span>
+<span class="na">apt</span><span class="pi">:</span>
+  <span class="na">sources</span><span class="pi">:</span>
+    <span class="s">docker.list</span><span class="pi">:</span>
+      <span class="na">source</span><span class="pi">:</span> <span class="s">deb [arch=amd64] https://download.docker.com/linux/debian $RELEASE stable</span>
+      <span class="na">keyid</span><span class="pi">:</span> <span class="s">9DC858229FC7DD38854AE2D88D81803C0EBFCD88</span>
+<span class="na">packages</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">docker-ce</span>
+  <span class="pi">-</span> <span class="s">docker-ce-cli</span>
+  <span class="pi">-</span> <span class="s">docker-compose</span>
+  <span class="pi">-</span> <span class="s">containerd.io</span>
+  <span class="pi">-</span> <span class="s">git</span>
+  <span class="pi">-</span> <span class="s">curl</span>
+<span class="na">write_files</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/etc/systemd/system/serial-getty@ttyS0.service.d/override.conf</span>
+    <span class="na">permissions</span><span class="pi">:</span> <span class="s1">&#39;</span><span class="s">0644&#39;</span>
+    <span class="na">owner</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="s">[Service]</span>
+      <span class="s">ExecStart=</span>
+      <span class="s">ExecStart=-/sbin/agetty -o &#39;-p -- \\u&#39; --keep-baud 115200,38400,9600 --noclear --autologin root ttyS0 $TERM</span>
+  <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/etc/rootshelltty</span>
+    <span class="na">permissions</span><span class="pi">:</span> <span class="s1">&#39;</span><span class="s">0644&#39;</span>
+    <span class="na">owner</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">content</span><span class="pi">:</span> <span class="pi">|</span>
+      <span class="s">/dev/ttyS0</span>
+<span class="na">runcmd</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">sed -i &#39;4s:^:\nauth sufficient pam_listfile.so item=tty sense=allow file=/etc/rootshelltty onerr=fail apply=root\n:&#39; /etc/pam.d/login</span>
+  <span class="pi">-</span> <span class="s">systemctl daemon-reload</span>
+  <span class="pi">-</span> <span class="s">systemctl restart serial-getty@ttyS0</span>
+  <span class="pi">-</span> <span class="s">apt-get purge -y openssh-server openssh-sftp-server</span>
+  <span class="pi">-</span> <span class="s">apt-get clean -y</span>
+  <span class="pi">-</span> <span class="s">fstrim -av</span>
+<span class="na">power_state</span><span class="pi">:</span>
+  <span class="na">mode</span><span class="pi">:</span> <span class="s">poweroff</span>
+  <span class="na">timeout</span><span class="pi">:</span> <span class="m">30</span>
+  <span class="na">condition</span><span class="pi">:</span> <span class="s">True</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://www.digitalocean.com/community/questions/cloud-init-change-order-of-module-execution">
+It is worth noting that I’ve listed steps in the order they are run</a> which is
+pretty important when configuring a system.
+Also, you have a lot of
+<a href="https://cloudinit.readthedocs.io/en/latest/topics/modules.html">modules to choose
+from</a>. These are just the ones I used to meet my needs:</p>
+</div>
+<div class="sect2">
+<h3 id="_bootcmd"><a class="anchor" href="#_bootcmd"></a><a class="link" href="#_bootcmd">bootcmd</a></h3>
+<div class="paragraph">
+<p>This is a list of commands that are run before most others. In my situation I
+had to install gnupg because the
+<a href="https://cdimage.debian.org/cdimage/openstack/current-10/debian-10-openstack-amd64.qcow2">
+image I was using</a> with cloud-init on it
+<a href="https://cdimage.debian.org/cdimage/openstack/current-10/debian-10-openstack-amd64-packages.list">
+didn’t actually have gnupg installed</a>. Meaning when I went to install a new apt
+source later it wouldn’t be able to import the key and would fail.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_growpart"><a class="anchor" href="#_growpart"></a><a class="link" href="#_growpart">growpart</a></h3>
+<div class="paragraph">
+<p>This will make your partition fill all of the available space. It means I can
+resize a copy of my base image with <code>qemu-img</code> and automatically have the
+partition table use the space on first boot. <code>resize_fs</code> is also triggered
+automatically that make the filesystem use the available space.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mounts"><a class="anchor" href="#_mounts"></a><a class="link" href="#_mounts">mounts</a></h3>
+<div class="paragraph">
+<p>This adds an entry in fstab to mount the CD drive to /mnt (with the default
+settings) on boot. Ultimately this is used by the build system to pass test
+scripts.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_apt"><a class="anchor" href="#_apt"></a><a class="link" href="#_apt">apt</a></h3>
+<div class="paragraph">
+<p>We use this to install a new repository to pull Docker from. My students often
+use Docker so we’ll need a build image that mimics their environment.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_packages"><a class="anchor" href="#_packages"></a><a class="link" href="#_packages">packages</a></h3>
+<div class="paragraph">
+<p>Packages installs a few additional packages are required for our VM including
+Docker, curl, and git.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_write_files"><a class="anchor" href="#_write_files"></a><a class="link" href="#_write_files">write_files</a></h3>
+<div class="paragraph">
+<p>The systemd ttyS0 service is overridden to automatically login root on ttyS0.
+A list of users for PAM to automatically authenticate is also written to
+<code>/etc/rootshelltty</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_runcmd"><a class="anchor" href="#_runcmd"></a><a class="link" href="#_runcmd">runcmd</a></h3>
+<div class="paragraph">
+<p>These are commands that are run one at a time to update <code>/etc/pam.d/login</code> to
+automatically login the root user on ttyS0, restart the ttyS0 service, and
+clean the filesystem a bit.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_power_state"><a class="anchor" href="#_power_state"></a><a class="link" href="#_power_state">power_state</a></h3>
+<div class="paragraph">
+<p>Lastly the machine is shut down so our build script exits automatically.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_putting_it_all_together"><a class="anchor" href="#_putting_it_all_together"></a><a class="link" href="#_putting_it_all_together">Putting it all together</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So with cloud-init in our toolbelt, we can now easily automate the creation
+of a VM for a build system. Here’s the actual script I provide for mine:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><span class="c">#!/bin/bash</span>
+
+<span class="nv">BASE_IMAGE</span><span class="o">=</span><span class="s2">&#34;debian-10-openstack-amd64.qcow2&#34;</span>
+<span class="nv">SIZE</span><span class="o">=</span><span class="s2">&#34;10G&#34;</span>
+<span class="nv">OUTPUT_IMAGE</span><span class="o">=</span><span class="s2">&#34;../debian-10.qcow2&#34;</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="k">${</span><span class="nv">BASE_IMAGE</span><span class="k">}</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+  </span><span class="nb">echo</span> <span class="s2">&#34;Downloading Debian 10 OpenStack image&#34;</span>
+  wget https://cloud.debian.org/cdimage/openstack/current-10/<span class="k">${</span><span class="nv">BASE_IMAGE</span><span class="k">}</span>
+<span class="k">fi
+
+</span><span class="nb">cp</span> <span class="k">${</span><span class="nv">BASE_IMAGE</span><span class="k">}</span> <span class="k">${</span><span class="nv">OUTPUT_IMAGE</span><span class="k">}</span>
+qemu-img resize <span class="k">${</span><span class="nv">OUTPUT_IMAGE</span><span class="k">}</span> <span class="k">${</span><span class="nv">SIZE</span><span class="k">}</span>
+
+genisoimage <span class="nt">-o</span> cloud-init.iso <span class="nt">-V</span> cidata <span class="nt">-r</span> <span class="nt">-J</span> meta-data user-data
+qemu-system-x86_64 <span class="nt">-cdrom</span> cloud-init.iso <span class="nt">-hda</span> <span class="k">${</span><span class="nv">OUTPUT_IMAGE</span><span class="k">}</span> <span class="nt">-m</span> 1G <span class="nt">-netdev</span> <span class="s2">&#34;user,id=n1&#34;</span> <span class="se">\</span>
+  <span class="nt">-device</span> <span class="s2">&#34;virtio-net-pci,netdev=n1&#34;</span> <span class="nt">-nographic</span>
+
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+You now have an image in </span><span class="k">${</span><span class="nv">OUTPUT_IMAGE</span><span class="k">}</span><span class="sh"> that can be used with Rob the Builder.
+The default prompt is &#39;root@rob-run:~#&#39;.
+
+If you want to build a memsnapshot so your image can boot &#39;instantly&#39;, run your
+newly created image with the &#39;images/run.sh&#39; command. Once it has booted type
+&#39;ctrl-a c&#39; to get the the Qemu monitor and run
+&#39;migrate &#34;exec: gzip -c &gt; memsnapshot.gz&#34;&#39;. You can then exit with the &#39;quit&#39;
+command.
+EOF</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ultimately cloud-init lets me make it easier to create build images. This
+benefits people who may want to use the build system including myself who often
+can’t remember how the heck I built that VM I was using last week.</p>
+</div>
+</div>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    
+    
+    <link rel="stylesheet" href="https://using.tech/css/syntax.css">
+<link rel="stylesheet" href="https://using.tech/css/asciidoc.css">
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><a href='mailto:ryan@using.tech'>Email</a></p>
+    
+     © 2020
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
