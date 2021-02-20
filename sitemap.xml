@@ -1,277 +1,182 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
+    <loc>https://using.tech/tags/asciidoctor/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://using.tech/posts/p2e/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://using.tech/tags/p2e/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://using.tech/tags/pathfinder/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://using.tech/posts/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://using.tech/tags/ruby/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://using.tech/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://using.tech/tags/</loc>
+    <lastmod>2021-02-19T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://using.tech/tags/automation/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/aws/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/cloud/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/cloud-init/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/cloud-init/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/iaas/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://using.tech/posts/</loc>
-    <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://using.tech/</loc>
-    <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://using.tech/tags/</loc>
-    <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/virtual-machines/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/vm/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/elm/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/front-end/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/functional-programming/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/javascript/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/elm/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/eap225/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/eap225/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/python/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/tp-link/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/autodeb/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/debian/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/dungeonman/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/git/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/homelab/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/3d-printing/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/abs/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/chuck-box/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/freecad/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/fusion-360/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/makerbot/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/openscad/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/pla/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/chuckbox/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/tinkercad/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/clojure/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/jr_2/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/generalized-logistic-function/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/gradient-descent/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/jr/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/logistic/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/secure-scuttlebutt/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/sigmoid/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/jr_1/</loc>
     <lastmod>2019-12-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/ssb/</loc>
     <lastmod>2019-12-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/emacs/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/evil-mode/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/neovim/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/spacemacs/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/text-editors/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/posts/spacemacs/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/tags/vim/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/about/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/categories/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://using.tech/consulting/</loc>
   </url>
-  
 </urlset>

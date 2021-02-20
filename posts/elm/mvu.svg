@@ -68,7 +68,7 @@ link update to main-->
     <text fill='#000000' font-family='sans-serif' font-size='13' lengthAdjust='spacingAndGlyphs' textLength='116' x='266' y='118.0669'>
       (Model, Cmd Msg)
     </text>
-    <!--MD5=[ea07b7f53bb5aa3245231624e70a1d43]
+    <!--MD5=[842cef3648abde632e87d71f4e6add99]
 @startuml
 
 rectangle view
@@ -88,7 +88,7 @@ PlantUML version 1.2020.06(Sun Apr 05 08:38:32 EDT 2020)
 (APACHE source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM
-Java Version: 1.8.0_275-8u275-b01-0ubuntu1~18.04-b01
+Java Version: 1.8.0_282-8u282-b08-0ubuntu1~18.04-b08
 Operating System: Linux
 Default Encoding: UTF-8
 Language: en
