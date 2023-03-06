@@ -19,9 +19,8 @@ core/extended-network-test builds a test network of 100 nodes each following 10 
 core/extended-network-test builds a test network of 100 nodes each following 10 random nodes. It then performs 1000 random syncs (two nodes chosen at random sync with each other) and records the average extended network size at each iteration." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://using.tech/posts/jr_2/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-01-20T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2020-01-20T00:00:00&#43;00:00" />
-
+<meta property="article:published_time" content="2020-01-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-01-20T00:00:00+00:00" />
 
 
     
@@ -58,7 +57,7 @@ core/extended-network-test builds a test network of 100 nodes each following 10 
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.82.0-DEV" />
+    <meta name="generator" content="Hugo 0.111.2">
   </head>
 
   <body class=" ">
@@ -169,8 +168,8 @@ $$ K = \min(n, f^2) $$</p>
 us to have a measure of how far off our guess of $ B $ and $ M $ is with the
 goal being to minimize the cost function. Since we are only dealing with two
 features we can create a 3D plot of the cost function using <code>gradient/graph-ssr</code>:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clojure" data-lang="clojure"><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">gradient/graph-ssr</span> <span style="color:#666">10</span> <span style="color:#666">100</span> (<span style="color:#00a000">gradient/read-csv</span> <span style="color:#b44">&#34;data/extended_growth.csv&#34;</span> <span style="color:#666">1</span>))
-</code></pre></div><p><img src="https://raw.githubusercontent.com/rxt1077/jr/master/data/ssr.png" alt="Cost Function"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-clojure" data-lang="clojure"><span style="display:flex;"><span><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">gradient/graph-ssr</span> <span style="color:#666">10</span> <span style="color:#666">100</span> (<span style="color:#00a000">gradient/read-csv</span> <span style="color:#b44">&#34;data/extended_growth.csv&#34;</span> <span style="color:#666">1</span>))
+</span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/rxt1077/jr/master/data/ssr.png" alt="Cost Function"></p>
 <p>As we can see from the graph, the minimum occurs around $ B = 0.01 $ and
 $ M = 500 $. Using gradient descent, we will attempt to hone in on more precise
 values<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.</p>
@@ -190,12 +189,12 @@ $$ \frac{\partial{ssr}}{\partial{M}} = -2\sum_{n=0}^{1000}\frac{\partial{Y}}{\pa
 <p>The functions for the partial derivatives as well as for the gradient are
 <code>gradient/pdb</code>, <code>gradient/pdm</code>, and <code>gradient/grad</code> respectively<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.
 <code>gradient/descent-to</code> will perform a gradient descent algorithm with an
-adaptive learning rate<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> (taking iterations from an infinite, lazy sequence)
+adaptive learning rate<sup id="fnref1:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> (taking iterations from an infinite, lazy sequence)
 until the cost function does not change by a certain threshold. The output for
 our example can be seen here:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clojure" data-lang="clojure"><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">gradient/descent-to</span> <span style="color:#666">10</span> <span style="color:#666">100</span> <span style="color:#666">0.01</span> <span style="color:#666">500</span> (<span style="color:#00a000">gradient/read-csv</span> <span style="color:#b44">&#34;data/extended_growth.csv&#34;</span> <span style="color:#666">1</span>) <span style="color:#666">0.001</span>)
-[<span style="color:#666">5.116888516074428</span> <span style="color:#666">0.010599133609303186</span> <span style="color:#666">518.1614846831767</span>]
-</code></pre></div><p>As we can see the value $ B = 0.01 $ and $ M = 518 $ yield a minimum $ SSR $ of
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-clojure" data-lang="clojure"><span style="display:flex;"><span><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">gradient/descent-to</span> <span style="color:#666">10</span> <span style="color:#666">100</span> <span style="color:#666">0.01</span> <span style="color:#666">500</span> (<span style="color:#00a000">gradient/read-csv</span> <span style="color:#b44">&#34;data/extended_growth.csv&#34;</span> <span style="color:#666">1</span>) <span style="color:#666">0.001</span>)
+</span></span><span style="display:flex;"><span>[<span style="color:#666">5.116888516074428</span> <span style="color:#666">0.010599133609303186</span> <span style="color:#666">518.1614846831767</span>]
+</span></span></code></pre></div><p>As we can see the value $ B = 0.01 $ and $ M = 518 $ yield a minimum $ SSR $ of
 5.11. Now that we have the tools we can try to build our mathematical model.</p>
 <h2 id="determining-the-effects-of-following-list-size--f--on-extended-network-growth">Determining the Effects of Following List Size ($ f $) on Extended Network Growth</h2>
 <p><code>core/multi-extended-growth</code> changes the amount of nodes each node in the
@@ -204,9 +203,9 @@ the results to
 <a href="https://github.com/rxt1077/jr/blob/master/data/multi_extended_growth.csv">data/multi_extended_growth.csv</a>.
 Plotting the data, we can see the effect on our logistic curve as we vary $ f $
 from 10 to 90:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clojure" data-lang="clojure"><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">multi-extended-growth</span> (<span style="color:#a2f">range </span><span style="color:#666">10</span> <span style="color:#666">100</span> <span style="color:#666">10</span>))
-<span style="color:#b8860b">nil</span>
-</code></pre></div><p><img src="https://raw.githubusercontent.com/rxt1077/jr/master/data/multi_extended_growth.png" alt="Multi Extended Growth"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-clojure" data-lang="clojure"><span style="display:flex;"><span><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">multi-extended-growth</span> (<span style="color:#a2f">range </span><span style="color:#666">10</span> <span style="color:#666">100</span> <span style="color:#666">10</span>))
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">nil</span>
+</span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/rxt1077/jr/master/data/multi_extended_growth.png" alt="Multi Extended Growth"></p>
 <p>As we can see, increasing $ f $ appears to be shifting $ M $ to the left. This
 is exactly what we would expect as a greater <code>:following</code> list would mean a node
 achieves its maximum growth rate earlier.</p>
@@ -219,11 +218,11 @@ maximum $ f $ we can work with is around $ 60 $ if we still want to have
 enough of a curve to do a decent fit. Using <code>core/multi-extended-growth</code> and
 <code>core/multi-descent</code> we can create graphs for $ B $ and $ M $ as functions of
 $ f $:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clojure" data-lang="clojure"><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">multi-extended-growth</span> (<span style="color:#a2f">range </span><span style="color:#666">3</span> <span style="color:#666">60</span> <span style="color:#666">1</span>))
-<span style="color:#b8860b">nil</span>
-<span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">multi-descent</span> (<span style="color:#a2f">range </span><span style="color:#666">3</span> <span style="color:#666">60</span> <span style="color:#666">1</span>))
-<span style="color:#b8860b">nil</span>
-</code></pre></div><p><img src="https://raw.githubusercontent.com/rxt1077/jr/master/data/multi_descent_m.png" alt="M vs f"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-clojure" data-lang="clojure"><span style="display:flex;"><span><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">multi-extended-growth</span> (<span style="color:#a2f">range </span><span style="color:#666">3</span> <span style="color:#666">60</span> <span style="color:#666">1</span>))
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">nil</span>
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">multi-descent</span> (<span style="color:#a2f">range </span><span style="color:#666">3</span> <span style="color:#666">60</span> <span style="color:#666">1</span>))
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">nil</span>
+</span></span></code></pre></div><p><img src="https://raw.githubusercontent.com/rxt1077/jr/master/data/multi_descent_m.png" alt="M vs f"></p>
 <p><img src="https://raw.githubusercontent.com/rxt1077/jr/master/data/multi_descent_b.png" alt="B vs f"></p>
 <p>As can be seen, the first few points still do not get a good fit with the
 gradient descent method and the results are not great. The computation took
@@ -302,10 +301,10 @@ analytically at first.</p>
 the code for the simulation as well as the output. The references in the paper
 are a great source for further exploration as well. I highly recommend reading
 this work.</p>
-<section class="footnotes" role="doc-endnotes">
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn:1" role="doc-endnote">
+<li id="fn:1">
 <p>Several graphing tools were tried for this post including
 <a href="https://plot.ly/">plotly</a>, <a href="">vegalite</a>, and
 <a href="https://github.com/incanter/incanter">incanter</a>. Both vegalite and plotly
@@ -313,41 +312,41 @@ seemed to cause too much javascript creep for a simple blog post (however it is
 worth noting that this page uses <a href="https://www.mathjax.org/">MathJax</a>). Vegalite
 also seemed incapable of the type of 3D plot needed for the cost function.
 Incanter seemed to be a hefty dependency, especially when I was choosing to
-implement gradient descent by hand. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+implement gradient descent by hand.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:2" role="doc-endnote">
+<li id="fn:2">
 <p>We could just increase the precision of <code>gradient/graph-ssr</code> and find the
 minimum, but for the purposes of gaining more experience working in clojure,
 implementing a basic gradient descent algorithm seemed prudent.
-<a href="https://github.com/rxt1077/jr/blob/master/data/extended_growth.R">R can also be used to solve this easily.</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<a href="https://github.com/rxt1077/jr/blob/master/data/extended_growth.R">R can also be used to solve this easily.</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:3" role="doc-endnote">
+<li id="fn:3">
 <p>The importance of an
 <a href="https://en.wikipedia.org/wiki/Learning_rate#Adaptive_learning_rate">adaptive learning rate</a>
 cannot be understated. Many times I found myself in a divergent situation
 because I changed the way I was using the logistic function or because the
 network was different enough that my initial estimates no longer worked. Much
-time could have been saved by implementing this earlier. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+time could have been saved by implementing this earlier.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:4" role="doc-endnote">
+<li id="fn:4">
 <p>I feel I should point out that approximating partial derivatives through
 finite differences is a great way to test your functions. In clojure, that was as
 simple as:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-clojure" data-lang="clojure"><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#a2f">/ </span>(<span style="color:#a2f">- </span>(<span style="color:#00a000">gradient/logistic</span> <span style="color:#666">0</span> <span style="color:#666">10</span> <span style="color:#666">0.010</span> <span style="color:#666">501</span>) (<span style="color:#00a000">gradient/logistic</span> <span style="color:#666">0</span> <span style="color:#666">10</span> <span style="color:#666">0.01</span> <span style="color:#666">500</span>)) <span style="color:#666">1</span>)
-<span style="color:#666">-0.00595383071597233</span>
-<span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">gradient/pdm</span> <span style="color:#666">0</span> <span style="color:#666">10</span> <span style="color:#666">0.01</span> <span style="color:#666">500</span>)
-<span style="color:#666">-0.005983251003711139</span>
-</code></pre></div><p>Here I am changing the $ M $ value by one, while holding the parameters
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-clojure" data-lang="clojure"><span style="display:flex;"><span><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#a2f">/ </span>(<span style="color:#a2f">- </span>(<span style="color:#00a000">gradient/logistic</span> <span style="color:#666">0</span> <span style="color:#666">10</span> <span style="color:#666">0.010</span> <span style="color:#666">501</span>) (<span style="color:#00a000">gradient/logistic</span> <span style="color:#666">0</span> <span style="color:#666">10</span> <span style="color:#666">0.01</span> <span style="color:#666">500</span>)) <span style="color:#666">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#666">-0.00595383071597233</span>
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">jr.core=&gt;</span> (<span style="color:#00a000">gradient/pdm</span> <span style="color:#666">0</span> <span style="color:#666">10</span> <span style="color:#666">0.01</span> <span style="color:#666">500</span>)
+</span></span><span style="display:flex;"><span><span style="color:#666">-0.005983251003711139</span>
+</span></span></code></pre></div><p>Here I am changing the $ M $ value by one, while holding the parameters
 constant. This should be close to the output of <code>gradient/pdm</code> which is the
 partial with respect to $ M $. More information on finite
 differences can be found
-<a href="http://www.cs.toronto.edu/~mbrubake/teaching/C11/Handouts/GradientDescent.pdf">here</a>. <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<a href="http://www.cs.toronto.edu/~mbrubake/teaching/C11/Handouts/GradientDescent.pdf">here</a>.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:5" role="doc-endnote">
-<p><a href="https://www.diva-portal.org/smash/get/diva2:829973/FULLTEXT01.pdf">Taghavianfar, pg 20</a> <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:5">
+<p><a href="https://www.diva-portal.org/smash/get/diva2:829973/FULLTEXT01.pdf">Taghavianfar, pg 20</a>&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
-</section>
+</div>
 
       </div>
 
@@ -393,7 +392,7 @@ differences can be found
     
       <p><a href='mailto:ryan@using.tech'>Email</a></p>
     
-     © 2021
+     © 2023
     
        · 
       Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.

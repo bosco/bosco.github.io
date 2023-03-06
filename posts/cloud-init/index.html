@@ -12,18 +12,17 @@
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Hands On with Cloud-init"/>
 <meta name="twitter:description" content="I remember talking to a friend about AWS a few years after we had both finished our undergrad degrees. He described it to me like this:
-  Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
-  — Mike   At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway."/>
+Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
+— Mike At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway."/>
 
     <meta property="og:title" content="Hands On with Cloud-init" />
 <meta property="og:description" content="I remember talking to a friend about AWS a few years after we had both finished our undergrad degrees. He described it to me like this:
-  Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
-  — Mike   At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway." />
+Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
+— Mike At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://using.tech/posts/cloud-init/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-12-08T00:00:00&#43;00:00" />
-<meta property="article:modified_time" content="2020-12-08T00:00:00&#43;00:00" />
-
+<meta property="article:published_time" content="2020-12-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-12-08T00:00:00+00:00" />
 
 
     
@@ -60,7 +59,7 @@
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
 
-    <meta name="generator" content="Hugo 0.82.0-DEV" />
+    <meta name="generator" content="Hugo 0.111.2">
   </head>
 
   <body class=" ">
@@ -275,12 +274,12 @@ information about how we name our instance.</p>
 <span class="na">growpart</span><span class="pi">:</span>
   <span class="na">mode</span><span class="pi">:</span> <span class="s">auto</span>
   <span class="na">devices</span><span class="pi">:</span> <span class="pi">[</span><span class="s1">&#39;</span><span class="s">/&#39;</span><span class="pi">]</span>
-  <span class="na">ignore_growroot_disabled</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">ignore_growroot_disabled</span><span class="pi">:</span> <span class="kc">false</span>
 <span class="na">mounts</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="pi">[</span> <span class="nv">/dev/sr0</span><span class="pi">,</span> <span class="nv">/mnt</span> <span class="pi">]</span>
 <span class="na">apt</span><span class="pi">:</span>
   <span class="na">sources</span><span class="pi">:</span>
-    <span class="s">docker.list</span><span class="pi">:</span>
+    <span class="na">docker.list</span><span class="pi">:</span>
       <span class="na">source</span><span class="pi">:</span> <span class="s">deb [arch=amd64] https://download.docker.com/linux/debian $RELEASE stable</span>
       <span class="na">keyid</span><span class="pi">:</span> <span class="s">9DC858229FC7DD38854AE2D88D81803C0EBFCD88</span>
 <span class="na">packages</span><span class="pi">:</span>
@@ -462,7 +461,7 @@ can’t remember how the heck I built that VM I was using last week.</p>
     
       <p><a href='mailto:ryan@using.tech'>Email</a></p>
     
-     © 2021
+     © 2023
     
        · 
       Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
