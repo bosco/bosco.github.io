@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Ryan Tolboom">
+    <meta name="description" content="Ryan Tolboom&#39;s website">
+    <meta name="keywords" content="edtech,professor,blog,developer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="FST4 Doppler Spread Algorithm in WSJT-X"/>
+<meta name="twitter:description" content="At HamSCI 2023 this past weekend I was lucky enough to be able to attend Gwyn Griffiths&#39; (G3ZIL) Identifying 14 MHz Propagation Modes Using FST4W SNR and Spectral Spread and Rob Robinett’s (AI6VN) Low Cost, High Accuracy and Stability FST4W Transmissions Using the QDX Transceiver presentations. After the presentation I was able to talk to Rob at his demo. He brought up the idea that if WSPR could calculate Doppler spread the same way FSTW4 calculates it, it might provide some useful data from people that didn’t want to start using FST4 but still wanted to run WSPR nodes."/>
+
+    <meta property="og:title" content="FST4 Doppler Spread Algorithm in WSJT-X" />
+<meta property="og:description" content="At HamSCI 2023 this past weekend I was lucky enough to be able to attend Gwyn Griffiths&#39; (G3ZIL) Identifying 14 MHz Propagation Modes Using FST4W SNR and Spectral Spread and Rob Robinett’s (AI6VN) Low Cost, High Accuracy and Stability FST4W Transmissions Using the QDX Transceiver presentations. After the presentation I was able to talk to Rob at his demo. He brought up the idea that if WSPR could calculate Doppler spread the same way FSTW4 calculates it, it might provide some useful data from people that didn’t want to start using FST4 but still wanted to run WSPR nodes." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://using.tech/posts/fst4/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-03-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-03-21T00:00:00+00:00" />
+
+
+    
+      <base href="https://using.tech/posts/fst4/">
+    
+    <title>
+  FST4 Doppler Spread Algorithm in WSJT-X · Ryan Tolboom
+</title>
+
+    
+      <link rel="canonical" href="https://using.tech/posts/fst4/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://using.tech/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://using.tech/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.111.2">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://using.tech">
+      Ryan Tolboom
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/consulting/">Consulting</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://github.com/rxt1077/resume">Resume</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">FST4 Doppler Spread Algorithm in WSJT-X</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2023-03-21T00:00:00Z'>
+                March 21, 2023
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              12 minutes read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://using.tech/tags/wsjt-x/">WSJT-X</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/hamsci/">HamSCI</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/fst4/">FST4</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/radio/">radio</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/dsp/">DSP</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/fortran/">Fortran</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        <div class="paragraph">
+<p>At <a href="https://hamsci.org">HamSCI</a> 2023 this past weekend I was lucky enough to be able to attend Gwyn Griffiths&#39; (G3ZIL) <a href="https://hamsci.org/publications/identifying-14-mhz-propagation-modes-using-fst4w-snr-and-spectral-spread">Identifying 14 MHz Propagation Modes Using FST4W SNR and Spectral Spread</a> and Rob Robinett’s (AI6VN) <a href="https://hamsci.org/publications/low-cost-high-accuracy-and-stability-fst4w-transmissions-using-qdx-transceiver">Low Cost, High Accuracy and Stability FST4W Transmissions Using the QDX Transceiver</a> presentations.
+After the presentation I was able to talk to Rob at his demo.
+He brought up the idea that if WSPR could calculate Doppler spread the same way <a href="https://wsjt.sourceforge.io/FST4_Quick_Start.pdf">FSTW4 calculates it</a>, it might provide some useful data from people that didn’t want to start using FST4 but still wanted to run WSPR nodes.
+In a perfect world, it would simply be a matter of calling the same subroutine in <code>wsprd</code> that the <code>jt9</code> uses.
+Unfortunately as <a href="https://en.wikipedia.org/wiki/Shannon%E2%80%93Hartley_theorem">Claude Shannon</a> can tell you, it’s not a perfect world.</p>
+</div>
+<div class="paragraph">
+<p>I decided to lookup how FST4 does its Doppler spread calculations and it turns out the code is all in one Fortran subroutine called dopspread:</p>
+</div>
+<div class="listingblock">
+<div class="title">wsjtx/lib/fst4_decode.f90</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="fortran"><span class="w">   </span><span class="k">subroutine</span><span class="w"> </span><span class="n">dopspread</span><span class="p">(</span><span class="n">itone</span><span class="p">,</span><span class="n">iwave</span><span class="p">,</span><span class="n">nsps</span><span class="p">,</span><span class="n">nmax</span><span class="p">,</span><span class="n">ndown</span><span class="p">,</span><span class="n">hmod</span><span class="p">,</span><span class="n">i0</span><span class="p">,</span><span class="n">fc</span><span class="p">,</span><span class="n">fmid</span><span class="p">,</span><span class="n">w50</span><span class="p">)</span><span class="w">
+
+</span><span class="c1">! On &#34;plotspec&#34; special request, compute Doppler spread for a decoded signal</span><span class="w">
+
+      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;fst4/fst4_params.f90&#39;</span><span class="w">
+      </span><span class="kt">complex</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">cwave</span><span class="p">(:)</span><span class="w">       </span><span class="c1">!Reconstructed complex signal</span><span class="w">
+      </span><span class="kt">complex</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">g</span><span class="p">(:)</span><span class="w">           </span><span class="c1">!Channel gain, g(t) in QEX paper</span><span class="w">
+      </span><span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="n">ss</span><span class="p">(:)</span><span class="w">              </span><span class="c1">!Computed power spectrum of g(t)</span><span class="w">
+      </span><span class="kt">integer</span><span class="w"> </span><span class="n">itone</span><span class="p">(</span><span class="mi">160</span><span class="p">)</span><span class="w">                     </span><span class="c1">!Tones for this message</span><span class="w">
+      </span><span class="kt">integer</span><span class="o">*</span><span class="mi">2</span><span class="w"> </span><span class="n">iwave</span><span class="p">(</span><span class="n">nmax</span><span class="p">)</span><span class="w">                  </span><span class="c1">!Raw Rx data</span><span class="w">
+      </span><span class="kt">integer</span><span class="w"> </span><span class="n">hmod</span><span class="w">                           </span><span class="c1">!Modulation index</span><span class="w">
+      </span><span class="k">data</span><span class="w"> </span><span class="n">ncall</span><span class="p">/</span><span class="mi">0</span><span class="p">/</span><span class="w">
+      </span><span class="k">save</span><span class="w"> </span><span class="n">ncall</span><span class="w">
+
+      </span><span class="n">ncall</span><span class="o">=</span><span class="n">ncall</span><span class="mi">+1</span><span class="w">
+      </span><span class="n">nfft</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">nmax</span><span class="w">
+      </span><span class="n">nwave</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">nmax</span><span class="p">,(</span><span class="n">NN</span><span class="mi">+2</span><span class="p">)</span><span class="o">*</span><span class="n">nsps</span><span class="p">)</span><span class="w">
+      </span><span class="k">allocate</span><span class="p">(</span><span class="n">cwave</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nwave</span><span class="mi">-1</span><span class="p">))</span><span class="w">
+      </span><span class="k">allocate</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nfft</span><span class="mi">-1</span><span class="p">))</span><span class="w">
+      </span><span class="n">wave</span><span class="o">=</span><span class="mi">0</span><span class="w">
+      </span><span class="n">fsample</span><span class="o">=</span><span class="mf">12000.0</span><span class="w">
+      </span><span class="k">call</span><span class="w"> </span><span class="n">gen_fst4wave</span><span class="p">(</span><span class="n">itone</span><span class="p">,</span><span class="n">NN</span><span class="p">,</span><span class="n">nsps</span><span class="p">,</span><span class="n">nwave</span><span class="p">,</span><span class="n">fsample</span><span class="p">,</span><span class="n">hmod</span><span class="p">,</span><span class="n">fc</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">cwave</span><span class="p">,</span><span class="n">wave</span><span class="p">)</span><span class="w">
+      </span><span class="n">cwave</span><span class="o">=</span><span class="nb">cshift</span><span class="p">(</span><span class="n">cwave</span><span class="p">,</span><span class="o">-</span><span class="n">i0</span><span class="o">*</span><span class="n">ndown</span><span class="p">)</span><span class="w">
+      </span><span class="n">fac</span><span class="o">=</span><span class="mf">1.0</span><span class="p">/</span><span class="mi">32768</span><span class="w">
+      </span><span class="n">g</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nmax</span><span class="mi">-1</span><span class="p">)</span><span class="o">=</span><span class="n">fac</span><span class="o">*</span><span class="n">float</span><span class="p">(</span><span class="n">iwave</span><span class="p">)</span><span class="o">*</span><span class="nb">conjg</span><span class="p">(</span><span class="n">cwave</span><span class="p">(:</span><span class="n">nmax</span><span class="mi">-1</span><span class="p">))</span><span class="w">
+      </span><span class="n">g</span><span class="p">(</span><span class="n">nmax</span><span class="p">:)</span><span class="o">=</span><span class="mf">0.</span><span class="w">
+      </span><span class="k">call</span><span class="w"> </span><span class="n">four2a</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">nfft</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">-1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w">         </span><span class="c1">!Forward c2c FFT</span><span class="w">
+
+      </span><span class="n">df</span><span class="o">=</span><span class="mf">12000.0</span><span class="p">/</span><span class="n">nfft</span><span class="w">
+      </span><span class="n">ia</span><span class="o">=</span><span class="mf">1.0</span><span class="p">/</span><span class="n">df</span><span class="w">
+      </span><span class="n">smax</span><span class="o">=</span><span class="mf">0.</span><span class="w">
+      </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=-</span><span class="n">ia</span><span class="p">,</span><span class="n">ia</span><span class="w">                        </span><span class="c1">!Find smax in +/- 1 Hz around 0.</span><span class="w">
+         </span><span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="ow">.lt.</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="n">nfft</span><span class="w">
+         </span><span class="n">s</span><span class="o">=</span><span class="kt">real</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">aimag</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="w">
+         </span><span class="n">smax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">smax</span><span class="p">)</span><span class="w">
+      </span><span class="k">enddo</span><span class="w">
+
+      </span><span class="n">ia</span><span class="o">=</span><span class="mf">10.1</span><span class="p">/</span><span class="n">df</span><span class="w">
+      </span><span class="k">allocate</span><span class="p">(</span><span class="n">ss</span><span class="p">(</span><span class="o">-</span><span class="n">ia</span><span class="p">:</span><span class="n">ia</span><span class="p">))</span><span class="w">               </span><span class="c1">!Allocate space for +/- 10 Hz</span><span class="w">
+      </span><span class="n">sum1</span><span class="o">=</span><span class="mf">0.</span><span class="w">
+      </span><span class="n">sum2</span><span class="o">=</span><span class="mf">0.</span><span class="w">
+      </span><span class="n">nns</span><span class="o">=</span><span class="mi">0</span><span class="w">
+      </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=-</span><span class="n">ia</span><span class="p">,</span><span class="n">ia</span><span class="w">
+         </span><span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="ow">.lt.</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="n">nfft</span><span class="w">
+         </span><span class="n">ss</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="kt">real</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">aimag</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)/</span><span class="n">smax</span><span class="w">
+         </span><span class="n">f</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">df</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="ow">.ge.</span><span class="mf">-4.0</span><span class="w"> </span><span class="ow">.and.</span><span class="w"> </span><span class="n">f</span><span class="ow">.le.</span><span class="mf">-2.0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+            </span><span class="n">sum1</span><span class="o">=</span><span class="n">sum1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w">                  </span><span class="c1">!Power between -2 and -4 Hz</span><span class="w">
+            </span><span class="n">nns</span><span class="o">=</span><span class="n">nns</span><span class="mi">+1</span><span class="w">
+         </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="ow">.ge.</span><span class="mf">2.0</span><span class="w"> </span><span class="ow">.and.</span><span class="w"> </span><span class="n">f</span><span class="ow">.le.</span><span class="mf">4.0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+            </span><span class="n">sum2</span><span class="o">=</span><span class="n">sum2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w">                  </span><span class="c1">!Power between +2 and +4 Hz</span><span class="w">
+         </span><span class="k">endif</span><span class="w">
+      </span><span class="k">enddo</span><span class="w">
+      </span><span class="n">avg</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">sum1</span><span class="p">/</span><span class="n">nns</span><span class="p">,</span><span class="n">sum2</span><span class="p">/</span><span class="n">nns</span><span class="p">)</span><span class="w">               </span><span class="c1">!Compute avg from smaller sum</span><span class="w">
+
+      </span><span class="n">sum1</span><span class="o">=</span><span class="mf">0.</span><span class="w">
+      </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=-</span><span class="n">ia</span><span class="p">,</span><span class="n">ia</span><span class="w">
+         </span><span class="n">f</span><span class="o">=</span><span class="n">i</span><span class="o">*</span><span class="n">df</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="ow">.le.</span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="n">sum1</span><span class="o">=</span><span class="n">sum1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">avg</span><span class="w"> </span><span class="c1">!Power in abs(f) &lt; 1 Hz</span><span class="w">
+      </span><span class="k">enddo</span><span class="w">
+
+      </span><span class="n">ia</span><span class="o">=</span><span class="nb">nint</span><span class="p">(</span><span class="mf">1.0</span><span class="p">/</span><span class="n">df</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">
+      </span><span class="n">sum2</span><span class="o">=</span><span class="mf">0.0</span><span class="w">
+      </span><span class="n">xi1</span><span class="o">=</span><span class="mi">-999</span><span class="w">
+      </span><span class="n">xi2</span><span class="o">=</span><span class="mi">-999</span><span class="w">
+      </span><span class="n">xi3</span><span class="o">=</span><span class="mi">-999</span><span class="w">
+      </span><span class="n">sum2z</span><span class="o">=</span><span class="mf">0.</span><span class="w">
+      </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=-</span><span class="n">ia</span><span class="p">,</span><span class="n">ia</span><span class="w">                </span><span class="c1">!Find freq range that has 50% of signal power</span><span class="w">
+         </span><span class="n">sum2</span><span class="o">=</span><span class="n">sum2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">avg</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="n">sum2</span><span class="ow">.ge.</span><span class="mf">0.25</span><span class="o">*</span><span class="n">sum1</span><span class="w"> </span><span class="ow">.and.</span><span class="w"> </span><span class="n">xi1</span><span class="ow">.eq.</span><span class="mf">-999.0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+            </span><span class="n">xi1</span><span class="o">=</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">sum2</span><span class="mf">-0.25</span><span class="o">*</span><span class="n">sum1</span><span class="p">)/(</span><span class="n">sum2</span><span class="o">-</span><span class="n">sum2z</span><span class="p">)</span><span class="w">
+         </span><span class="k">endif</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="n">sum2</span><span class="ow">.ge.</span><span class="mf">0.50</span><span class="o">*</span><span class="n">sum1</span><span class="w"> </span><span class="ow">.and.</span><span class="w"> </span><span class="n">xi2</span><span class="ow">.eq.</span><span class="mf">-999.0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+            </span><span class="n">xi2</span><span class="o">=</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">sum2</span><span class="mf">-0.50</span><span class="o">*</span><span class="n">sum1</span><span class="p">)/(</span><span class="n">sum2</span><span class="o">-</span><span class="n">sum2z</span><span class="p">)</span><span class="w">
+         </span><span class="k">endif</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="n">sum2</span><span class="ow">.ge.</span><span class="mf">0.75</span><span class="o">*</span><span class="n">sum1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+            </span><span class="n">xi3</span><span class="o">=</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">sum2</span><span class="mf">-0.75</span><span class="o">*</span><span class="n">sum1</span><span class="p">)/(</span><span class="n">sum2</span><span class="o">-</span><span class="n">sum2z</span><span class="p">)</span><span class="w">
+            </span><span class="k">exit</span><span class="w">
+         </span><span class="k">endif</span><span class="w">
+         </span><span class="n">sum2z</span><span class="o">=</span><span class="n">sum2</span><span class="w">
+      </span><span class="k">enddo</span><span class="w">
+      </span><span class="n">xdiff</span><span class="o">=</span><span class="nb">sqrt</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="p">(</span><span class="n">xi3</span><span class="o">-</span><span class="n">xi1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="c1">!Keep small values from fluctuating too widely</span><span class="w">
+      </span><span class="n">w50</span><span class="o">=</span><span class="n">xdiff</span><span class="o">*</span><span class="n">df</span><span class="w">                 </span><span class="c1">!Compute Doppler spread</span><span class="w">
+      </span><span class="n">fmid</span><span class="o">=</span><span class="n">xi2</span><span class="o">*</span><span class="n">df</span><span class="w">                  </span><span class="c1">!Frequency midpoint of signal powere</span><span class="w">
+
+      </span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=-</span><span class="n">ia</span><span class="p">,</span><span class="n">ia</span><span class="w">                          </span><span class="c1">!Save the spectrum for plotting</span><span class="w">
+         </span><span class="n">y</span><span class="o">=</span><span class="n">ncall</span><span class="mi">-1</span><span class="w">
+         </span><span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="nb">nint</span><span class="p">(</span><span class="n">xi2</span><span class="p">)</span><span class="w">
+         </span><span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">j</span><span class="o">*</span><span class="n">df</span><span class="p">)</span><span class="ow">.lt.</span><span class="mf">10.0</span><span class="p">)</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mf">0.99</span><span class="o">*</span><span class="n">ss</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="nb">nint</span><span class="p">(</span><span class="n">xi2</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ncall</span><span class="mi">-1</span><span class="w">
+         </span><span class="k">write</span><span class="p">(</span><span class="mi">52</span><span class="p">,</span><span class="mi">1010</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="o">*</span><span class="n">df</span><span class="p">,</span><span class="n">y</span><span class="w">
+</span><span class="nl">1010</span><span class="w">     </span><span class="k">format</span><span class="p">(</span><span class="l">f12.6</span><span class="p">,</span><span class="l">f12.6</span><span class="p">)</span><span class="w">
+      </span><span class="k">enddo</span><span class="w">
+
+      </span><span class="k">return</span><span class="w">
+   </span><span class="k">end</span><span class="w"> </span><span class="k">subroutine</span><span class="w"> </span><span class="n">dopspread</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So here’s the problem: wsprd is written in C and jt9 uses Fortran.
+It wouldn’t simply be a matter of dropping this routine somewhere at the end of wsprd’s decode loop.
+That being said, I think there is some value taking a deep look at how FST4 calculates Doppler spread.
+What follows is a deep dive into the above code.</p>
+</div>
+<div class="sect1">
+<h2 id="_the_test_environment"><a class="anchor" href="#_the_test_environment"></a><a class="link" href="#_the_test_environment">The Test Environment</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I used the WSJT-X CMake script to clone the latest version of the modified hamlib and wsjtx and confirmed that I could compile everything.
+This was basically a matter of following the steps in the INSTALL file.
+I then downloaded <a href="https://sourceforge.net/projects/wsjt/files/samples/FST4+FST4W/">60 second FTS4 signal (210115_0058.wav)</a> and confirmed that I could use the <code>jt9</code> utility to decode it.
+Adding a file named <code>plotspec</code> in the directory where I was running it caused it to calculate the Doppler spread:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">$ touch plotspec
+$ ./jt9 -7 210115_0058.wav
+0058  16  0.4 1331 `  CQ K9KFR EN71                              0.021
+0058  -7  0.3 1101 `  CQ N5TM EL29                               0.054
+&lt;DecodeFinished&gt;   0   2        0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You’ll notice there are two decodes in here, but as I work through the code I’ll only be focusing on the second one.
+This is because I added <code>WRITE</code> statements to the Fortran code to spit out representations of the variables it was using.
+I didn’t want to bother changing filenames for each decode, so the data is only up-to-date for the last decode performed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_catching_the_perfect_wave"><a class="anchor" href="#_catching_the_perfect_wave"></a><a class="link" href="#_catching_the_perfect_wave">Catching the Perfect Wave</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When <code>dopspread</code> is called, the message has already been decoded.
+The tones are passed to the subroutine in <code>itone</code> and the <code>call gen_fst4wave</code> subroutine is used to construct an ideal signal in <code>cwave</code>.
+Through the magic of Fortran <code>WRITE</code> statements, a bit of <a href="https://pages.mtu.edu/~shene/COURSES/cs201/NOTES/chap05/format.html">reading about Fortran formats</a>, and some Python processing with <a href="https://matplotlib.org/">Matplotlib</a>, we can look at part of <code>cwave</code>.
+Here’s a small 3D plot showing the rise of the signal envelope:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/fst4/cwave.png" alt="cwave"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Viewing it as a complex waveform doesn’t really do us too much good, so let’s look at the real projection in 2D:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/fst4/cwave_real.png" alt="cwave real"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we’re getting somewhere.
+You can see the Gaussian-smoothed pulses (bumps that show up when the signal increases).
+You’d really have to zoom in and count to actually note the minor differences in frequency, but detecting those would be no trouble for an FFT.</p>
+</div>
+<div class="paragraph">
+<p>Remember, this waveform looks perfect because it is!
+We’ve already decoded this signal and this a reconstruction.
+Next we’ll take a look at the actual radio data that was captured.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_riding_the_wave_youre_stuck_with"><a class="anchor" href="#_riding_the_wave_youre_stuck_with"></a><a class="link" href="#_riding_the_wave_youre_stuck_with">Riding the Wave You’re Stuck With</a></h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/fst4/iwave.png" alt="iwave"/>
+</div>
+</div>
+<div class="paragraph">
+<p>This is the actual sampled RF data stored in a two byte signed integer array shown in the time domain.
+As you can see, it’s pretty hard for the human eye to make heads or tails of it.
+<code>dopspread</code> scales <code>iwave</code> down to +/- 1 and multiplies it by the complex conjugate of <code>cwave</code> to get <code>g</code>, <a href="https://wsjt.sourceforge.io/FT4_FT8_QEX.pdf">the estimated channel gain data</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="fortran"><span class="n">fac</span><span class="o">=</span><span class="mf">1.0</span><span class="p">/</span><span class="mi">32768</span><span class="w">
+</span><span class="n">g</span><span class="p">(</span><span class="mi">0</span><span class="p">:</span><span class="n">nmax</span><span class="mi">-1</span><span class="p">)</span><span class="o">=</span><span class="n">fac</span><span class="o">*</span><span class="n">float</span><span class="p">(</span><span class="n">iwave</span><span class="p">)</span><span class="o">*</span><span class="nb">conjg</span><span class="p">(</span><span class="n">cwave</span><span class="p">(:</span><span class="n">nmax</span><span class="mi">-1</span><span class="p">))</span><span class="w">
+</span><span class="n">g</span><span class="p">(</span><span class="n">nmax</span><span class="p">:)</span><span class="o">=</span><span class="mf">0.</span><span class="w"> <i class="conum" data-value="1"></i><b>(1)</b>
+</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>iwave</code> starts at one and goes to <code>nmax</code>, but <code>g</code> starts at zero and goes to <code>nmax - 1</code></td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p><code>g</code> doesn’t help us much in the time domain, but in the frequency domain we can do a whole lot more.
+A complex to complex FFT with twice as many points as the samples in iwave and we get this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/fst4/g_fft_all.png" alt="g fft all"/>
+</div>
+</div>
+<div class="paragraph">
+<p>This is the only FFT the algorithm performs.
+It’s the basis for much of the analysis that follows and it’s important to note a few things:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>This is a representation of how much the signal has spread.</p>
+</li>
+<li>
+<p>We only really care about the low frequencies (see the note about using a low pass filter on <code>g</code> in <a href="https://wsjt.sourceforge.io/FT4_FT8_QEX.pdf">the QEX article</a>).</p>
+</li>
+<li>
+<p>If our signal is centered at zero, negative frequencies are on the far right of the FFT.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_scaling_by_max_power_and_subtracting_noise"><a class="anchor" href="#_scaling_by_max_power_and_subtracting_noise"></a><a class="link" href="#_scaling_by_max_power_and_subtracting_noise">Scaling by Max Power and Subtracting Noise</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The FFT can be broken down into two main regions, the <em>power</em> region, -1 Hz to 1 Hz, and the <em>noise</em> region, -4 Hz to 2 Hz and 2 Hz to 4 Hz.
+The analysis only takes place from -4 Hz to 4 Hz, but it appears -10 Hz to 10 Hz can be stored in a separate file (perhaps it provides a prettier picture?).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/fst4/g_fft_4Hz.png" alt="g fft 4Hz"/>
+</div>
+</div>
+<div class="paragraph">
+<p>It starts by looking in the <em>power</em> region for the maximum signal (as calculated as the sum of the squares of the real and imaginary components of the signal).
+This is stored as <code>smax</code> which is used to scale the whole FFT down between the values of 0 and 1.</p>
+</div>
+<div class="paragraph">
+<p>In the <em>noise</em> regions an average signal on each side is calculated.
+The minimum value of the two regions is then subtracted from the FFT, effectively removing any offset above zero.</p>
+</div>
+<div class="paragraph">
+<p>Pay close attention to how the loops check to see if <code>i</code> is negative and set <code>j</code> accordingly:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="fortran"><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=-</span><span class="n">ia</span><span class="p">,</span><span class="n">ia</span><span class="w">
+   </span><span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="w">
+   </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="ow">.lt.</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="n">nfft</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For a negative <code>i</code> the FFT is actually indexed from the right hand side.
+Just visualizing the array without centering it will yield confusing results!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_finding_w50"><a class="anchor" href="#_finding_w50"></a><a class="link" href="#_finding_w50">Finding w50</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To fully understand the next part of the algorithm, it helps to pay close attention to the name of the variable it returns: <code>w50</code>.
+A bit of googling yields <a href="https://wsjt.sourceforge.io/EME2010_K1JT.pdf">this paper</a> in which Joe Taylor defines <em>w50</em></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+For practical purposes related to amateur EME communication, I define two parameters for measuring frequency spread: <em>w50</em> and <em>w10</em>.
+Both are readily determined from autocorrelation functions of the echo spectra.
+Loosely speaking, they represent the full widths of those functions at the 50% (–3 dB) and 10% (–10 dB) points.
+In other words, <em>w50</em> represents a range of frequencies containing half of the echo power, while <em>w10</em> contains 90% of the power.
+</blockquote>
+<div class="attribution">
+— Joe Taylor K1JT<br/>
+<cite>Frequency-Dependent Characteristics of the EME Path</cite>
+</div>
+</div>
+<div class="paragraph">
+<p>The total power for the power region is stored in <code>sum1</code>.
+The Fortran code loops through the power region again, this time summing up the power as it goes and storing the index when it reaches 25 percent, 50 percent, and 75 percent in <code>xi1</code>, <code>xi2</code>, and <code>xi3</code> respectively:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="fortran"><span class="n">ia</span><span class="o">=</span><span class="nb">nint</span><span class="p">(</span><span class="mf">1.0</span><span class="p">/</span><span class="n">df</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="n">sum2</span><span class="o">=</span><span class="mf">0.0</span><span class="w">
+</span><span class="n">xi1</span><span class="o">=</span><span class="mi">-999</span><span class="w">
+</span><span class="n">xi2</span><span class="o">=</span><span class="mi">-999</span><span class="w">
+</span><span class="n">xi3</span><span class="o">=</span><span class="mi">-999</span><span class="w">
+</span><span class="n">sum2z</span><span class="o">=</span><span class="mf">0.</span><span class="w">
+</span><span class="k">do</span><span class="w"> </span><span class="n">i</span><span class="o">=-</span><span class="n">ia</span><span class="p">,</span><span class="n">ia</span><span class="w">                </span><span class="c1">!Find freq range that has 50% of signal power</span><span class="w">
+   </span><span class="n">sum2</span><span class="o">=</span><span class="n">sum2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ss</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">avg</span><span class="w">
+   </span><span class="k">if</span><span class="p">(</span><span class="n">sum2</span><span class="ow">.ge.</span><span class="mf">0.25</span><span class="o">*</span><span class="n">sum1</span><span class="w"> </span><span class="ow">.and.</span><span class="w"> </span><span class="n">xi1</span><span class="ow">.eq.</span><span class="mf">-999.0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+      </span><span class="n">xi1</span><span class="o">=</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">sum2</span><span class="mf">-0.25</span><span class="o">*</span><span class="n">sum1</span><span class="p">)/(</span><span class="n">sum2</span><span class="o">-</span><span class="n">sum2z</span><span class="p">)</span><span class="w">
+   </span><span class="k">endif</span><span class="w">
+   </span><span class="k">if</span><span class="p">(</span><span class="n">sum2</span><span class="ow">.ge.</span><span class="mf">0.50</span><span class="o">*</span><span class="n">sum1</span><span class="w"> </span><span class="ow">.and.</span><span class="w"> </span><span class="n">xi2</span><span class="ow">.eq.</span><span class="mf">-999.0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+      </span><span class="n">xi2</span><span class="o">=</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">sum2</span><span class="mf">-0.50</span><span class="o">*</span><span class="n">sum1</span><span class="p">)/(</span><span class="n">sum2</span><span class="o">-</span><span class="n">sum2z</span><span class="p">)</span><span class="w">
+   </span><span class="k">endif</span><span class="w">
+   </span><span class="k">if</span><span class="p">(</span><span class="n">sum2</span><span class="ow">.ge.</span><span class="mf">0.75</span><span class="o">*</span><span class="n">sum1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w">
+      </span><span class="n">xi3</span><span class="o">=</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">sum2</span><span class="mf">-0.75</span><span class="o">*</span><span class="n">sum1</span><span class="p">)/(</span><span class="n">sum2</span><span class="o">-</span><span class="n">sum2z</span><span class="p">)</span><span class="w">
+      </span><span class="k">exit</span><span class="w">
+   </span><span class="k">endif</span><span class="w">
+   </span><span class="n">sum2z</span><span class="o">=</span><span class="n">sum2</span><span class="w">
+</span><span class="k">enddo</span><span class="w">
+</span><span class="n">xdiff</span><span class="o">=</span><span class="nb">sqrt</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="p">(</span><span class="n">xi3</span><span class="o">-</span><span class="n">xi1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="c1">!Keep small values from fluctuating too widely</span><span class="w">
+</span><span class="n">w50</span><span class="o">=</span><span class="n">xdiff</span><span class="o">*</span><span class="n">df</span><span class="w">                 </span><span class="c1">!Compute Doppler spread</span><span class="w">
+</span><span class="n">fmid</span><span class="o">=</span><span class="n">xi2</span><span class="o">*</span><span class="n">df</span><span class="w">                  </span><span class="c1">!Frequency midpoint of signal powere</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may also notice the indexes it stores aren’t technically integers.
+It performs an overshoot correction of the form:</p>
+</div>
+$$OvershootCorrection = 1 + {(CurrentPower - ExpectedPower) \over (CurrentPower - PreviousPower)}$$
+<div class="paragraph">
+<p>In this way if the percent power is somewhere between two indices, it can make a linear estimate as to where it would be and return a float.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>The algorithm then takes the difference between the 75% power index and the 25% power index and attempts to prevent index differences less than one through the use of:</p>
+</div>
+$$y=\sqrt{1+x^2}$$
+<div class="paragraph">
+<p>Graphing this shows how the minimum <code>xdiff</code> will be one:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/fst4/sqrt_graph.png" alt="sqrt graph"/>
+</div>
+</div>
+<div class="paragraph">
+<p>The difference in indexes is then converted to a difference in frequencies and voilà, you have the spread of frequencies over which half of the power of the transmission is contained: <em>w50</em>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_general_algorithm"><a class="anchor" href="#_general_algorithm"></a><a class="link" href="#_general_algorithm">General Algorithm</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To summarize, here are the basic steps of the algorithm for FSTW4 Doppler spread calculations:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Using the tones of the message construct an ideal complex waveform of what it should be scaled between -1 and 1.</p>
+</li>
+<li>
+<p>Scale the received data to be between 1 and -1 and multiply it by the ideal waveform. This yields the estimated channel gain data, <code>g</code>, as discussed in <a href="https://wsjt.sourceforge.io/FT4_FT8_QEX.pdf">the QEX paper</a>.</p>
+</li>
+<li>
+<p>Perform a forward, complex-to-complex FFT on the <code>g</code> at a resolution of twice the samples you started with.</p>
+</li>
+<li>
+<p>Find the maximum power (real component squared plus imaginary component squared) around +/- 1 Hz of the center.</p>
+</li>
+<li>
+<p>Scale by the maximum power so the FFT is between 0 and 1.</p>
+</li>
+<li>
+<p>Find the average magnitude between -2 and -4 Hz as well as average magnitude between 2 and 4 Hz. This is the left and right noise.</p>
+</li>
+<li>
+<p>Use the minimum noise and subtract it from the FFT.</p>
+</li>
+<li>
+<p>Find the total power around the +/- 1 Hz region.</p>
+</li>
+<li>
+<p>Iterate through the +/- 1 Hz region summing up the power to find the indices where you get 25% and 75% of the total magnitude (some steps can be taken to account for overshoot).</p>
+</li>
+<li>
+<p>Take the difference of the indices ensuring that the minimum value is at least one one and convert those indexes to a frequency in Hz. This is <em>w50</em>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_python_implementation"><a class="anchor" href="#_python_implementation"></a><a class="link" href="#_python_implementation">Python Implementation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I’d be remiss if I didn’t check to see that my understanding was complete by implementing the algorithm myself.
+What follows is a Python implementation, using the same data (including the ideal generated waveform) as the Fortran implementation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python"><span class="kn">import</span> <span class="n">math</span>
+<span class="kn">from</span> <span class="n">numpy.fft</span> <span class="kn">import</span> <span class="n">fft</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">RF_DATA_FILE</span> <span class="o">=</span> <span class="s">&#39;iwave.dat&#39;</span>
+<span class="n">IDEAL_FILE</span> <span class="o">=</span> <span class="s">&#39;cwave.dat&#39;</span>
+<span class="n">TIME</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">12000</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">TIME</span> <span class="o">*</span> <span class="n">SAMPLE_RATE</span>
+<span class="n">g_fft_size</span> <span class="o">=</span> <span class="n">samples</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">index_per_freq</span> <span class="o">=</span> <span class="n">g_fft_size</span> <span class="o">/</span> <span class="n">SAMPLE_RATE</span>
+<span class="n">freq_per_index</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">index_per_freq</span>
+<span class="n">FOCUS_REGION</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># we really only care about frequencies +/- 4 Hz
+</span><span class="n">POWER_REGION</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># we look for the maximum power to normalize in +/- 1 Hz
+</span><span class="n">NOISE_REGION</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># we look for the noise 2 Hz in from outsides of the FOCUS region
+</span>
+<span class="c1"># theoretically our RF data is between -32768 and 32768
+# this scale factor makes it a float between -1 and 1
+</span><span class="n">rf_scale_factor</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">32768</span>
+
+<span class="c1"># Read RF data
+</span><span class="n">rf_data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">RF_DATA_FILE</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_file</span><span class="p">:</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_file</span><span class="p">.</span><span class="nf">readlines</span><span class="p">():</span>
+        <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">()</span>
+        <span class="n">rf_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">samples</span><span class="p">:</span>
+            <span class="k">break</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">&#34;Read </span><span class="si">{</span><span class="n">rf_data</span><span class="p">.</span><span class="n">size</span><span class="si">}</span><span class="s"> samples of RF data from </span><span class="si">{</span><span class="n">RF_DATA_FILE</span><span class="si">}</span><span class="s">&#34;</span><span class="p">)</span>
+
+<span class="c1"># Read ideal waveform
+</span><span class="n">ideal</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+<span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">IDEAL_FILE</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_file</span><span class="p">:</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_file</span><span class="p">.</span><span class="nf">readlines</span><span class="p">():</span>
+        <span class="n">split_line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">()</span>
+        <span class="n">ideal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nf">complex</span><span class="p">(</span><span class="nf">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nf">float</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">samples</span><span class="p">:</span>
+            <span class="k">break</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">&#34;Read </span><span class="si">{</span><span class="n">ideal</span><span class="p">.</span><span class="n">size</span><span class="si">}</span><span class="s"> samples of the ideal waveform from </span><span class="si">{</span><span class="n">IDEAL_FILE</span><span class="si">}</span><span class="s">&#34;</span><span class="p">)</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">rf_scale_factor</span> <span class="o">*</span> <span class="n">rf_data</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">conj</span><span class="p">(</span><span class="n">ideal</span><span class="p">)</span>
+<span class="n">g_fft</span> <span class="o">=</span> <span class="nf">fft</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">g_fft_size</span><span class="p">)</span>
+
+<span class="c1"># grab the focus region, don&#39;t forget negative values wrap around
+# we center the focus region in our array and from complex to just magnitude
+</span><span class="n">di</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">index_per_freq</span> <span class="o">*</span> <span class="n">FOCUS_REGION</span><span class="p">)</span>
+<span class="n">g_fft_focus</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">empty</span><span class="p">(</span><span class="n">di</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">di</span><span class="p">,</span> <span class="n">di</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="n">g_fft_size</span>
+    <span class="n">g_fft_focus</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">g_fft</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">g_fft</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># find the maximum power in the +/- POWER_REGION Hz region
+# don&#39;t forget that the frequency has now shifted to start at -FOCUS_REGION Hz
+</span><span class="n">power_start</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">index_per_freq</span> <span class="o">*</span> <span class="p">(</span><span class="n">FOCUS_REGION</span> <span class="o">-</span> <span class="n">POWER_REGION</span><span class="p">))</span>
+<span class="n">power_end</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">power_start</span> <span class="o">+</span> <span class="n">index_per_freq</span> <span class="o">*</span> <span class="p">(</span><span class="n">POWER_REGION</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">smax</span> <span class="o">=</span> <span class="n">g_fft_focus</span><span class="p">[</span><span class="n">power_start</span><span class="p">:</span><span class="n">power_end</span><span class="p">].</span><span class="nf">max</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">&#34;smax: </span><span class="si">{</span><span class="n">smax</span><span class="si">}</span><span class="s">&#34;</span><span class="p">)</span>
+
+<span class="c1"># using smax, scale the FFT to be between 0 and 1
+</span><span class="n">g_fft_focus</span> <span class="o">/=</span> <span class="n">smax</span>
+
+<span class="c1"># calculate the noise average
+</span><span class="n">left_noise</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">average</span><span class="p">(</span><span class="n">g_fft_focus</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nf">int</span><span class="p">(</span><span class="n">index_per_freq</span> <span class="o">*</span> <span class="n">NOISE_REGION</span><span class="p">)])</span>
+<span class="n">right_noise</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">average</span><span class="p">(</span><span class="n">g_fft_focus</span><span class="p">[:</span><span class="o">-</span><span class="nf">int</span><span class="p">(</span><span class="n">index_per_freq</span><span class="o">*</span><span class="n">NOISE_REGION</span><span class="p">)])</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="nf">min</span><span class="p">(</span><span class="n">left_noise</span><span class="p">,</span> <span class="n">right_noise</span><span class="p">)</span>
+
+<span class="c1"># subtract out the noise
+</span><span class="n">g_fft_focus</span> <span class="o">-=</span> <span class="n">noise</span>
+
+<span class="c1"># calculate the power around POWER_REGION
+</span><span class="n">total_power</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">g_fft_focus</span><span class="p">[</span><span class="n">power_start</span><span class="p">:</span><span class="n">power_end</span><span class="p">])</span>
+
+<span class="c1"># find the indexes around the power region where we hit 25% and 75% of the power
+</span><span class="n">current_power</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">p25_index</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">p75_index</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">power_start</span><span class="p">,</span> <span class="n">power_end</span><span class="p">):</span>
+    <span class="n">current_power</span> <span class="o">+=</span> <span class="n">g_fft_focus</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">power_percent</span> <span class="o">=</span> <span class="n">current_power</span> <span class="o">/</span> <span class="n">total_power</span>
+    <span class="nf">if </span><span class="p">(</span><span class="n">power_percent</span> <span class="o">&gt;=</span> <span class="mf">0.25</span><span class="p">)</span> <span class="ow">and</span> <span class="n">p25_index</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">p25_index</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">if</span> <span class="n">power_percent</span> <span class="o">&gt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+        <span class="n">p75_index</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">break</span>
+    <span class="n">prev_power</span> <span class="o">=</span> <span class="n">current_power</span>
+
+<span class="n">xdiff</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">p75_index</span> <span class="o">-</span> <span class="n">p25_index</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">w50</span> <span class="o">=</span> <span class="n">xdiff</span> <span class="o">*</span> <span class="n">freq_per_index</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">&#34;Doppler Spread (w50): </span><span class="si">{</span><span class="n">w50</span><span class="si">}</span><span class="s">&#34;</span><span class="p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Running this gives me 0.051 for the Doppler spread, which is within 6% of the 0.054 the Fortran code gives.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a><a class="link" href="#_conclusion">Conclusion</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can find the Python implementation, the data used, the scripts used to make the plots, and my butchered <code>fst4_decode.f90</code> in <a href="https://github.com/rxt1077/spread_analysis">this repo</a>.
+Hopefully with a greater understanding of how this algorithm works, it can be implemented for WSPR signals.
+If you don’t want to dive into the C code that makes up wsprd, it may even be possible to do it based on the c2 files that <a href="http://wsprdaemon.org/">wsprdaemon</a> already analyzes.
+The main difference would probably be in setting <code>FOCUS_REGION</code>, <code>POWER_REGION</code>, and <code>NOISE_REGION</code>.</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr/>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. I found this doesn’t make a huge difference and I left it out of my Python implementation.
+</div>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      
+      
+      
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i = 0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+    
+    <link rel="stylesheet" href="https://using.tech/css/syntax.css">
+<link rel="stylesheet" href="https://using.tech/css/asciidoc.css">
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><a href='mailto:ryan@using.tech'>Email</a></p>
+    
+     © 2023
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
