@@ -18,3 +18,20 @@
     margin-right: auto;
     width: 50%;
 }
+
+.right {
+    float: right !important;
+}
+
+.left {
+    float: left !important;
+}
+
+div.imageblock img {
+    margin-top: 1.5rem;
+}
+
+body {
+    font-family: Merriweather Sans, Sans;
+    font-size: 2.0em;
+}
