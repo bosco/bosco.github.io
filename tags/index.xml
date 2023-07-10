@@ -2,566 +2,566 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Ryan Tolboom</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://using.tech/tags/</link>
     <description>Recent content in Tags on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DSP</title>
-      <link>http://localhost:1313/tags/dsp/</link>
+      <link>https://using.tech/tags/dsp/</link>
       <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/dsp/</guid>
+      <guid>https://using.tech/tags/dsp/</guid>
       <description></description>
     </item>
     
     <item>
       <title>radio</title>
-      <link>http://localhost:1313/tags/radio/</link>
+      <link>https://using.tech/tags/radio/</link>
       <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/radio/</guid>
+      <guid>https://using.tech/tags/radio/</guid>
       <description></description>
     </item>
     
     <item>
       <title>WSPR</title>
-      <link>http://localhost:1313/tags/wspr/</link>
+      <link>https://using.tech/tags/wspr/</link>
       <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/wspr/</guid>
+      <guid>https://using.tech/tags/wspr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>wsprd</title>
-      <link>http://localhost:1313/tags/wsprd/</link>
+      <link>https://using.tech/tags/wsprd/</link>
       <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/wsprd/</guid>
+      <guid>https://using.tech/tags/wsprd/</guid>
       <description></description>
     </item>
     
     <item>
       <title>DIY</title>
-      <link>http://localhost:1313/tags/diy/</link>
+      <link>https://using.tech/tags/diy/</link>
       <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/diy/</guid>
+      <guid>https://using.tech/tags/diy/</guid>
       <description></description>
     </item>
     
     <item>
       <title>make your own gear</title>
-      <link>http://localhost:1313/tags/make-your-own-gear/</link>
+      <link>https://using.tech/tags/make-your-own-gear/</link>
       <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/make-your-own-gear/</guid>
+      <guid>https://using.tech/tags/make-your-own-gear/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sailing</title>
-      <link>http://localhost:1313/tags/sailing/</link>
+      <link>https://using.tech/tags/sailing/</link>
       <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/sailing/</guid>
+      <guid>https://using.tech/tags/sailing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sailrite</title>
-      <link>http://localhost:1313/tags/sailrite/</link>
+      <link>https://using.tech/tags/sailrite/</link>
       <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/sailrite/</guid>
+      <guid>https://using.tech/tags/sailrite/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Fortran</title>
-      <link>http://localhost:1313/tags/fortran/</link>
+      <link>https://using.tech/tags/fortran/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/fortran/</guid>
+      <guid>https://using.tech/tags/fortran/</guid>
       <description></description>
     </item>
     
     <item>
       <title>FST4</title>
-      <link>http://localhost:1313/tags/fst4/</link>
+      <link>https://using.tech/tags/fst4/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/fst4/</guid>
+      <guid>https://using.tech/tags/fst4/</guid>
       <description></description>
     </item>
     
     <item>
       <title>HamSCI</title>
-      <link>http://localhost:1313/tags/hamsci/</link>
+      <link>https://using.tech/tags/hamsci/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/hamsci/</guid>
+      <guid>https://using.tech/tags/hamsci/</guid>
       <description></description>
     </item>
     
     <item>
       <title>WSJT-X</title>
-      <link>http://localhost:1313/tags/wsjt-x/</link>
+      <link>https://using.tech/tags/wsjt-x/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/wsjt-x/</guid>
+      <guid>https://using.tech/tags/wsjt-x/</guid>
       <description></description>
     </item>
     
     <item>
       <title>cyber security</title>
-      <link>http://localhost:1313/tags/cyber-security/</link>
+      <link>https://using.tech/tags/cyber-security/</link>
       <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/cyber-security/</guid>
+      <guid>https://using.tech/tags/cyber-security/</guid>
       <description></description>
     </item>
     
     <item>
       <title>oeweek</title>
-      <link>http://localhost:1313/tags/oeweek/</link>
+      <link>https://using.tech/tags/oeweek/</link>
       <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/oeweek/</guid>
+      <guid>https://using.tech/tags/oeweek/</guid>
       <description></description>
     </item>
     
     <item>
       <title>open education week</title>
-      <link>http://localhost:1313/tags/open-education-week/</link>
+      <link>https://using.tech/tags/open-education-week/</link>
       <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/open-education-week/</guid>
+      <guid>https://using.tech/tags/open-education-week/</guid>
       <description></description>
     </item>
     
     <item>
       <title>open educational resources</title>
-      <link>http://localhost:1313/tags/open-educational-resources/</link>
+      <link>https://using.tech/tags/open-educational-resources/</link>
       <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/open-educational-resources/</guid>
+      <guid>https://using.tech/tags/open-educational-resources/</guid>
       <description></description>
     </item>
     
     <item>
       <title>security</title>
-      <link>http://localhost:1313/tags/security/</link>
+      <link>https://using.tech/tags/security/</link>
       <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/security/</guid>
+      <guid>https://using.tech/tags/security/</guid>
       <description></description>
     </item>
     
     <item>
       <title>asciidoctor</title>
-      <link>http://localhost:1313/tags/asciidoctor/</link>
+      <link>https://using.tech/tags/asciidoctor/</link>
       <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/asciidoctor/</guid>
+      <guid>https://using.tech/tags/asciidoctor/</guid>
       <description></description>
     </item>
     
     <item>
       <title>p2e</title>
-      <link>http://localhost:1313/tags/p2e/</link>
+      <link>https://using.tech/tags/p2e/</link>
       <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/p2e/</guid>
+      <guid>https://using.tech/tags/p2e/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pathfinder</title>
-      <link>http://localhost:1313/tags/pathfinder/</link>
+      <link>https://using.tech/tags/pathfinder/</link>
       <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/pathfinder/</guid>
+      <guid>https://using.tech/tags/pathfinder/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ruby</title>
-      <link>http://localhost:1313/tags/ruby/</link>
+      <link>https://using.tech/tags/ruby/</link>
       <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/ruby/</guid>
+      <guid>https://using.tech/tags/ruby/</guid>
       <description></description>
     </item>
     
     <item>
       <title>automation</title>
-      <link>http://localhost:1313/tags/automation/</link>
+      <link>https://using.tech/tags/automation/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/automation/</guid>
+      <guid>https://using.tech/tags/automation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>AWS</title>
-      <link>http://localhost:1313/tags/aws/</link>
+      <link>https://using.tech/tags/aws/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/aws/</guid>
+      <guid>https://using.tech/tags/aws/</guid>
       <description></description>
     </item>
     
     <item>
       <title>cloud</title>
-      <link>http://localhost:1313/tags/cloud/</link>
+      <link>https://using.tech/tags/cloud/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/cloud/</guid>
+      <guid>https://using.tech/tags/cloud/</guid>
       <description></description>
     </item>
     
     <item>
       <title>cloud-init</title>
-      <link>http://localhost:1313/tags/cloud-init/</link>
+      <link>https://using.tech/tags/cloud-init/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/cloud-init/</guid>
+      <guid>https://using.tech/tags/cloud-init/</guid>
       <description></description>
     </item>
     
     <item>
       <title>IaaS</title>
-      <link>http://localhost:1313/tags/iaas/</link>
+      <link>https://using.tech/tags/iaas/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/iaas/</guid>
+      <guid>https://using.tech/tags/iaas/</guid>
       <description></description>
     </item>
     
     <item>
       <title>virtual machines</title>
-      <link>http://localhost:1313/tags/virtual-machines/</link>
+      <link>https://using.tech/tags/virtual-machines/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/virtual-machines/</guid>
+      <guid>https://using.tech/tags/virtual-machines/</guid>
       <description></description>
     </item>
     
     <item>
       <title>VM</title>
-      <link>http://localhost:1313/tags/vm/</link>
+      <link>https://using.tech/tags/vm/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/vm/</guid>
+      <guid>https://using.tech/tags/vm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>elm</title>
-      <link>http://localhost:1313/tags/elm/</link>
+      <link>https://using.tech/tags/elm/</link>
       <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/elm/</guid>
+      <guid>https://using.tech/tags/elm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>front end</title>
-      <link>http://localhost:1313/tags/front-end/</link>
+      <link>https://using.tech/tags/front-end/</link>
       <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/front-end/</guid>
+      <guid>https://using.tech/tags/front-end/</guid>
       <description></description>
     </item>
     
     <item>
       <title>functional programming</title>
-      <link>http://localhost:1313/tags/functional-programming/</link>
+      <link>https://using.tech/tags/functional-programming/</link>
       <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/functional-programming/</guid>
+      <guid>https://using.tech/tags/functional-programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>javascript</title>
-      <link>http://localhost:1313/tags/javascript/</link>
+      <link>https://using.tech/tags/javascript/</link>
       <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/javascript/</guid>
+      <guid>https://using.tech/tags/javascript/</guid>
       <description></description>
     </item>
     
     <item>
       <title>eap225</title>
-      <link>http://localhost:1313/tags/eap225/</link>
+      <link>https://using.tech/tags/eap225/</link>
       <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/eap225/</guid>
+      <guid>https://using.tech/tags/eap225/</guid>
       <description></description>
     </item>
     
     <item>
       <title>python</title>
-      <link>http://localhost:1313/tags/python/</link>
+      <link>https://using.tech/tags/python/</link>
       <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/python/</guid>
+      <guid>https://using.tech/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tp-link</title>
-      <link>http://localhost:1313/tags/tp-link/</link>
+      <link>https://using.tech/tags/tp-link/</link>
       <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/tp-link/</guid>
+      <guid>https://using.tech/tags/tp-link/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Debian</title>
-      <link>http://localhost:1313/tags/debian/</link>
+      <link>https://using.tech/tags/debian/</link>
       <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/debian/</guid>
+      <guid>https://using.tech/tags/debian/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dungeonman</title>
-      <link>http://localhost:1313/tags/dungeonman/</link>
+      <link>https://using.tech/tags/dungeonman/</link>
       <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/dungeonman/</guid>
+      <guid>https://using.tech/tags/dungeonman/</guid>
       <description></description>
     </item>
     
     <item>
       <title>git</title>
-      <link>http://localhost:1313/tags/git/</link>
+      <link>https://using.tech/tags/git/</link>
       <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/git/</guid>
+      <guid>https://using.tech/tags/git/</guid>
       <description></description>
     </item>
     
     <item>
       <title>homelab</title>
-      <link>http://localhost:1313/tags/homelab/</link>
+      <link>https://using.tech/tags/homelab/</link>
       <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/homelab/</guid>
+      <guid>https://using.tech/tags/homelab/</guid>
       <description></description>
     </item>
     
     <item>
       <title>3d printing</title>
-      <link>http://localhost:1313/tags/3d-printing/</link>
+      <link>https://using.tech/tags/3d-printing/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/3d-printing/</guid>
+      <guid>https://using.tech/tags/3d-printing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ABS</title>
-      <link>http://localhost:1313/tags/abs/</link>
+      <link>https://using.tech/tags/abs/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/abs/</guid>
+      <guid>https://using.tech/tags/abs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>chuck box</title>
-      <link>http://localhost:1313/tags/chuck-box/</link>
+      <link>https://using.tech/tags/chuck-box/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/chuck-box/</guid>
+      <guid>https://using.tech/tags/chuck-box/</guid>
       <description></description>
     </item>
     
     <item>
       <title>FreeCAD</title>
-      <link>http://localhost:1313/tags/freecad/</link>
+      <link>https://using.tech/tags/freecad/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/freecad/</guid>
+      <guid>https://using.tech/tags/freecad/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Fusion 360</title>
-      <link>http://localhost:1313/tags/fusion-360/</link>
+      <link>https://using.tech/tags/fusion-360/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/fusion-360/</guid>
+      <guid>https://using.tech/tags/fusion-360/</guid>
       <description></description>
     </item>
     
     <item>
       <title>MakerBot</title>
-      <link>http://localhost:1313/tags/makerbot/</link>
+      <link>https://using.tech/tags/makerbot/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/makerbot/</guid>
+      <guid>https://using.tech/tags/makerbot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>OpenSCAD</title>
-      <link>http://localhost:1313/tags/openscad/</link>
+      <link>https://using.tech/tags/openscad/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/openscad/</guid>
+      <guid>https://using.tech/tags/openscad/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PLA</title>
-      <link>http://localhost:1313/tags/pla/</link>
+      <link>https://using.tech/tags/pla/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/pla/</guid>
+      <guid>https://using.tech/tags/pla/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tinkercad</title>
-      <link>http://localhost:1313/tags/tinkercad/</link>
+      <link>https://using.tech/tags/tinkercad/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/tinkercad/</guid>
+      <guid>https://using.tech/tags/tinkercad/</guid>
       <description></description>
     </item>
     
     <item>
       <title>clojure</title>
-      <link>http://localhost:1313/tags/clojure/</link>
+      <link>https://using.tech/tags/clojure/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/clojure/</guid>
+      <guid>https://using.tech/tags/clojure/</guid>
       <description></description>
     </item>
     
     <item>
       <title>generalized logistic function</title>
-      <link>http://localhost:1313/tags/generalized-logistic-function/</link>
+      <link>https://using.tech/tags/generalized-logistic-function/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/generalized-logistic-function/</guid>
+      <guid>https://using.tech/tags/generalized-logistic-function/</guid>
       <description></description>
     </item>
     
     <item>
       <title>gradient descent</title>
-      <link>http://localhost:1313/tags/gradient-descent/</link>
+      <link>https://using.tech/tags/gradient-descent/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/gradient-descent/</guid>
+      <guid>https://using.tech/tags/gradient-descent/</guid>
       <description></description>
     </item>
     
     <item>
       <title>jr</title>
-      <link>http://localhost:1313/tags/jr/</link>
+      <link>https://using.tech/tags/jr/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/jr/</guid>
+      <guid>https://using.tech/tags/jr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>logistic</title>
-      <link>http://localhost:1313/tags/logistic/</link>
+      <link>https://using.tech/tags/logistic/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/logistic/</guid>
+      <guid>https://using.tech/tags/logistic/</guid>
       <description></description>
     </item>
     
     <item>
       <title>secure scuttlebutt</title>
-      <link>http://localhost:1313/tags/secure-scuttlebutt/</link>
+      <link>https://using.tech/tags/secure-scuttlebutt/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/secure-scuttlebutt/</guid>
+      <guid>https://using.tech/tags/secure-scuttlebutt/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sigmoid</title>
-      <link>http://localhost:1313/tags/sigmoid/</link>
+      <link>https://using.tech/tags/sigmoid/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/sigmoid/</guid>
+      <guid>https://using.tech/tags/sigmoid/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ssb</title>
-      <link>http://localhost:1313/tags/ssb/</link>
+      <link>https://using.tech/tags/ssb/</link>
       <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/ssb/</guid>
+      <guid>https://using.tech/tags/ssb/</guid>
       <description></description>
     </item>
     
     <item>
       <title>emacs</title>
-      <link>http://localhost:1313/tags/emacs/</link>
+      <link>https://using.tech/tags/emacs/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/emacs/</guid>
+      <guid>https://using.tech/tags/emacs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>evil mode</title>
-      <link>http://localhost:1313/tags/evil-mode/</link>
+      <link>https://using.tech/tags/evil-mode/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/evil-mode/</guid>
+      <guid>https://using.tech/tags/evil-mode/</guid>
       <description></description>
     </item>
     
     <item>
       <title>neovim</title>
-      <link>http://localhost:1313/tags/neovim/</link>
+      <link>https://using.tech/tags/neovim/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/neovim/</guid>
+      <guid>https://using.tech/tags/neovim/</guid>
       <description></description>
     </item>
     
     <item>
       <title>spacemacs</title>
-      <link>http://localhost:1313/tags/spacemacs/</link>
+      <link>https://using.tech/tags/spacemacs/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/spacemacs/</guid>
+      <guid>https://using.tech/tags/spacemacs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>text editors</title>
-      <link>http://localhost:1313/tags/text-editors/</link>
+      <link>https://using.tech/tags/text-editors/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/text-editors/</guid>
+      <guid>https://using.tech/tags/text-editors/</guid>
       <description></description>
     </item>
     
     <item>
       <title>vim</title>
-      <link>http://localhost:1313/tags/vim/</link>
+      <link>https://using.tech/tags/vim/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/tags/vim/</guid>
+      <guid>https://using.tech/tags/vim/</guid>
       <description></description>
     </item>
     

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>python on Ryan Tolboom</title>
-    <link>http://localhost:1313/tags/python/</link>
+    <link>https://using.tech/tags/python/</link>
     <description>Recent content in python on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 07 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 07 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Automating TP-Link EAP225 Configuration</title>
-      <link>http://localhost:1313/posts/eap225/</link>
+      <link>https://using.tech/posts/eap225/</link>
       <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/eap225/</guid>
+      <guid>https://using.tech/posts/eap225/</guid>
       <description>Purpose As part of my continued efforts to automate the deployment of my home network, I ran into an interesting situation. Because I was using both Ubiquiti and TP-Link devices I needed to run two controllers to achieve my deployment goals. Running just one controller, the fabled UniFi controller, turned out to be enough of a pain ( here is a script based on that article BTW) and enough of a resource hog that I decided to forgo the setting up the Omada controller and just create my own solution for configuring wireless access points automatically.</description>
     </item>
     

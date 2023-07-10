@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>logistic on Ryan Tolboom</title>
-    <link>http://localhost:1313/tags/logistic/</link>
+    <link>https://using.tech/tags/logistic/</link>
     <description>Recent content in logistic on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/logistic/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/logistic/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Extended Network Growth in jr - Part 1</title>
-      <link>http://localhost:1313/posts/jr_2/</link>
+      <link>https://using.tech/posts/jr_2/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/jr_2/</guid>
+      <guid>https://using.tech/posts/jr_2/</guid>
       <description>Goal With the basics of the jr network established (see Introducing jr: A Peer-to-Peer Social Network), I wanted to simulate the growth of the extended network and find a mathematical model that describes this growth.
 core/extended-network-test builds a test network of 100 nodes each following 10 random nodes. It then performs 1000 random syncs (two nodes chosen at random sync with each other) and records the average extended network size at each iteration.</description>
     </item>

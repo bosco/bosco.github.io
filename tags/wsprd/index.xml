@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>wsprd on Ryan Tolboom</title>
-    <link>http://localhost:1313/tags/wsprd/</link>
+    <link>https://using.tech/tags/wsprd/</link>
     <description>Recent content in wsprd on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/wsprd/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/wsprd/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dissecting wsprd</title>
-      <link>http://localhost:1313/posts/dissecting-wsprd/</link>
+      <link>https://using.tech/posts/dissecting-wsprd/</link>
       <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/dissecting-wsprd/</guid>
+      <guid>https://using.tech/posts/dissecting-wsprd/</guid>
       <description>Purpose The goal of this article is to pick apart exactly how wsprd works. There seems to be plenty of things written about the WSPR encoding process, less things written about the decoding process, and frankly not a whole lot about how the tool bundled with WSJT-X actually does it. So in the UTSL spirit, I present a dissection of wsprd.
 I will point out that this is going to be a lengthy article, feel free to take it in chunks.</description>
     </item>

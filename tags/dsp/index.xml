@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DSP on Ryan Tolboom</title>
-    <link>http://localhost:1313/tags/dsp/</link>
+    <link>https://using.tech/tags/dsp/</link>
     <description>Recent content in DSP on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/dsp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/dsp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dissecting wsprd</title>
-      <link>http://localhost:1313/posts/dissecting-wsprd/</link>
+      <link>https://using.tech/posts/dissecting-wsprd/</link>
       <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/dissecting-wsprd/</guid>
+      <guid>https://using.tech/posts/dissecting-wsprd/</guid>
       <description>Purpose The goal of this article is to pick apart exactly how wsprd works. There seems to be plenty of things written about the WSPR encoding process, less things written about the decoding process, and frankly not a whole lot about how the tool bundled with WSJT-X actually does it. So in the UTSL spirit, I present a dissection of wsprd.
 I will point out that this is going to be a lengthy article, feel free to take it in chunks.</description>
     </item>
     
     <item>
       <title>FST4 Doppler Spread Algorithm in WSJT-X</title>
-      <link>http://localhost:1313/posts/fst4/</link>
+      <link>https://using.tech/posts/fst4/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/fst4/</guid>
+      <guid>https://using.tech/posts/fst4/</guid>
       <description>At HamSCI 2023 this past weekend I was lucky enough to be able to attend Gwyn Griffiths&amp;#39; (G3ZIL) Identifying 14 MHz Propagation Modes Using FST4W SNR and Spectral Spread and Rob Robinett’s (AI6VN) Low Cost, High Accuracy and Stability FST4W Transmissions Using the QDX Transceiver presentations. After the presentation I was able to talk to Rob at his demo. He brought up the idea that if WSPR could calculate Doppler spread the same way FSTW4 calculates it, it might provide some useful data from people that didn’t want to start using FST4 but still wanted to run WSPR nodes.</description>
     </item>
     

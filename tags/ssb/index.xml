@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ssb on Ryan Tolboom</title>
-    <link>http://localhost:1313/tags/ssb/</link>
+    <link>https://using.tech/tags/ssb/</link>
     <description>Recent content in ssb on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 18 Dec 2019 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/ssb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 18 Dec 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/ssb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Introducing jr: A Peer-to-Peer Social Network</title>
-      <link>http://localhost:1313/posts/jr_1/</link>
+      <link>https://using.tech/posts/jr_1/</link>
       <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/jr_1/</guid>
+      <guid>https://using.tech/posts/jr_1/</guid>
       <description>Intro A friend of mine, John R., has been extolling the virtues of Clojure for years now. At one point, I bought Clojure for the Brave and True, read it, and implemented a few toy programs. It&amp;rsquo;s an excellent book. Recently I found myself looking for a language to implement a project to measure analyze a Secure Scuttlebutt style social network. While trying to decide between Guile, Chicken Scheme, and Racket I remembered John&amp;rsquo;s advice and instead went with Clojure.</description>
     </item>
     

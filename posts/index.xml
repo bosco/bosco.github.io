@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Ryan Tolboom</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://using.tech/posts/</link>
     <description>Recent content in Posts on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dissecting wsprd</title>
-      <link>http://localhost:1313/posts/dissecting-wsprd/</link>
+      <link>https://using.tech/posts/dissecting-wsprd/</link>
       <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/dissecting-wsprd/</guid>
+      <guid>https://using.tech/posts/dissecting-wsprd/</guid>
       <description>Purpose The goal of this article is to pick apart exactly how wsprd works. There seems to be plenty of things written about the WSPR encoding process, less things written about the decoding process, and frankly not a whole lot about how the tool bundled with WSJT-X actually does it. So in the UTSL spirit, I present a dissection of wsprd.
 I will point out that this is going to be a lengthy article, feel free to take it in chunks.</description>
     </item>
     
     <item>
       <title>DIY Rope Bags</title>
-      <link>http://localhost:1313/posts/rope-bags/</link>
+      <link>https://using.tech/posts/rope-bags/</link>
       <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/rope-bags/</guid>
+      <guid>https://using.tech/posts/rope-bags/</guid>
       <description>Purpose My boat needs some new rope bags. The old Ronstad ones have held up incredibly well, but they just werent sticking to the back of the cockpit anymore. Lured in by the appeal of trying SNAD fasteners and having some leftover Sunbrella material from a sail cover I made, I decided to see if I could make them myself.
 It should be noted that Sailrite does have a howto on making sheet bags but I was looking for something with a bit more structure.</description>
     </item>
     
     <item>
       <title>FST4 Doppler Spread Algorithm in WSJT-X</title>
-      <link>http://localhost:1313/posts/fst4/</link>
+      <link>https://using.tech/posts/fst4/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/fst4/</guid>
+      <guid>https://using.tech/posts/fst4/</guid>
       <description>At HamSCI 2023 this past weekend I was lucky enough to be able to attend Gwyn Griffiths&amp;#39; (G3ZIL) Identifying 14 MHz Propagation Modes Using FST4W SNR and Spectral Spread and Rob Robinett’s (AI6VN) Low Cost, High Accuracy and Stability FST4W Transmissions Using the QDX Transceiver presentations. After the presentation I was able to talk to Rob at his demo. He brought up the idea that if WSPR could calculate Doppler spread the same way FSTW4 calculates it, it might provide some useful data from people that didn’t want to start using FST4 but still wanted to run WSPR nodes.</description>
     </item>
     
     <item>
       <title>Open Education Week</title>
-      <link>http://localhost:1313/posts/oeweek/</link>
+      <link>https://using.tech/posts/oeweek/</link>
       <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/oeweek/</guid>
+      <guid>https://using.tech/posts/oeweek/</guid>
       <description>A textbook that I wrote, Computer Systems Security: Planning for Success, is going to be featured during OEWeek! This scope, sequence, and need for this textbook came about through an NJIT Open and Affordable Textbook (OAT) grant. It was completed and piloted through an Open Textbook Collaborative (OTC) grant. The OTC is funded through the US Department of Education’s Fund for the Improvement of Postsecondary Education (FIPSE) program.
 The goal is to provide an introductory text for students that roughly aligns with the CompTIA Security+ SY0-601 exam.</description>
     </item>
     
     <item>
       <title>asciidoctor-p2e</title>
-      <link>http://localhost:1313/posts/p2e/</link>
+      <link>https://using.tech/posts/p2e/</link>
       <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/p2e/</guid>
+      <guid>https://using.tech/posts/p2e/</guid>
       <description>As far as text processors go, I’m a big fan of Asciidoctor. This blog is rendered from it, presentations for my classes are created with it, heck I even wrote a textbook in it. So it should come as no suprise that when I wanted to keep track of things for a Pathfinder roleplaying campaign I turned to Asciidoctor.
 Unfortunately I couldn’t really figure out an easy way to get all the stats for an NPC in a reasonable space.</description>
     </item>
     
     <item>
       <title>Hands On with Cloud-init</title>
-      <link>http://localhost:1313/posts/cloud-init/</link>
+      <link>https://using.tech/posts/cloud-init/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/cloud-init/</guid>
+      <guid>https://using.tech/posts/cloud-init/</guid>
       <description>I remember talking to a friend about AWS a few years after we had both finished our undergrad degrees. He described it to me like this:
 Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
 — Mike At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway.</description>
@@ -69,66 +69,66 @@ Imagine you could take a Linux distro, install it, and set someone up with an SS
     
     <item>
       <title>The Good, the Bad, and the Elmy</title>
-      <link>http://localhost:1313/posts/elm/</link>
+      <link>https://using.tech/posts/elm/</link>
       <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/elm/</guid>
+      <guid>https://using.tech/posts/elm/</guid>
       <description>I decided to begin developing a web app to keep track of groups in some of my classes. Ultimately I’d like to be able to automate project milestone check-ins for these groups (is your git repo up, can I clone it and run docker-compose, etc.) but the first part of that is just getting the groups and members in a database. Looking through the long list of things I would like to play with, I decided on developing the front end in Elm with Bulma for the styling.</description>
     </item>
     
     <item>
       <title>Automating TP-Link EAP225 Configuration</title>
-      <link>http://localhost:1313/posts/eap225/</link>
+      <link>https://using.tech/posts/eap225/</link>
       <pubDate>Sat, 07 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/eap225/</guid>
+      <guid>https://using.tech/posts/eap225/</guid>
       <description>Purpose As part of my continued efforts to automate the deployment of my home network, I ran into an interesting situation. Because I was using both Ubiquiti and TP-Link devices I needed to run two controllers to achieve my deployment goals. Running just one controller, the fabled UniFi controller, turned out to be enough of a pain ( here is a script based on that article BTW) and enough of a resource hog that I decided to forgo the setting up the Omada controller and just create my own solution for configuring wireless access points automatically.</description>
     </item>
     
     <item>
       <title>Automating a Debian Install and Tracking Config Changes</title>
-      <link>http://localhost:1313/posts/autodeb/</link>
+      <link>https://using.tech/posts/autodeb/</link>
       <pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/autodeb/</guid>
+      <guid>https://using.tech/posts/autodeb/</guid>
       <description>Purpose My original homelab consisted of a Dell R710 which was a ton of fun to play with, but ultimately the turbojet noises and utility bill led me to bring it in to work and purchase a couple of broken Dell R610s. Between the two of them, I made one working one which has served (pun intended) me well.
 In an effort to further lower my utility bill, move the level of ambient noise from annoying to quiet, and play with some new hardware I’ve decided to migrate to a small form factor (SFF) enterprise workstation.</description>
     </item>
     
     <item>
       <title>Testing the 3D Printing Waters - Chuck Box</title>
-      <link>http://localhost:1313/posts/chuckbox/</link>
+      <link>https://using.tech/posts/chuckbox/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/chuckbox/</guid>
+      <guid>https://using.tech/posts/chuckbox/</guid>
       <description>Motivation I&amp;rsquo;ve started spending more time family camping than solo backpacking and this has necessitated a change in the way I do things. A cat-food container alcohol stove and ziplock bag of dehydrated BBQ spaghetti weren&amp;rsquo;t going to cut it anymore. Also, starting a fire, burning it down to coals, heating a pan, and cooking dinner turned out to be a little too time consuming for my fresh-from-the-playground toddlers. I decided I needed a family camp cooking kit.</description>
     </item>
     
     <item>
       <title>Extended Network Growth in jr - Part 1</title>
-      <link>http://localhost:1313/posts/jr_2/</link>
+      <link>https://using.tech/posts/jr_2/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/jr_2/</guid>
+      <guid>https://using.tech/posts/jr_2/</guid>
       <description>Goal With the basics of the jr network established (see Introducing jr: A Peer-to-Peer Social Network), I wanted to simulate the growth of the extended network and find a mathematical model that describes this growth.
 core/extended-network-test builds a test network of 100 nodes each following 10 random nodes. It then performs 1000 random syncs (two nodes chosen at random sync with each other) and records the average extended network size at each iteration.</description>
     </item>
     
     <item>
       <title>Introducing jr: A Peer-to-Peer Social Network</title>
-      <link>http://localhost:1313/posts/jr_1/</link>
+      <link>https://using.tech/posts/jr_1/</link>
       <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/jr_1/</guid>
+      <guid>https://using.tech/posts/jr_1/</guid>
       <description>Intro A friend of mine, John R., has been extolling the virtues of Clojure for years now. At one point, I bought Clojure for the Brave and True, read it, and implemented a few toy programs. It&amp;rsquo;s an excellent book. Recently I found myself looking for a language to implement a project to measure analyze a Secure Scuttlebutt style social network. While trying to decide between Guile, Chicken Scheme, and Racket I remembered John&amp;rsquo;s advice and instead went with Clojure.</description>
     </item>
     
     <item>
       <title>Trying Out Spacemacs</title>
-      <link>http://localhost:1313/posts/spacemacs/</link>
+      <link>https://using.tech/posts/spacemacs/</link>
       <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/spacemacs/</guid>
+      <guid>https://using.tech/posts/spacemacs/</guid>
       <description>Intro In high school, I was given a Sun 3/60 workstation and given instructions to set everything up and learn how to use vi. &amp;ldquo;You&amp;rsquo;ll never find a better editor&amp;rdquo; my boss told me. In retrospect, I think you&amp;rsquo;ll never find a better editing concept, and that&amp;rsquo;s modal editing.
 Developers spend far more time reading than they do typing. Breaking reading and writing (or inserting) into two discrete modes seems natural after you take a moment to get used to it.</description>
     </item>
