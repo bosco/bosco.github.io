@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>cloud-init on Ryan Tolboom</title>
-    <link>https://using.tech/tags/cloud-init/</link>
+    <link>http://localhost:1313/tags/cloud-init/</link>
     <description>Recent content in cloud-init on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 08 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/cloud-init/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/cloud-init/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hands On with Cloud-init</title>
-      <link>https://using.tech/posts/cloud-init/</link>
+      <link>http://localhost:1313/posts/cloud-init/</link>
       <pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://using.tech/posts/cloud-init/</guid>
+      <guid>http://localhost:1313/posts/cloud-init/</guid>
       <description>I remember talking to a friend about AWS a few years after we had both finished our undergrad degrees. He described it to me like this:
 Imagine you could take a Linux distro, install it, and set someone up with an SSH shell as soon as their credit card cleared. That’s AWS.
 — Mike At this point, mid 2000s, we had both had plenty of experience with SSH and I used to jokingly say that it didn’t matter what computer I used because I was just using it to get to something better anyway.</description>

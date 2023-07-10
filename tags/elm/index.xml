@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>elm on Ryan Tolboom</title>
-    <link>https://using.tech/tags/elm/</link>
+    <link>http://localhost:1313/tags/elm/</link>
     <description>Recent content in elm on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 29 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/elm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/elm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The Good, the Bad, and the Elmy</title>
-      <link>https://using.tech/posts/elm/</link>
+      <link>http://localhost:1313/posts/elm/</link>
       <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://using.tech/posts/elm/</guid>
+      <guid>http://localhost:1313/posts/elm/</guid>
       <description>I decided to begin developing a web app to keep track of groups in some of my classes. Ultimately I’d like to be able to automate project milestone check-ins for these groups (is your git repo up, can I clone it and run docker-compose, etc.) but the first part of that is just getting the groups and members in a database. Looking through the long list of things I would like to play with, I decided on developing the front end in Elm with Bulma for the styling.</description>
     </item>
     

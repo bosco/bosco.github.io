@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Fortran on Ryan Tolboom</title>
-    <link>https://using.tech/tags/fortran/</link>
+    <link>http://localhost:1313/tags/fortran/</link>
     <description>Recent content in Fortran on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 21 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/fortran/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/fortran/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>FST4 Doppler Spread Algorithm in WSJT-X</title>
-      <link>https://using.tech/posts/fst4/</link>
+      <link>http://localhost:1313/posts/fst4/</link>
       <pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://using.tech/posts/fst4/</guid>
+      <guid>http://localhost:1313/posts/fst4/</guid>
       <description>At HamSCI 2023 this past weekend I was lucky enough to be able to attend Gwyn Griffiths&amp;#39; (G3ZIL) Identifying 14 MHz Propagation Modes Using FST4W SNR and Spectral Spread and Rob Robinett’s (AI6VN) Low Cost, High Accuracy and Stability FST4W Transmissions Using the QDX Transceiver presentations. After the presentation I was able to talk to Rob at his demo. He brought up the idea that if WSPR could calculate Doppler spread the same way FSTW4 calculates it, it might provide some useful data from people that didn’t want to start using FST4 but still wanted to run WSPR nodes.</description>
     </item>
     

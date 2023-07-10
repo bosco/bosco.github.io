@@ -2,235 +2,244 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://using.tech/tags/diy/</loc>
+    <loc>http://localhost:1313/posts/dissecting-wsprd/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/dsp/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/radio/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/wspr/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/wsprd/</loc>
+    <lastmod>2023-07-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/diy/</loc>
     <lastmod>2023-06-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/rope-bags/</loc>
+    <loc>http://localhost:1313/posts/rope-bags/</loc>
     <lastmod>2023-06-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/make-your-own-gear/</loc>
+    <loc>http://localhost:1313/tags/make-your-own-gear/</loc>
     <lastmod>2023-06-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/</loc>
+    <loc>http://localhost:1313/tags/sailing/</loc>
     <lastmod>2023-06-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/</loc>
+    <loc>http://localhost:1313/tags/sailrite/</loc>
     <lastmod>2023-06-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/sailing/</loc>
-    <lastmod>2023-06-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://using.tech/tags/sailrite/</loc>
-    <lastmod>2023-06-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://using.tech/tags/</loc>
-    <lastmod>2023-06-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://using.tech/tags/dsp/</loc>
+    <loc>http://localhost:1313/tags/fortran/</loc>
     <lastmod>2023-03-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/fortran/</loc>
+    <loc>http://localhost:1313/tags/fst4/</loc>
     <lastmod>2023-03-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/fst4/</loc>
+    <loc>http://localhost:1313/posts/fst4/</loc>
     <lastmod>2023-03-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/fst4/</loc>
+    <loc>http://localhost:1313/tags/hamsci/</loc>
     <lastmod>2023-03-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/hamsci/</loc>
+    <loc>http://localhost:1313/tags/wsjt-x/</loc>
     <lastmod>2023-03-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/radio/</loc>
-    <lastmod>2023-03-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://using.tech/tags/wsjt-x/</loc>
-    <lastmod>2023-03-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://using.tech/tags/cyber-security/</loc>
+    <loc>http://localhost:1313/tags/cyber-security/</loc>
     <lastmod>2023-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/oeweek/</loc>
+    <loc>http://localhost:1313/tags/oeweek/</loc>
     <lastmod>2023-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/open-education-week/</loc>
+    <loc>http://localhost:1313/tags/open-education-week/</loc>
     <lastmod>2023-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/oeweek/</loc>
+    <loc>http://localhost:1313/posts/oeweek/</loc>
     <lastmod>2023-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/open-educational-resources/</loc>
+    <loc>http://localhost:1313/tags/open-educational-resources/</loc>
     <lastmod>2023-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/security/</loc>
+    <loc>http://localhost:1313/tags/security/</loc>
     <lastmod>2023-03-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/asciidoctor/</loc>
+    <loc>http://localhost:1313/tags/asciidoctor/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/p2e/</loc>
+    <loc>http://localhost:1313/posts/p2e/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/p2e/</loc>
+    <loc>http://localhost:1313/tags/p2e/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/pathfinder/</loc>
+    <loc>http://localhost:1313/tags/pathfinder/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/ruby/</loc>
+    <loc>http://localhost:1313/tags/ruby/</loc>
     <lastmod>2021-02-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/automation/</loc>
+    <loc>http://localhost:1313/tags/automation/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/aws/</loc>
+    <loc>http://localhost:1313/tags/aws/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/cloud/</loc>
+    <loc>http://localhost:1313/tags/cloud/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/cloud-init/</loc>
+    <loc>http://localhost:1313/tags/cloud-init/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/cloud-init/</loc>
+    <loc>http://localhost:1313/posts/cloud-init/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/iaas/</loc>
+    <loc>http://localhost:1313/tags/iaas/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/virtual-machines/</loc>
+    <loc>http://localhost:1313/tags/virtual-machines/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/vm/</loc>
+    <loc>http://localhost:1313/tags/vm/</loc>
     <lastmod>2020-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/elm/</loc>
+    <loc>http://localhost:1313/tags/elm/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/front-end/</loc>
+    <loc>http://localhost:1313/tags/front-end/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/functional-programming/</loc>
+    <loc>http://localhost:1313/tags/functional-programming/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/javascript/</loc>
+    <loc>http://localhost:1313/tags/javascript/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/elm/</loc>
+    <loc>http://localhost:1313/posts/elm/</loc>
     <lastmod>2020-11-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/eap225/</loc>
+    <loc>http://localhost:1313/posts/eap225/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/eap225/</loc>
+    <loc>http://localhost:1313/tags/eap225/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/python/</loc>
+    <loc>http://localhost:1313/tags/python/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/tp-link/</loc>
+    <loc>http://localhost:1313/tags/tp-link/</loc>
     <lastmod>2020-11-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/autodeb/</loc>
+    <loc>http://localhost:1313/posts/autodeb/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/debian/</loc>
+    <loc>http://localhost:1313/tags/debian/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/dungeonman/</loc>
+    <loc>http://localhost:1313/tags/dungeonman/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/git/</loc>
+    <loc>http://localhost:1313/tags/git/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/homelab/</loc>
+    <loc>http://localhost:1313/tags/homelab/</loc>
     <lastmod>2020-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/3d-printing/</loc>
+    <loc>http://localhost:1313/tags/3d-printing/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/abs/</loc>
+    <loc>http://localhost:1313/tags/abs/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/chuck-box/</loc>
+    <loc>http://localhost:1313/tags/chuck-box/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/freecad/</loc>
+    <loc>http://localhost:1313/tags/freecad/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/fusion-360/</loc>
+    <loc>http://localhost:1313/tags/fusion-360/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/makerbot/</loc>
+    <loc>http://localhost:1313/tags/makerbot/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/openscad/</loc>
+    <loc>http://localhost:1313/tags/openscad/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/pla/</loc>
+    <loc>http://localhost:1313/tags/pla/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/chuckbox/</loc>
+    <loc>http://localhost:1313/posts/chuckbox/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/tinkercad/</loc>
+    <loc>http://localhost:1313/tags/tinkercad/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/clojure/</loc>
+    <loc>http://localhost:1313/tags/clojure/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/jr_2/</loc>
+    <loc>http://localhost:1313/posts/jr_2/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/generalized-logistic-function/</loc>
+    <loc>http://localhost:1313/tags/generalized-logistic-function/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/gradient-descent/</loc>
+    <loc>http://localhost:1313/tags/gradient-descent/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/jr/</loc>
+    <loc>http://localhost:1313/tags/jr/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/logistic/</loc>
+    <loc>http://localhost:1313/tags/logistic/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/secure-scuttlebutt/</loc>
+    <loc>http://localhost:1313/tags/secure-scuttlebutt/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/sigmoid/</loc>
+    <loc>http://localhost:1313/tags/sigmoid/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/jr_1/</loc>
+    <loc>http://localhost:1313/posts/jr_1/</loc>
     <lastmod>2019-12-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/ssb/</loc>
+    <loc>http://localhost:1313/tags/ssb/</loc>
     <lastmod>2019-12-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/emacs/</loc>
+    <loc>http://localhost:1313/tags/emacs/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/evil-mode/</loc>
+    <loc>http://localhost:1313/tags/evil-mode/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/neovim/</loc>
+    <loc>http://localhost:1313/tags/neovim/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/spacemacs/</loc>
+    <loc>http://localhost:1313/tags/spacemacs/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/text-editors/</loc>
+    <loc>http://localhost:1313/tags/text-editors/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/posts/spacemacs/</loc>
+    <loc>http://localhost:1313/posts/spacemacs/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/tags/vim/</loc>
+    <loc>http://localhost:1313/tags/vim/</loc>
     <lastmod>2019-06-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://using.tech/about/</loc>
+    <loc>http://localhost:1313/about/</loc>
   </url><url>
-    <loc>https://using.tech/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url><url>
-    <loc>https://using.tech/consulting/</loc>
+    <loc>http://localhost:1313/consulting/</loc>
   </url>
 </urlset>

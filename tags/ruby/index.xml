@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ruby on Ryan Tolboom</title>
-    <link>https://using.tech/tags/ruby/</link>
+    <link>http://localhost:1313/tags/ruby/</link>
     <description>Recent content in ruby on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 19 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/ruby/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 19 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/ruby/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>asciidoctor-p2e</title>
-      <link>https://using.tech/posts/p2e/</link>
+      <link>http://localhost:1313/posts/p2e/</link>
       <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://using.tech/posts/p2e/</guid>
+      <guid>http://localhost:1313/posts/p2e/</guid>
       <description>As far as text processors go, I’m a big fan of Asciidoctor. This blog is rendered from it, presentations for my classes are created with it, heck I even wrote a textbook in it. So it should come as no suprise that when I wanted to keep track of things for a Pathfinder roleplaying campaign I turned to Asciidoctor.
 Unfortunately I couldn’t really figure out an easy way to get all the stats for an NPC in a reasonable space.</description>
     </item>

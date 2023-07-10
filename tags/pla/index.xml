@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PLA on Ryan Tolboom</title>
-    <link>https://using.tech/tags/pla/</link>
+    <link>http://localhost:1313/tags/pla/</link>
     <description>Recent content in PLA on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 13 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/pla/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/pla/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Testing the 3D Printing Waters - Chuck Box</title>
-      <link>https://using.tech/posts/chuckbox/</link>
+      <link>http://localhost:1313/posts/chuckbox/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://using.tech/posts/chuckbox/</guid>
+      <guid>http://localhost:1313/posts/chuckbox/</guid>
       <description>Motivation I&amp;rsquo;ve started spending more time family camping than solo backpacking and this has necessitated a change in the way I do things. A cat-food container alcohol stove and ziplock bag of dehydrated BBQ spaghetti weren&amp;rsquo;t going to cut it anymore. Also, starting a fire, burning it down to coals, heating a pan, and cooking dinner turned out to be a little too time consuming for my fresh-from-the-playground toddlers. I decided I needed a family camp cooking kit.</description>
     </item>
     

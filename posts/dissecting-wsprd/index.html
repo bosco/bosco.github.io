@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Ryan Tolboom">
+    <meta name="description" content="Ryan Tolboom&#39;s website">
+    <meta name="keywords" content="edtech,professor,blog,developer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dissecting wsprd"/>
+<meta name="twitter:description" content="Purpose The goal of this article is to pick apart exactly how wsprd works. There seems to be plenty of things written about the WSPR encoding process, less things written about the decoding process, and frankly not a whole lot about how the tool bundled with WSJT-X actually does it. So in the UTSL spirit, I present a dissection of wsprd.
+I will point out that this is going to be a lengthy article, feel free to take it in chunks."/>
+
+    <meta property="og:title" content="Dissecting wsprd" />
+<meta property="og:description" content="Purpose The goal of this article is to pick apart exactly how wsprd works. There seems to be plenty of things written about the WSPR encoding process, less things written about the decoding process, and frankly not a whole lot about how the tool bundled with WSJT-X actually does it. So in the UTSL spirit, I present a dissection of wsprd.
+I will point out that this is going to be a lengthy article, feel free to take it in chunks." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/dissecting-wsprd/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-07-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-07-09T00:00:00+00:00" />
+
+
+    
+      <base href="http://localhost:1313/posts/dissecting-wsprd/">
+    
+    <title>
+  Dissecting wsprd · Ryan Tolboom
+</title>
+
+    
+      <link rel="canonical" href="http://localhost:1313/posts/dissecting-wsprd/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="http://localhost:1313/css/coder.css" media="screen">
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="http://localhost:1313/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="http://localhost:1313/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://localhost:1313/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.111.2">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://localhost:1313/">
+      Ryan Tolboom
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://localhost:1313/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://localhost:1313/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="http://localhost:1313/consulting/">Consulting</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://github.com/rxt1077/resume">Resume</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Dissecting wsprd</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2023-07-09T00:00:00Z'>
+                July 9, 2023
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              29 minutes read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="http://localhost:1313/tags/wspr/">WSPR</a>
+      <span class="separator">•</span>
+    <a href="http://localhost:1313/tags/wsprd/">wsprd</a>
+      <span class="separator">•</span>
+    <a href="http://localhost:1313/tags/dsp/">DSP</a>
+      <span class="separator">•</span>
+    <a href="http://localhost:1313/tags/radio/">radio</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        <div class="sect1">
+<h2 id="_purpose"><a class="anchor" href="#_purpose"></a><a class="link" href="#_purpose">Purpose</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The goal of this article is to pick apart exactly how wsprd works.
+There seems to be plenty of things written about the WSPR encoding process, less things written about the decoding process, and frankly not a whole lot about how the tool bundled with WSJT-X actually does it.
+So in the <a href="https://wiki.c2.com/?UseTheSourceLuke">UTSL</a> spirit, I present a dissection of wsprd.</p>
+</div>
+<div class="paragraph">
+<p>I will point out that this is going to be a lengthy article, feel free to take it in chunks.
+I’ve included a <a href="#_structure">Structure</a> section to act as a table of contents if you want to jump around.
+It also helps to have the source for <a href="https://sourceforge.net/p/wsjt/wsjtx/ci/master/tree/lib/wsprd/wsprd.c">wsprd.c</a> open on another screen to follow along.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources"><a class="anchor" href="#_resources"></a><a class="link" href="#_resources">Resources</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Throughout the course of this exploration I found some great resources on how WSPR works.
+I’ve added a few of them here:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://www.g4jnt.com/wspr_coding_process.pdf">The WSRP Coding Process</a></p>
+</li>
+<li>
+<p><a href="http://www.pa0sim.nl/WSPR_AGC_impact.pdf">WSPR Measurement AGC impact on SNR Discussion WSPR SNR calculation</a></p>
+</li>
+<li>
+<p><a href="https://swharden.com/software/FSKview/wspr/">FSKview WSPR page</a></p>
+</li>
+<li>
+<p><a href="http://wsprdaemon.org/wspr-field-names.html">WsprDaemon WSPR field name definitions</a></p>
+</li>
+<li>
+<p><a href="https://www.researchgate.net/publication/344782232_Estimating_LF_-HF_Band_Noise_While_Acquiring_WSPR_Spots">Estimating LF -HF Band Noise While Acquiring WSPR Spots</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_structure"><a class="anchor" href="#_structure"></a><a class="link" href="#_structure">Structure</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_reproducably_building_wsjtx">Reproducably Building WSJTX</a></p>
+</li>
+<li>
+<p><a href="#_readwavfile">readwavfile()</a></p>
+</li>
+<li>
+<p><a href="#_windowed_ffts">Windowed FFTs</a></p>
+</li>
+<li>
+<p><a href="#_smoothing">Smoothing</a></p>
+</li>
+<li>
+<p><a href="#_noise">Noise</a></p>
+</li>
+<li>
+<p><a href="#_candidates">Candidates</a></p>
+</li>
+<li>
+<p><a href="#_coarse_estimates">Coarse Estimates</a></p>
+</li>
+<li>
+<p><a href="#_hector_the_sync_vector_detector">Hector the Sync Vector Detector</a></p>
+</li>
+<li>
+<p><a href="#_drift_detection">Drift Detection</a></p>
+</li>
+<li>
+<p><a href="#_time_search">Time Search</a></p>
+</li>
+<li>
+<p><a href="#_frequency_search">Frequency Search</a></p>
+</li>
+<li>
+<p><a href="#_results">Results</a></p>
+</li>
+<li>
+<p><a href="#_sync_and_demodulate">sync_and_demodulate()</a></p>
+</li>
+<li>
+<p><a href="#_use_fourier_analysis_for_your_analysis">Use Fourier Analysis For Your Analysis</a></p>
+</li>
+<li>
+<p><a href="#Power">Sync, and Soft Symbols</a></p>
+</li>
+<li>
+<p><a href="#_refined_estimates">Refined Estimates</a></p>
+</li>
+<li>
+<p><a href="#_dedupe_and_minsync2">Dedupe and minsync2</a></p>
+</li>
+<li>
+<p><a href="#_non_coherent_sequence_detection">noncoherent_sequence_detection()</a></p>
+</li>
+<li>
+<p><a href="#_attempt_to_decode">Attempt to Decode</a></p>
+</li>
+<li>
+<p><a href="#_sanity_checks">Sanity Checks</a></p>
+</li>
+<li>
+<p><a href="#_subtract_signals">Subtract Signals</a></p>
+</li>
+<li>
+<p><a href="#_dedupe_decode_again_perform_more_passes_print_results">Dedupe, Decode (again), Perform More Passes, Print Results</a></p>
+</li>
+<li>
+<p><a href="#_summary">Summary</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reproducably_building_wsjtx"><a class="anchor" href="#_reproducably_building_wsjtx"></a><a class="link" href="#_reproducably_building_wsjtx">Reproducably Building WSJTX</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you grab the source code for WSJTX and read the INSTALL doc, you’ll quickly find that quite a few dependencies are required to build it:</p>
+</div>
+<div class="listingblock">
+<div class="title">INSTALL from WSJTX source</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">To  build WSJT-X  from sources  you need  some prerequisite  tools and
+libraries.
+
+On Linux:
+
+   build-essential
+   gcc-4.8.2 or clang-3.4 or newer
+   g++-4.8.2 or clang-3.4 or newer
+   gfortran-4.8.2 or newer
+   CMake-2.8.9 or newer
+   git
+   asciidoc
+   asciidoctor
+   texinfo
+
+   Also   qtmultimedia5-dev,    libqt5serialport5-dev,   qttools5-dev,
+   qttools5-dev-tools,         libboost-all-dev,         libfftw3-dev,
+   libreadline-dev,      libusb-1.0-0-dev,       libudev-dev,      and
+   portaudio19-dev.   Note that  these are  Debian dpkg  style package
+   names, other  distributions will  have different package  names and
+   package contents.   For example  on RedHat RPM  style distributions
+   the  packages   will  be  something   like  qt5-qtmultimedia-devel,
+   qt5-qtserialpport-devel,  qt5-linguist,   boost-devel,  fftw-devel,
+   readline-devel, systemd-devel, libusb-devel, and portaudio-devel.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It also doesn’t have all of the source code in that package you downloaded.
+By default the CMake build system clones a few repos to grab the actual sources that will be used including <a href="git://git.code.sf.net/u/bsomervi/hamlib)">a modified version of HamLib</a> and <a href="ssh://git@bitbucket.org/k1jt/wsjtx.git">the actual WSJTX code</a>.</p>
+</div>
+<div class="paragraph">
+<p>The make things a little easier on myself, I started by making <a href="https://github.com/rxt1077/wspr_spread">a Dockerfile and a few shell scripts</a> that could easily build the wsprd component of WSJT.
+They can be found here.
+Now just by running <code>init.sh</code> I had an environment where I could modify <code>wsprd.c</code> locally, compile it with <code>make.sh</code> and test it on a <a href="https://sourceforge.net/projects/wsjt/files/samples/WSPR/">sample WAV</a> with <code>run.sh</code>.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_readwavfile"><a class="anchor" href="#_readwavfile"></a><a class="link" href="#_readwavfile">readwavfile()</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you jump into the <code>wsprd.c</code> code the first thing you’ll see is that it can read input from a c2 file or a WAV file.
+In our case, we’re reading from a WAV file so it makes sense to start with the <code>readwavefile()</code> function.
+Fortunately, there’s been some excellent examination of this step that can be found in the <code>README.md</code> for the <a href="https://github.com/jj1bdx/wspr-cui">wspr-cui project</a>.</p>
+</div>
+<div class="paragraph">
+<p>I don’t want to repeat too much of what the wspr-cui documentation covers, so here is the executive summary of what this function does:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Read a 2 minute (actually 114 seconds) or 15 minute WAV file with a sample rate of 12000 Hz</p>
+</li>
+<li>
+<p>Scale the <code>signed short int</code> values to a float between -1 and 1</p>
+</li>
+<li>
+<p>Generate a real-to-complex FFT with 1474560 points (uses <a href="https://www.fftw.org/">FFTW</a>, 1474560 is 46080 x 32)</p>
+</li>
+<li>
+<p>Pull out a 375 Hz subset of the FFT centered around 1500 Hz and copy it into an array of 46080 complex numbers. <a href="https://www.fftw.org/fftw3_doc/The-1d-Discrete-Fourier-Transform-_0028DFT_0029.html">FFTW uses standard &#34;in-order&#34;</a> output ordering and we must preserve that for the reverse FFT. The first half of this array is 1500 Hz to 1688 Hz (positive offset) and the second half is 1313 Hz to 1500 Hz (negative offset).</p>
+</li>
+<li>
+<p>Perform a complex-to-complex, reverse FFT on the above array to get I/Q data</p>
+</li>
+<li>
+<p>Scale down the I/Q data by 1000 as <a href="https://www.fftw.org/fftw3_doc/The-1d-Discrete-Fourier-Transform-_0028DFT_0029.html">FFTW computes an unnormalized transform</a>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If you look at the wspr-cui documentation or read through the <code>writec2file()</code> you’ll see that a c2 file is just this I/Q data with a header.
+For the purposes of calculating <a href="https://using.tech/posts/fst4/">doppler spread</a> we could take this data, either in wsprd or by reading a c2 file with an external tool, take a FFT, identify the signals, and determine the spread.
+The problem I foresee is that we’d be replicating some of what wsprd already does but identifying the signals ourselves.
+Let’s dig deeper and see how wsprd actually finds the signals in this I/Q data.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_windowed_ffts"><a class="anchor" href="#_windowed_ffts"></a><a class="link" href="#_windowed_ffts">Windowed FFTs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>readwavfile()</code> returned time domain data in the <code>idat</code> and <code>qdat</code>.
+To tease out WSPR signals we want to see how the frequencies of the signal are changing over time.
+To do that we can designate a time <em>window</em> over which we look at the frequency components of the signals.</p>
+</div>
+<div class="paragraph">
+<p>From a discrete perspective this simply means taking a lot of small FFTs incrementally over the 46080 samples of data we have.
+wsprd uses 360 FFTs each with a width of 512 points to cover the entire spectrum.
+Each window has the ends tapered using a <a href="https://download.ni.com/evaluation/pxi/Understanding%20FFTs%20and%20Windowing.pdf">Hanning function (sine) to prevent strange results from the FFT due to discontinuities at the boundaries</a>.
+Let’s take a look at the first window used:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://localhost:1313/dissecting-wsprd/window.svg" alt="window" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>You can see the index covers 0 to 512 and the real component of the time series is shown in purple.
+The windowing function, the first half of a sine wave, is shown in green and varies from 0 to 1 and back.
+Finally the two are multiplied, producing the blue series which tapers off at the edges.</p>
+</div>
+<div class="paragraph">
+<p>An FFT of the windowed data is performed and the power is calculated as the real component squared plus the imaginary component squared.
+To account for the &#34;in-order&#34; output ordering the negative frequency offsets are done first, 256-511, followed by the positive frequencies offsets, 0-255.
+At this point we have 360 power spectrums that cover the I/Q data.
+Each one covers two symbols and there is a step of half a symbol between them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_smoothing"><a class="anchor" href="#_smoothing"></a><a class="link" href="#_smoothing">Smoothing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At this point, wsprd does some processing to make it easier to pick candidates.
+First it goes through each power spectrum and sums the power in each index.
+This gives you a single array, <code>psavg</code>, that holds the total power for that set of frequencies (an index for an FFT bin).
+It is important to note that the FFTs were windowed across time, so this <code>psavg</code> represents the power of frequency components for <em>the whole 2 minute transmission</em>.</p>
+</div>
+<div class="listingblock">
+<div class="title">wsprd Average Spectrum Calculation</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="c1">// Compute average spectrum </span><i class="conum" data-value="1"></i><b>(1)</b>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">512</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">psavg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">nffts</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">512</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">psavg</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">psavg</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="n">ps</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>While not technically the average, the author saves an expensive division operation knowing that this is really just being used to pick large signals.
+The relationship between this number for different frequencies matters more than whether or not it’s actually an average.</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>wsprd then takes the center 411 power numbers (+/- 150 Hz) and smooths them by iterating through the array and summing the power at i, the previous 3 powers, and the following 3.
+Let’s take a look at the effect of this windowing step:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://localhost:1313/dissecting-wsprd/smooth.svg" alt="smooth" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>The original sum of powers is shown in purple, with the smoothed sum of powers shown in green.
+As you can see, the large signals are amplified and the transient signals are minimized.
+Also note that the green plot does not cover as many frequencies.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_noise"><a class="anchor" href="#_noise"></a><a class="link" href="#_noise">Noise</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once the power spectrum is smoothed, each frequency bin is sorted from low to high and the 123rd power is pulled out to set the noise floor.
+As mentioned in the comments 122/410 corresponds to the 30th percentile.</p>
+</div>
+<div class="paragraph">
+<p>SNR changes depending on the bandwidth over which is is measured and the author of wsprd notes that in the comments.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="cm">/* Renormalize spectrum so that (large) peaks represent an estimate of snr.
+ * We know from experience that threshold snr is near -7dB in wspr bandwidth,
+ * corresponding to -7-26.3=-33.3dB in 2500 Hz bandwidth.
+ * The corresponding threshold is -42.3 dB in 2500 Hz bandwidth for WSPR-15. */</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Whereas we are working within 300 Hz of, it is more customary in amateur radio to assess SNR in the 2500 Hz filter used for SSB.
+<a href="https://www.pa3fwm.nl/technotes/tn09b.html">Pieter-Tjerk de Boer, PA3FWM, has an interesting article about this too.</a>
+wsprd divides each power in the smoothed power spectrum by the noise floor, called <code>noise_level</code>, and subtracts one to convert it to SNR.
+If an SNR is lower than <code>1E-9</code>, it is set at <code>1E-10</code>.</p>
+</div>
+<div class="paragraph">
+<p>At this point SNR is just a ratio, but eventually we will want it expressed in dB within 2500 Hz bandwidth.
+wspr sets <code>snr_scaling_factor</code> accordingly so we can use it once we have our candidates.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_candidates"><a class="anchor" href="#_candidates"></a><a class="link" href="#_candidates">Candidates</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we’ve got got an array of SNR values corresponding to the frequencies in the WSPR signal we can identify candidates to attempt to decode.
+wsprd will try up to 200 candidates (by default) keeping track of freq, snr, shift, drift, and sync for each one:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="k">struct</span> <span class="n">cand</span> <span class="p">{</span> <span class="kt">float</span> <span class="n">freq</span><span class="p">;</span> <span class="kt">float</span> <span class="n">snr</span><span class="p">;</span> <span class="kt">int</span> <span class="n">shift</span><span class="p">;</span> <span class="kt">float</span> <span class="n">drift</span><span class="p">;</span> <span class="kt">float</span> <span class="n">sync</span><span class="p">;</span> <span class="p">};</span>
+<span class="k">struct</span> <span class="n">cand</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>wsprd performs a basic local maxima search that iterates through each value and checks if the previous value and the following value are each smaller.
+If they are, this value is a candidate.
+Candidates outside of +/- 110 Hz are thrown out (there is an option to widen this to +/- 150 Hz).
+Let’s take a look at some of the candidates that were found on the first pass:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://localhost:1313/dissecting-wsprd/candidates.svg" alt="candidates" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>I only labelled the first four candidates, but ten were found in total.
+wsprd bubble sorts the candidates based on SNR.
+Here they are in order:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">Initial candidates:
+  index=0 freq=2.929688 snr=-1.020897
+  index=1 freq=-10.986328 snr=-5.870845
+  index=2 freq=-53.466797 snr=-8.514095
+  index=3 freq=86.425781 snr=-10.655240
+  index=4 freq=-39.550781 snr=-14.824939
+  index=5 freq=30.029297 snr=-18.309950
+  index=6 freq=17.578125 snr=-20.642868
+  index=7 freq=94.482422 snr=-25.315132
+  index=8 freq=-99.609375 snr=-33.305218
+  index=9 freq=-95.947266 snr=-33.418915</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_coarse_estimates"><a class="anchor" href="#_coarse_estimates"></a><a class="link" href="#_coarse_estimates">Coarse Estimates</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the coolest features of wsprd is its ability to pull spots even if the timing or frequency is off.
+Likewise it has the ability to account for drift if the frequency is not stable.
+The segment of code we’re now going to analyze is the first part in that process.
+It’s important to note that we have lots of variables here, but ultimately all wsprd is doing is cycling through <em>all</em> possibilities to find the best.
+This is a good thing, because I don’t think I have multivariate regression in me today.</p>
+</div>
+<div class="listingblock">
+<div class="title">wsprd.c starting on line 1134</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="cm">/* Make coarse estimates of shift (DT), freq, and drift
+
+ * Look for time offsets up to +/- 8 symbols (about +/- 5.4 s) relative
+ to nominal start time, which is 2 seconds into the file
+
+ * Calculates shift relative to the beginning of the file
+
+ * Negative shifts mean that signal started before start of file
+
+ * The program prints DT = shift-2 s
+
+ * Shifts that cause sync vector to fall off of either end of the data
+ vector are accommodated by &#34;partial decoding&#34;, such that missing
+ symbols produce a soft-decision symbol value of 128
+
+ * The frequency drift model is linear, deviation of +/- drift/2 over the
+ span of 162 symbols, with deviation equal to 0 at the center of the
+ signal vector.
+ */</span>
+
+<span class="kt">int</span> <span class="n">idrift</span><span class="p">,</span><span class="n">ifr</span><span class="p">,</span><span class="n">if0</span><span class="p">,</span><span class="n">ifd</span><span class="p">,</span><span class="n">k0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">kindex</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">smax</span><span class="p">,</span><span class="n">ss</span><span class="p">,</span><span class="n">pow</span><span class="p">,</span><span class="n">p0</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">npk</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>                              <span class="c1">//For each candidate...</span>
+    <span class="n">smax</span><span class="o">=-</span><span class="mf">1e30</span><span class="p">;</span>
+    <span class="n">if0</span><span class="o">=</span><span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">freq</span><span class="o">/</span><span class="n">df</span><span class="o">+</span><span class="mi">256</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">ifr</span><span class="o">=</span><span class="n">if0</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="n">ifr</span><span class="o">&lt;=</span><span class="n">if0</span><span class="o">+</span><span class="mi">2</span><span class="p">;</span> <span class="n">ifr</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>                      <span class="c1">//Freq search</span>
+	<span class="k">for</span><span class="p">(</span> <span class="n">k0</span><span class="o">=-</span><span class="mi">10</span><span class="p">;</span> <span class="n">k0</span><span class="o">&lt;</span><span class="mi">22</span><span class="p">;</span> <span class="n">k0</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>                             <span class="c1">//Time search</span>
+	    <span class="k">for</span> <span class="p">(</span><span class="n">idrift</span><span class="o">=-</span><span class="n">maxdrift</span><span class="p">;</span> <span class="n">idrift</span><span class="o">&lt;=</span><span class="n">maxdrift</span><span class="p">;</span> <span class="n">idrift</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">//Drift search</span>
+		<span class="n">ss</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+		<span class="n">pow</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span><span class="o">&lt;</span><span class="mi">162</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>                             <span class="c1">//Sum over symbols</span>
+		    <span class="n">ifd</span><span class="o">=</span><span class="n">ifr</span><span class="o">+</span><span class="p">((</span><span class="kt">float</span><span class="p">)</span><span class="n">k</span><span class="o">-</span><span class="mi">81</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="o">/</span><span class="mi">81</span><span class="p">.</span><span class="mi">0</span><span class="o">*</span><span class="p">(</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">idrift</span> <span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="o">*</span><span class="n">df</span><span class="p">);</span>
+		    <span class="n">kindex</span><span class="o">=</span><span class="n">k0</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">;</span>
+		    <span class="k">if</span><span class="p">(</span> <span class="n">kindex</span> <span class="o">&lt;</span> <span class="n">nffts</span> <span class="p">)</span> <span class="p">{</span>
+			<span class="n">p0</span><span class="o">=</span><span class="n">ps</span><span class="p">[</span><span class="n">ifd</span><span class="o">-</span><span class="mi">3</span><span class="p">][</span><span class="n">kindex</span><span class="p">];</span>
+			<span class="n">p1</span><span class="o">=</span><span class="n">ps</span><span class="p">[</span><span class="n">ifd</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">kindex</span><span class="p">];</span>
+			<span class="n">p2</span><span class="o">=</span><span class="n">ps</span><span class="p">[</span><span class="n">ifd</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">kindex</span><span class="p">];</span>
+			<span class="n">p3</span><span class="o">=</span><span class="n">ps</span><span class="p">[</span><span class="n">ifd</span><span class="o">+</span><span class="mi">3</span><span class="p">][</span><span class="n">kindex</span><span class="p">];</span>
+
+			<span class="n">p0</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p0</span><span class="p">);</span>
+			<span class="n">p1</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p1</span><span class="p">);</span>
+			<span class="n">p2</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p2</span><span class="p">);</span>
+			<span class="n">p3</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p3</span><span class="p">);</span>
+
+			<span class="n">ss</span><span class="o">=</span><span class="n">ss</span><span class="o">+</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pr3</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">p1</span><span class="o">+</span><span class="n">p3</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">p0</span><span class="o">+</span><span class="n">p2</span><span class="p">));</span>
+			<span class="n">pow</span><span class="o">=</span><span class="n">pow</span><span class="o">+</span><span class="n">p0</span><span class="o">+</span><span class="n">p1</span><span class="o">+</span><span class="n">p2</span><span class="o">+</span><span class="n">p3</span><span class="p">;</span>
+		    <span class="p">}</span>
+		<span class="p">}</span>
+		<span class="n">sync1</span><span class="o">=</span><span class="n">ss</span><span class="o">/</span><span class="n">pow</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span> <span class="n">sync1</span> <span class="o">&gt;</span> <span class="n">smax</span> <span class="p">)</span> <span class="p">{</span>                  <span class="c1">//Save coarse parameters</span>
+		    <span class="n">smax</span><span class="o">=</span><span class="n">sync1</span><span class="p">;</span>
+		    <span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">shift</span><span class="o">=</span><span class="mi">128</span><span class="o">*</span><span class="p">(</span><span class="n">k0</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+		    <span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">drift</span><span class="o">=</span><span class="n">idrift</span><span class="p">;</span>
+		    <span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">freq</span><span class="o">=</span><span class="p">(</span><span class="n">ifr</span><span class="o">-</span><span class="mi">256</span><span class="p">)</span><span class="o">*</span><span class="n">df</span><span class="p">;</span>
+		    <span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">sync</span><span class="o">=</span><span class="n">sync1</span><span class="p">;</span>
+		<span class="p">}</span>
+	    <span class="p">}</span>
+	<span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We’ll approach this snippet from the inside out.</p>
+</div>
+<div class="sect2">
+<h3 id="_hector_the_sync_vector_detector"><a class="anchor" href="#_hector_the_sync_vector_detector"></a><a class="link" href="#_hector_the_sync_vector_detector">Hector the Sync Vector Detector</a></h3>
+<div class="paragraph">
+<p>At the core of these nested loops is this equation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="n">ss</span><span class="o">=</span><span class="n">ss</span><span class="o">+</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pr3</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">p1</span><span class="o">+</span><span class="n">p3</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="n">p0</span><span class="o">+</span><span class="n">p2</span><span class="p">));</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This equation is so cool that I think it should have a name.
+I’ve chosen to call it Hector.</p>
+</div>
+<div class="paragraph">
+<p><code>pr3</code> is the sync vector, a series of bits that all WSPR messages will have set.
+Since WSPR is FSK-4, it can represent up to two bits per symbol and uses four frequencies.
+The power level of each frequency is stored in <code>p0</code>, <code>p1</code>, <code>p2</code>, and <code>p3</code>.
+This equation is used to sum up how well each symbol matches the 162 bits of the sync vector.
+At this stage it is our primary metric for how well the time and frequency shifts match the signal.</p>
+</div>
+<div class="paragraph">
+<p>To better understand this, let’s look at a simplified example of merging four bits with the sync vector.
+Let’s say that we want to encode <code>0 1 1 0</code>.
+We have the first four bits of the WSPR sync vector, <code>1 1 0 0</code>, which is an agreed upon value that everyone is using.
+We would go bit-by-bit shifting our bit one to the left and adding the sync vector bit to get our <em>symbol</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">0&lt;&lt;1 + 1 = 01
+1&lt;&lt;1 + 1 = 11
+1&lt;&lt;1 + 0 = 10
+0&lt;&lt;1 + 0 = 00</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let’s go symbol by symbol through a perfect transmission and see how our detector works.
+For each symbol this is what we would hope to receive:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">01: p0 = 0, p1 = 1, p2 = 0, p3 = 0
+11: p0 = 0, p1 = 0, p2 = 0, p3 = 1
+10: p0 = 0, p1 = 0, p2 = 1, p3 = 0
+00: p0 = 1, p1 = 0, p2 = 0, p3 = 0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice how each frequency shift is used to represent <em>one</em> symbol.
+We can’t have more than one frequency shift in a given time window.
+Also, I’m using zeros and ones to demonstrate but in actuality the values of <code>p0, p1, p2, p3</code> would be power levels.</p>
+</div>
+<div class="paragraph">
+<p>Let’s see what the wsprd detector would do with this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">First symbol: 01
+
+p0 = 0, p1 = 1, p2 = 0, p3 = 0
+sync_vector_bit = 1 <i class="conum" data-value="1"></i><b>(1)</b>
+(2 * sync_vector_bit - 1) * ((p1 + p3) - (p0 + p2))
+(2 * 1 - 1) * ((1 + 0) - (0 + 0))
+1 * 1
+1
+
+Second symbol: 11
+
+p0 = 0, p1 = 0, p2 = 0, p3 = 1
+sync_vector_bit = 1
+(2 * sync_vector_bit - 1) * ((p1 + p3) - (p0 + p2))
+(2 * 1 - 1) * ((0 + 1) - (0 + 0))
+1 * 1
+1
+
+Third symbol: 10
+
+p0 = 0, p1 = 0, p2 = 1, p3 = 0
+sync_vector_bit = 0
+(2 * sync_vector_bit - 1) * ((p1 + p3) - (p0 + p2))
+(2 * 0 - 1) * ((0 + 0) - (0 + 1))
+-1 * -1
+1
+
+Fourth symbol: 00
+
+p0 = 1, p1 = 0, p2 = 0, p3 = 0
+sync_vector_bit = 0
+(2 * sync_vector_bit - 1) * ((p1 + p3) - (p0 + p2))
+(2 * 0 - 1) * ((0 + 0) - (1 + 0))
+-1 * -1
+1</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>These values are looked up from the known sync vector: <code>pr3</code></td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Not to belabor the point, but what would happen if we got the symbol wrong?
+Let’s take a look at the first symbol, but we’ll use the wrong p values.
+In the first scenario we’ll have multiple frequencies and in the second will have just one, but it’ll be incorrect:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">First symbol: 01 (p0 erroneously set)
+
+p0 = 1, p1 = 1, p2 = 0, p3 = 0
+sync_vector_bit = 1
+(2 * sync_vector_bit - 1) * ((p1 + p3) - (p0 + p2)
+(2 * 1 - 1) * ((1 + 0) - (1 + 0))
+1 * 0
+0
+
+First symbol: 01 (wrong freq entirely)
+
+p0 = 0, p1 = 0, p2 = 1, p3 = 0
+sync_vector_bit = 1
+(2 * sync_vector_bit - 1) * ((p1 + p3) - (p0 + p2)
+(2 * 1 - 1) * ((0 + 0) - (0 + 1))
+1 * (-1)
+-1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_drift_detection"><a class="anchor" href="#_drift_detection"></a><a class="link" href="#_drift_detection">Drift Detection</a></h3>
+<div class="imageblock right">
+<div class="content">
+<img src="http://localhost:1313/dissecting-wsprd/drift.jpg" alt="drift" width="66%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>So now that we know how the sync vector detector is working, lets take a look at the loops around it.
+The inner-most loop sums up the results of our detector over all 162 symbols <em>while accounting for drift</em>.
+The loop immediately outside of that one iterates over all of our drift values.
+For the first and second passes (yes there are loops around this <em>whole</em> thing outside of this one) utilize a <code>maxdrift</code> of 4.
+This means that the inner-most loop will try the drifting from 2 to -2, 1.5 to -1.5, 1 to -1, 0.5 to -0.5, 0 to 0, -0.5 to 0.5, -1 to 1, -1.5 to 1.5, and -2 to 2 (all measured in Hertz).</p>
+</div>
+<div class="paragraph">
+<p>The drift loop passes that drift value into the inner-most loop which splits that drift linearly across all 162 samples that it’s trying.
+For context, if you had a transmitter that drifted up the dial by 2 Hz over the whole WSPR transmission, two minutes, this logic would find the highest &#34;sync&#34; at a drift of 2 and save it in the <code>drift</code> member of the candidate struct.
+To make things even clearer, here are the drift vs. sync readings for the first pass on the first candidate at the first estimate of its center frequency with no time adjustment:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://localhost:1313/dissecting-wsprd/drift.svg" alt="drift" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>This loud and clean signal peaks noticably at a drift of 0 Hz.
+It’s worth noting that I did try optimizing the drift loop by having it break as soon as it passed a peak rather than having it try all drifts in the range.
+This actually caused it to miss a decode as not all <em>Sync Output vs. Drift</em> graphs are as clean as this one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_time_search"><a class="anchor" href="#_time_search"></a><a class="link" href="#_time_search">Time Search</a></h3>
+<div class="paragraph">
+<p>Recall that <a href="#_windowed_ffts">we have 360 FFTs covering 114 seconds</a> of the transmission (including the first two seconds which should be empty) stored in a variable named <code>ps</code>.
+This gives us 114/360, or 0.32 seconds per FFT index, which means every symbol has 2 FFTs.
+The time search loop goes from a -10 FFT index (-3.2 s) to a +21 FFT index (+6.7 s) changing the time at which Hector the sync vector detector will start decoding.<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup>
+This allows WSPR beacons that don’t have their time set correctly and don’t start their transmissions at exactly two seconds after an even UTC minute can still be detected.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_frequency_search"><a class="anchor" href="#_frequency_search"></a><a class="link" href="#_frequency_search">Frequency Search</a></h3>
+<div class="paragraph">
+<p>Moving one more loop out, we have a frequency search that iterates from -1.46 Hz to 1.46 Hz centered around the frequency picked in <a href="#_candidates">the initial candidates section</a>.
+Don’t let the addition of 256 when setting <code>if0</code> throw you off, recall that our FFTs are stored with the positive offset frequencies first and the negative offset frequencies halfway through the array.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_results"><a class="anchor" href="#_results"></a><a class="link" href="#_results">Results</a></h3>
+<div class="paragraph">
+<p>Let’s take a look at the change for the first candidate:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;"/>
+<col style="width: 33.3333%;"/>
+<col style="width: 33.3334%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Before</th>
+<th class="tableblock halign-left valign-top">After</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Frequency (Hz)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.93</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.93</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SNR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-1.02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-1.02</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Shift (time)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Drift (Hz)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sync</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.42</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>As we’d expect for a strong signal the frequency doesn’t really change.
+Our estimate based on the smooth power spectrum was good enough.
+The SNR isn’t touched by this section of the code.
+The shift is interestingly set to <code>128*(k0+1)</code>.
+Since we had no time shift needed (<code>k0</code> = 0) we get 128.
+Going forward, I’m curious as to how this is used/changes.
+No drift was needed to recognize the sync vector in this signal and lastly the value of that sync result is stored in <em>Sync</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sync_and_demodulate"><a class="anchor" href="#_sync_and_demodulate"></a><a class="link" href="#_sync_and_demodulate">sync_and_demodulate()</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For the next series of frequency, frequency drift, and time adjustments we’re going to need something a little more powerful than the SNR spectrum and windowed FFTs we’ve been using.
+This is where the <code>sync_and_demodulate()</code> function comes in.
+This function takes the I/Q data that we created way back in <a href="#readwavefile()">[readwavefile()]</a> as well as information about our best guesses to make even better guesses.
+<code>sync_and_demodulate()</code> has three modes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="cm">/***********************************************************************
+* mode = 0: no frequency or drift search. find best time lag.          *
+*        1: no time lag or drift search. find best frequency.          *
+*        2: no frequency or time lag search. calculate soft-decision   *
+*           symbols using passed frequency and shift.                  *
+************************************************************************/</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>sync_and_demodulate()</code> has a very similar structure to the <a href="#_coarse_estimates">Coarse Estimates</a> loops.
+The outer loop will iterate the frequency around a central frequency.
+The next loop in will go through all possible time shifts.
+Finally the inner loop goes through all 162 symbols.</p>
+</div>
+<div class="sect2">
+<h3 id="_use_fourier_analysis_for_your_analysis"><a class="anchor" href="#_use_fourier_analysis_for_your_analysis"></a><a class="link" href="#_use_fourier_analysis_for_your_analysis">Use Fourier Analysis For Your Analysis</a></h3>
+<div class="paragraph">
+<p>I’ll admit I was a little intimidated by the core section of this code when I first scrolled through the file, but <a href="https://en.wikipedia.org/wiki/WSPR_(amateur_radio_software)">a lot of reading</a>, <a href="https://www.youtube.com/watch?v=yYEMxqreA10">a little watching</a>, and a lot of time spent looking at it and I think I can provide some insights.</p>
+</div>
+<div class="paragraph">
+<p>The I/Q data we have is a time series.
+One of the first things this function does is generate DFT coefficients for the frequencies -2.20 Hz, -1.46, 1.46 Hz, and 2.20 Hz relative to the frequency being tested (2.929688 Hz for our first candidate).<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnotedef_3" title="View footnote.">3</a>]</sup>
+These frequencies correspond to the location of the frequency being used to represent a different symbol.
+Here’s the code in question:</p>
+</div>
+<div class="listingblock">
+<div class="title">wsprd Fourier Coefficient Calculation in sync_and_demodulate()</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="n">dphi0</span><span class="o">=</span><span class="n">twopidt</span><span class="o">*</span><span class="p">(</span><span class="n">fp</span><span class="o">-</span><span class="n">df15</span><span class="p">);</span>
+<span class="n">cdphi0</span><span class="o">=</span><span class="n">cos</span><span class="p">(</span><span class="n">dphi0</span><span class="p">);</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="n">sdphi0</span><span class="o">=</span><span class="n">sin</span><span class="p">(</span><span class="n">dphi0</span><span class="p">);</span>
+
+<span class="n">dphi1</span><span class="o">=</span><span class="n">twopidt</span><span class="o">*</span><span class="p">(</span><span class="n">fp</span><span class="o">-</span><span class="n">df05</span><span class="p">);</span>
+<span class="n">cdphi1</span><span class="o">=</span><span class="n">cos</span><span class="p">(</span><span class="n">dphi1</span><span class="p">);</span>
+<span class="n">sdphi1</span><span class="o">=</span><span class="n">sin</span><span class="p">(</span><span class="n">dphi1</span><span class="p">);</span>
+
+<span class="n">dphi2</span><span class="o">=</span><span class="n">twopidt</span><span class="o">*</span><span class="p">(</span><span class="n">fp</span><span class="o">+</span><span class="n">df05</span><span class="p">);</span>
+<span class="n">cdphi2</span><span class="o">=</span><span class="n">cos</span><span class="p">(</span><span class="n">dphi2</span><span class="p">);</span>
+<span class="n">sdphi2</span><span class="o">=</span><span class="n">sin</span><span class="p">(</span><span class="n">dphi2</span><span class="p">);</span>
+
+<span class="n">dphi3</span><span class="o">=</span><span class="n">twopidt</span><span class="o">*</span><span class="p">(</span><span class="n">fp</span><span class="o">+</span><span class="n">df15</span><span class="p">);</span>
+<span class="n">cdphi3</span><span class="o">=</span><span class="n">cos</span><span class="p">(</span><span class="n">dphi3</span><span class="p">);</span>
+<span class="n">sdphi3</span><span class="o">=</span><span class="n">sin</span><span class="p">(</span><span class="n">dphi3</span><span class="p">);</span>
+
+<span class="n">c0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">s0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="n">c1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">c2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">c3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">s3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">256</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">c0</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c0</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi0</span> <span class="o">-</span> <span class="n">s0</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi0</span><span class="p">;</span>
+    <span class="n">s0</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c0</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi0</span> <span class="o">+</span> <span class="n">s0</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi0</span><span class="p">;</span>
+    <span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi1</span> <span class="o">-</span> <span class="n">s1</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi1</span><span class="p">;</span>
+    <span class="n">s1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi1</span> <span class="o">+</span> <span class="n">s1</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi1</span><span class="p">;</span>
+    <span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi2</span> <span class="o">-</span> <span class="n">s2</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi2</span><span class="p">;</span>
+    <span class="n">s2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi2</span> <span class="o">+</span> <span class="n">s2</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi2</span><span class="p">;</span>
+    <span class="n">c3</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c3</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi3</span> <span class="o">-</span> <span class="n">s3</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi3</span><span class="p">;</span>
+    <span class="n">s3</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">c3</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">sdphi3</span> <span class="o">+</span> <span class="n">s3</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">cdphi3</span><span class="p">;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>cdphi</code> and <code>sdphi</code> variables are going to generate cosines and sines based on the previous result over a 256 sample window.<sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnotedef_4" title="View footnote.">4</a>]</sup></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Fourier coefficients where the c (cosine) is the real part and the s (sine) is the imaginary part</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Recall <a href="https://en.wikipedia.org/wiki/Euler%27s_formula">Euler’s formula</a> (including the <a href="https://study.com/learn/lesson/eulers-formula-complex-numbers-notation-conversions-examples.html">negative exponent formulation</a>):</p>
+</div>
+$$e^{ix} = \cos x + i \sin x$$
+$$e^{-ix} = \cos x - i \ sin x$$
+<div class="paragraph">
+<p>Taking a close look at the first set of coefficients (<code>c0</code> and <code>s0</code>) we can see that the real part, <code>c0</code>, is equivalent to:</p>
+</div>
+$$\cos (2 \pi \frac{1}{375} (f - 2.2)) - i \sin(2 \pi \frac{1}{375} (f - 2.2)) = e^{\frac{-i 2 \pi}{375} (f - 2.2)}$$
+<div class="paragraph">
+<p>Likewise the imaginary part, <code>s0</code>, is equivalent to:</p>
+</div>
+$$\cos (2 \pi \frac{1}{375} (f - 2.2)) + i \sin(2 \pi \frac{1}{375} (f - 2.2)) = e^{\frac{i 2 \pi}{375} (f - 2.2)}$$
+<div class="paragraph">
+<p>Finally comparing this to the summation for a <a href="https://en.wikipedia.org/wiki/Discrete_Fourier_transform">DFT</a>:</p>
+</div>
+$$X_k = \sum_{n=0}^{N-1} x_n e^{\frac{-i 2 \pi}{N} f n}$$
+<div class="paragraph">
+<p>We can see that what we have in <code>c0</code>, <code>s0</code>, <code>c1</code>, <code>s1</code>, <code>c2</code>, <code>s2</code>, <code>c3</code>, <code>s3</code> are the parts of the DFT we need to multiply and sum by the real and imaginary data (I/Q respectively) to get a representation of that frequency component’s contribution to the overall signal.
+We’re only investigating four frequencies and these coefficients are only calculated at the start (first symbol) of each decode attempt.
+The windowed FFTs from FFTW were a great start but now we need to do things by hand at a smaller scale to really narrow in on the frequencies and parameters we want.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_power_sync_and_soft_symbols"><a class="anchor" href="#_power_sync_and_soft_symbols"></a><a class="link" href="#_power_sync_and_soft_symbols">Power, Sync, and Soft Symbols</a></h3>
+<div class="paragraph">
+<p>With the coefficients in hand found, we perform the DFT as we travel through time for each of our symbols.
+Then taking the complex output we calculate the magnitude of the power of each frequency at that moment.
+We use good old <a href="#_hector_the_sync_vector_detector">Hector the Sync Vector Detector</a> to get a measurement of sync and keep track of the parameters that yield the best result.</p>
+</div>
+<div class="paragraph">
+<p>If we were asked to actually read the symbols, mode 2 for this function, we keep track of the power difference between two of the frequencies, depending on the sync vector bit:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="k">if</span><span class="p">(</span><span class="n">pr3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="n">fsymb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">p3</span><span class="o">-</span><span class="n">p1</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="n">fsymb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">p2</span><span class="o">-</span><span class="n">p0</span><span class="p">;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If the sync vector bit is set (it’s the lowest bit) this takes the difference between <code>p3</code> and  <code>p1</code> (which should be set)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Otherwise it takes the difference between <code>p2</code> and <code>p0</code> (which should be set)</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>Finally, in modes 0 and 1 we simply return the best parameters.
+In mode 2 we divide each member of the <code>fsymb</code> array by their standard deviation to convert them to z-scores.
+We multiply by a scaling factor, <code>symfac</code>, which was passed to us and create an array of unsigned bytes.
+Each byte in the array represents the likelihood that, that bit was set.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_refined_estimates"><a class="anchor" href="#_refined_estimates"></a><a class="link" href="#_refined_estimates">Refined Estimates</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we know how <code>sync_and_demodulate()</code> works, let’s take a look at how it’s used.
+We start by taking <code>shift</code> in the candidates stuct for our lag estimate searching for the best lag +/- 128 samples around that number.
+The lag numbers used by <code>sync_and_demodulate()</code> are given in the amount of samples in the I/Q array, where 256 samples corresponds to one symbol.
+This is why we set <code>shift</code> to <code>128*(k0+1)</code> earlier when we were using FFTs with half-symbol resolution.
+With these parameters we will call <code>sync_and_demodulate()</code> in mode 0 so there is no frequency or drift search.</p>
+</div>
+<div class="paragraph">
+<p>Looking at the results, for the first candidate we actually get a better sync at a shift of 64.
+This is progress!
+Recall that our <a href="#_coarse_estimates">Coarse Estimates</a> didn’t detect any time shift.</p>
+</div>
+<div class="paragraph">
+<p>Next we do a frequency search from -2 Hz to 2 Hz around our coarse estimate in 0.25 Hz steps.
+This calls <code>sync_and_demodulate()</code> in mode 1, which is strictly a frequency search.
+Again, more progress!
+Our frequency estimate for the first candidate shifts down 0.25 Hz to 2.679688 Hz.</p>
+</div>
+<div class="paragraph">
+<p>Now it’s important to note that <code>sync_and_demodulate()</code> does not actually have any logic within it to perform a <em>drift</em> search.
+It can take a drift parameter, but it’s up to the called to try <code>sync_and_demodulate()</code> with different drifts.
+There’s no internal loop (like we have for time lag or frequency) to do it for you.</p>
+</div>
+<div class="paragraph">
+<p>That’s exactly what the next section of the code does.
+If you’re not on the final pass, it will try adjusting drift +/- 0.5 and refining the drift parameter if the sync is better.
+In the case of the first candidate, neither of those drifts yield a better sync.</p>
+</div>
+<div class="paragraph">
+<p>Finally, if our estimate needs further refining we do more frequency and lag searches.
+The minimum sync for the first two passes needs to be 0.12 and for the last pass it needs to be 0.10.
+If it isn’t, we time lag search over +/- 32 samples with a step of 16 and then frequency search +/- 2 Hz with a step of 0.05 Hz.</p>
+</div>
+<div class="paragraph">
+<p>In the case of candidate one on the first pass we actually do further refine our numbers and end with a shift of 80 samples and a frequency of 2.779687 Hz.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dedupe_and_minsync2"><a class="anchor" href="#_dedupe_and_minsync2"></a><a class="link" href="#_dedupe_and_minsync2">Dedupe and minsync2</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At this point wsprd pulls out signals that may be duplicated in the candidate list or may not have enough sync for a good decode.
+It’s important to note that over though <code>sync_and_demodulate()</code> has a mode, 2, that demodulates the signal and gives us soft symbols we haven’t used it.
+This means that we can only really use frequency and shift to determine if two signals are the same.
+wsprd removes candidates within 0.05 Hz and a shift (time log) of 16.
+It also removes candidates that have a sync below <code>minsync2</code> (0.12 for the first two passes and 0.10 for the last).
+Here’s the code that does it:</p>
+</div>
+<div class="listingblock">
+<div class="title">First Round of Dedupe in wsprd.c</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="kt">int</span> <span class="n">nwat</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">idupe</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">npk</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">idupe</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="n">nwat</span><span class="p">;</span><span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span> <span class="n">fabsf</span><span class="p">(</span><span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">freq</span> <span class="o">-</span> <span class="n">candidates</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">freq</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">.</span><span class="mo">05</span>  <span class="o">&amp;&amp;</span>
+	   <span class="n">abs</span><span class="p">(</span><span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">shift</span> <span class="o">-</span> <span class="n">candidates</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">shift</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">16</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">// mention why shift matters</span>
+	    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;First dedupe: %d is %d (%f %d %f %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">freq</span><span class="p">,</span> <span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">shift</span><span class="p">,</span> <span class="n">candidates</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">freq</span><span class="p">,</span> <span class="n">candidates</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">shift</span><span class="p">);</span>
+	    <span class="n">idupe</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+	    <span class="k">break</span><span class="p">;</span>
+	<span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">idupe</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">sync</span> <span class="o">&gt;</span> <span class="n">candidates</span><span class="p">[</span><span class="n">k</span><span class="p">].</span><span class="n">sync</span><span class="p">)</span> <span class="n">candidates</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">sync</span> <span class="o">&gt;</span> <span class="n">minsync2</span> <span class="p">)</span> <span class="p">{</span>
+	<span class="n">candidates</span><span class="p">[</span><span class="n">nwat</span><span class="p">]</span><span class="o">=</span><span class="n">candidates</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+	<span class="n">nwat</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_noncoherent_sequence_detection"><a class="anchor" href="#_noncoherent_sequence_detection"></a><a class="link" href="#_noncoherent_sequence_detection">noncoherent_sequence_detection()</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you’ve made it through my incoherent ramblings so far, you’re already a noncoherent signal detection expert and this part should be no problem!
+In actuality this function is very similar (almost the same) as the first part of <code>sync_and_demodulate()</code>, we take many of the usual suspects as arguments: I/Q data, drift, shift, and lag.
+We calculate the DFT coefficients for the frequencies we’re interested in.
+In some parts we use arrays instead of individual variables names, but the DFT summation is the same.</p>
+</div>
+<div class="paragraph">
+<p>This function has the code smell of an upgrade to the <code>sync_and_demodulate()</code> function.
+Mode 2 of <code>sync_and_demodulate()</code> (which is the demodulate part) isn’t called anywhere in the code currently, instead this function is used.
+This function doesn’t have modes, it demodulates each time.
+Finally the timing output refers to this function call as <code>sync_and_demodulate(2)</code>.
+It’s also worth noting that both functions work on noncoherent frequency shifts, but this one gets <em>noncoherent</em> in its name.</p>
+</div>
+<div class="paragraph">
+<p>The major difference you see is this code block:</p>
+</div>
+<div class="listingblock">
+<div class="title">Sequence Detection block from noncoherent_sequence_detection() in wsprd.c</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">162</span><span class="p">;</span> <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="n">nblock</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">nseq</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span> <span class="n">xq</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+        <span class="n">cm</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">sm</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">ib</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">ib</span><span class="o">&lt;</span><span class="n">nblock</span><span class="p">;</span> <span class="n">ib</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">b</span><span class="o">=</span><span class="p">(</span><span class="n">j</span><span class="o">&amp;</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">nblock</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">ib</span><span class="p">)))</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">nblock</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">ib</span><span class="p">);</span>
+            <span class="n">itone</span><span class="o">=</span><span class="n">pr3</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">b</span><span class="p">;</span>
+            <span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="n">is</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">cm</span> <span class="o">+</span> <span class="n">qs</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">sm</span><span class="p">;</span>
+            <span class="n">xq</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">xq</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="n">qs</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">cm</span> <span class="o">-</span> <span class="n">is</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">sm</span><span class="p">;</span>
+            <span class="n">cmp</span><span class="o">=</span><span class="n">cf</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">cm</span> <span class="o">-</span> <span class="n">sf</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">sm</span><span class="p">;</span>
+            <span class="n">smp</span><span class="o">=</span><span class="n">sf</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">cm</span> <span class="o">+</span> <span class="n">cf</span><span class="p">[</span><span class="n">itone</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">*</span><span class="n">sm</span><span class="p">;</span>
+            <span class="n">cm</span><span class="o">=</span><span class="n">cmp</span><span class="p">;</span> <span class="n">sm</span><span class="o">=</span><span class="n">smp</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">xi</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="n">xq</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">xq</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+        <span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">ib</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">ib</span><span class="o">&lt;</span><span class="n">nblock</span><span class="p">;</span> <span class="n">ib</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">imask</span><span class="o">=</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">nblock</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">ib</span><span class="p">);</span>
+        <span class="n">xm1</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span> <span class="n">xm0</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">nseq</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">((</span><span class="n">j</span> <span class="o">&amp;</span> <span class="n">imask</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">xm1</span><span class="p">)</span> <span class="n">xm1</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">((</span><span class="n">j</span> <span class="o">&amp;</span> <span class="n">imask</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">&gt;</span><span class="n">xm0</span><span class="p">)</span> <span class="n">xm0</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">fsymb</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">=</span><span class="n">xm1</span><span class="o">-</span><span class="n">xm0</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">bitbybit</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">fsymb</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">=</span><span class="n">fsymb</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">ib</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">xm1</span> <span class="o">&gt;</span> <span class="n">xm0</span> <span class="o">?</span> <span class="n">xm1</span> <span class="o">:</span> <span class="n">xm0</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will go through all 162 symbols in <em>blocks</em> of <code>nblock</code> size.
+For each block it iterates through all combinations of bits and sums up the powers of the expected sync frequency components.
+I will readily admit that there is a scaling factor there, <code>cm</code> and <code>sm</code> adjusted by <code>cmp</code> and <code>smp</code> respectively, that I don’t fully understand.
+<code>cm</code> and <code>sm</code> start at one and zero respectively and seem to stay close to those values.
+They control how the real and imaginary parts of the data are summed.
+Once you have the powers it goes through each bit of the block and calculates the maximum power in all sequences when the bit is high, <code>xm1</code>, and when the bit is low <code>xm0</code>.
+This is used to create the soft symbol for that bit as high power minus low power.</p>
+</div>
+<div class="paragraph">
+<p>The last part uses the same normalization routing (divide by standard deviation and multiply by 256) use in <code>sync_and_demodulate()</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_attempt_to_decode"><a class="anchor" href="#_attempt_to_decode"></a><a class="link" href="#_attempt_to_decode">Attempt to Decode</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We’ve used windowed FFTs to get coarse estimates and refined those estimates with a custom DFT.
+At this point we should have a pretty good idea of the best frequency shift, frequency drift, and time lag for our candidates.
+So what are we going to do with our fancy <code>noncoherent_sequence_detection()</code> function?
+We’ll get the best set of soft-decision symbols we can and attempt to perform a full decode of course!</p>
+</div>
+<div class="paragraph">
+<p>A parameter we have left to tweak is the blocksize used by our <code>noncoherent_sequence_detection()</code>.
+The outermost loop of this step will try blocksizes up to 3 bits and bit-by-bit where each soft-decision symbol is normalized by <code>xm1</code> or <code>xm0</code> depending on if it is closest to a one or zero respectively.
+Interestingly it will also tweak the frequency shift just slightly during these passes.
+The code refers to this process as <em>shift jittering</em>.</p>
+</div>
+<div class="paragraph">
+<p>Finally within this loop we calculate the root mean squared of the soft symbols (centered at 128, recall they can be 0-255) and if it is above a certain value a decode is attempted.
+The symbols are uninterleaved (descrambled) and if an option is selected the jelenik decoder is used.
+If the options is not set the fano decoder is used.
+If these decoders fail and the pass conditions are correct an ordered statistical decoder (OSD) is used.
+As all of these decoders warrant analysis in their own right and exist outside of the <code>wsprd.c</code> file we’re looking at, I won’t be detailing their operations.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sanity_checks"><a class="anchor" href="#_sanity_checks"></a><a class="link" href="#_sanity_checks">Sanity Checks</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that we have symbols we can do some neat things most of which are detailed in this comment in <code>wsprd.c</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="c1">// Unpack the decoded message, update the hashtable, apply</span>
+<span class="c1">// sanity checks on grid and power, and return</span>
+<span class="c1">// call_loc_pow string and also callsign (for de-duping).</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>unpk_()</code> which can be found in <code>wsprd_utils.c</code> is called to unpack the message and check to make sure it makes sense (sanity checks).
+Finally we have one of the most interesting features of <code>wsprd</code>: subtracting signals.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_subtract_signals"><a class="anchor" href="#_subtract_signals"></a><a class="link" href="#_subtract_signals">Subtract Signals</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You’ve already seen how the wsprd decoder exhaustively revises the parameters of the candidates to find the best fitting option.
+It also repeats this whole process three times, subtracting signals after it finds them.
+This allows small signals that are too close to other signals to be detected.
+Let’s take a look at the functions it uses to pull this off.</p>
+</div>
+<div class="sect2">
+<h3 id="_subtract_signal"><a class="anchor" href="#_subtract_signal"></a><a class="link" href="#_subtract_signal">subtract_signal()</a></h3>
+<div class="paragraph">
+<p>This function appears to be a holdover of a time period when a simpler method was used.
+It isn’t actually called anywhere in the code.
+That being said, it may make sense to look at it to get a basic idea of how subtraction works.</p>
+</div>
+<div class="paragraph">
+<p><code>subtract_signal()</code> takes 162 symbols as well as the time shift and frequency drift and generates the real and imaginary components of the signal at each point in time.
+Finally it subtracts this generated signal from the actual IQ data, which was passed as a pointers to float arrays.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_subtract_signal2"><a class="anchor" href="#_subtract_signal2"></a><a class="link" href="#_subtract_signal2">subtract_signal2()</a></h3>
+<div class="paragraph">
+<p>This updated function is significantly more complex than <code>subtract_signal2()</code>.
+It starts in a similar fashion by creating a reference signal including the time shift and frequency drift.
+It then sets up a low pass filter, running average in groups of 360 points, which I believe also performs some windowing so the initial and final values are weighted slighly less.
+The complex amplitude is estimated as the received signal times the complex conjugate of the reference signal.
+This should have the effect of removing the reference signal, but the comments mention a phase shift issue.
+The low pass filter is applied and finally the <code>id</code> and <code>qd</code> arrays are set to the received signal (their original value) minus the complex amplited times the reference signal.</p>
+</div>
+<div class="paragraph">
+<p>I will admit that I’m still slightly confused by the final steps of <code>subtract_signal2()</code> but it seems to perform much better than <code>subtract_signal()</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dedupe_decode_again_perform_more_passes_print_results"><a class="anchor" href="#_dedupe_decode_again_perform_more_passes_print_results"></a><a class="link" href="#_dedupe_decode_again_perform_more_passes_print_results">Dedupe, Decode (again), Perform More Passes, Print Results</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The same callsign within 4 Hz of eachother in the candidate list is removed.
+The other candidates are decoded and subtracted and finally more passes are performed.
+If this is the first pass, the c2 file is written.
+If this is the last pass no more signals are subtracted.</p>
+</div>
+<div class="paragraph">
+<p>Finally the list of decoded signals is sorted in order of frequency and printed out.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a><a class="link" href="#_summary">Summary</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hopefully this article has given you an idea as to just how exhaustive a search <code>wsprd</code> performs.
+It performs analysis in both the time and frequency domain.
+It accounts for frequency shift, frequency drift, and time shift.
+It subtracts large signals to make smaller signals more noticable and finally it performs multiple passes of all these techniques to get the most decodes possible.</p>
+</div>
+<div class="paragraph">
+<p>From the appearance of the code it’s gone through <a href="https://sourceforge.net/p/wsjt/wsjtx/ci/4667929d0e5a65569d3d0fbb331c4fd1cb1368b8/log/?path=/lib/wsprd/wsprd.c">several modifications over time to improve its decode rate</a>.
+It’s also worth noting that there is also a significant quantity of code designed to collect performance metrics.
+It’s obvious that the authors have put in a lot of time to make this a great WSPR decoder and what is more they made the source code available so everyone can learn from it.
+I’d like to thank them for their hard work.</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr/>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. The Makefile for wsprd is actually pretty simple and it could probably be compiled out-of-tree with minimal effort. I wanted to make sure my development environment was exactly like the way WSJT-X specified <em>just in case</em>.
+</div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. At the time this article being written, I reached out to the wsjtx-devel team regarding a negative index being used in this logic. The issue was quickly resolved by the team.
+</div>
+<div class="footnote" id="_footnotedef_3">
+<a href="#_footnoteref_3">3</a>. In Fourier analysis the term coefficients seems to be miserably overloaded. In this instance I’m using it to describe the value we have to multiply our time domain data by in the process of getting frequency domain data. It is <em>not</em> the frequency domain data yet.
+</div>
+<div class="footnote" id="_footnotedef_4">
+<a href="#_footnoteref_4">4</a>. Thanks <a href="https://github.com/id-Software/wolf3d">Wolfenstein 3D</a> for teaching me how to generate sine and cosines on the fly in a raycasting engine.
+</div>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      
+      
+      
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i = 0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+    
+    <link rel="stylesheet" href="http://localhost:1313/css/syntax.css">
+<link rel="stylesheet" href="http://localhost:1313/css/asciidoc.css">
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><a href='mailto:ryan@using.tech'>Email</a></p>
+    
+     © 2023
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
