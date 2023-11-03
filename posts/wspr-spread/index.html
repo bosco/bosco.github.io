@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Ryan Tolboom">
+    <meta name="description" content="Ryan Tolboom&#39;s website">
+    <meta name="keywords" content="edtech,professor,blog,developer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Calculating Doppler Spread from WSPR Data"/>
+<meta name="twitter:description" content="Purpose After examining the Doppler spread (w50) algorithm from FST4 and trying to understand how wpsrd works I decided to take the plunge and see if I could calculate Doppler spread from WSPR data. My initial idea was to use the c2 files created by wsprd as a data source. Thanks to the wsjtx-devel list, I soon discovered c2 files didn’t have the data I thought they did.
+So what I ended up implementing is a Python program that takes a WAV file as well as the wsprd output and calculates the Doppler spread for each decoded signal."/>
+
+    <meta property="og:title" content="Calculating Doppler Spread from WSPR Data" />
+<meta property="og:description" content="Purpose After examining the Doppler spread (w50) algorithm from FST4 and trying to understand how wpsrd works I decided to take the plunge and see if I could calculate Doppler spread from WSPR data. My initial idea was to use the c2 files created by wsprd as a data source. Thanks to the wsjtx-devel list, I soon discovered c2 files didn’t have the data I thought they did.
+So what I ended up implementing is a Python program that takes a WAV file as well as the wsprd output and calculates the Doppler spread for each decoded signal." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://using.tech/posts/wspr-spread/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-01T00:00:00+00:00" />
+
+
+    
+      <base href="https://using.tech/posts/wspr-spread/">
+    
+    <title>
+  Calculating Doppler Spread from WSPR Data · Ryan Tolboom
+</title>
+
+    
+      <link rel="canonical" href="https://using.tech/posts/wspr-spread/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://using.tech/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://using.tech/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.111.2">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://using.tech">
+      Ryan Tolboom
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/consulting/">Consulting</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://github.com/rxt1077/resume">Resume</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Calculating Doppler Spread from WSPR Data</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2023-11-01T00:00:00Z'>
+                November 1, 2023
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2 minutes read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://using.tech/tags/wspr/">WSPR</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/wsprd/">wsprd</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/dsp/">DSP</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/radio/">radio</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        <div class="sect1">
+<h2 id="_purpose"><a class="anchor" href="#_purpose"></a><a class="link" href="#_purpose">Purpose</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After examining <a href="https://using.tech/posts/fst4/">the Doppler spread (<em>w50</em>) algorithm from FST4</a> and <a href="https://using.tech/posts/dissecting-wsprd/">trying to understand how wpsrd works</a> I decided to take the plunge and see if I could calculate Doppler spread from WSPR data.
+My initial idea was to <a href="https://groups.io/g/wsprdaemon/message/2157">use the c2 files created by wsprd as a data source</a>.
+<a href="https://sourceforge.net/p/wsjt/mailman/wsjt-devel/thread/CADamToiSQuqox107_NZbpPQh_0w4RmGD4gOY0Yov7sRT2jXTCg%40mail.gmail.com/#msg37872946">Thanks to the wsjtx-devel list</a>, I soon discovered c2 files didn’t have the data I thought they did.</p>
+</div>
+<div class="paragraph">
+<p>So what I ended up implementing is a Python program that takes a WAV file as well as the wsprd output and calculates the Doppler spread for each decoded signal.
+In the process of testing the Python program I ended up with a patch for <code>wsprd.c</code> as well.
+You can find them both <a href="https://github.com/rxt1077/wspr_spread">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_wspr_py"><a class="anchor" href="#_wspr_py"></a><a class="link" href="#_wspr_py">wspr.py</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While wsprd has all sorts of functions available to it for doing things like generating a reference signal as required by the Doppler spread algorithm, I didn’t have much available for me in Python.
+That’s not to say that WSPR encoding is not well documented, it’s far better documented than WSPR decoding, but my options in Python were not as easy-to-use and well documented as I wished.</p>
+</div>
+<div class="paragraph">
+<p>As such, I wrote a Python implementation.
+I’ll quote directly from its module docstring here (remember I said I was aiming for well documented):</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>This module implements functions required to encode WSPR messages.
+It is largely based on the G4JNT’s excellent reference:
+<a href="http://www.g4jnt.com/wspr_coding_process.pdf" class="bare">http://www.g4jnt.com/wspr_coding_process.pdf</a> as well as SM0YSR’s
+wspr-tools: <a href="https://github.com/robertostling/wspr-tools" "="" class="bare">https://github.com/robertostling/wspr-tools&#34;</a>
+The goal was to make an easy-to-understand, well-documented Python WSPR encoder
+implementation.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Feel free to yank <a href="https://github.com/rxt1077/wspr_spread/blob/main/wspr.py">this file</a> out and do whatever you like with it.
+It currently only supports simple, two minute transmissions, but for my purposes of generating a symbols array it works great.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_wspr_spread_py"><a class="anchor" href="#_wspr_spread_py"></a><a class="link" href="#_wspr_spread_py">wspr_spread.py</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let’s jump into the internals of the program to understand how it works and what its limitations are.</p>
+</div>
+<div class="sect2">
+<h3 id="_reading_the_wav_file"><a class="anchor" href="#_reading_the_wav_file"></a><a class="link" href="#_reading_the_wav_file">Reading the WAV file</a></h3>
+<div class="paragraph">
+<p>There are a couple of different ways I can approach calculating the Doppler spread with WAV data:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>I could take the samples straight from the WAV file (two minutes at 12,000 samples/sec), generate a reference waveform with the same number samples and calculate <em>g(t)</em> by multiplying the raw data by the complex conjugate of the reference waveform.</p>
+</li>
+<li>
+<p>I could process the WAV file the same way <code>wsprd.c</code> does, downsampling it and working it into complex IQ data with 46080 samples.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>I chose the second option as I suspected this work would be best done <em>inside</em> <code>wsprd.c</code> and at some point I intended to create and submit a patch.
+While the second option may not be the fastest for a pure Python implementation, it should demonstrate how much of the work that <code>wsprd.c</code> does is replicated and make it easier to write the patch.</p>
+</div>
+<div class="paragraph">
+<p>If you take a look a <code>read_wav_file()</code> in <code>wspr_spread.py</code> it’s almost taken exactly from <code>readwavfile()</code> in <code>wsprd.c</code>.
+It does a bit more WAV file error checking as I had the whole <code>wave</code> Python package at my disposal, so why not.
+It performs a forward and reverse FFT via <code>numpy.fft</code> to resample and isolate a 375 Hz subsection.
+Some attention must be paid to the normalization as <code>FFTW</code> and <code>numpy.fft</code> are slightly different.
+Finally it returns a complex numpy array as opposed to <code>idat</code> and <code>qdat</code> arrays.
+This function was checked by analyzing the output and making sure it matched with the <code>wsprd.c readwavefile()</code> results.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reading_the_wsprd_output"><a class="anchor" href="#_reading_the_wsprd_output"></a><a class="link" href="#_reading_the_wsprd_output">Reading the wsprd output</a></h3>
+<div class="paragraph">
+<p><code>read_wsprd()</code> reads an ALL_WSPR.txt format file, which looks something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="txt">sprd mple  -9  1.13   0.0014463  ND6P DM04 30            0  0.68  1  1    0  0   0     1   612
+sprd mple -15  0.07   0.0014604  W5BIT EL09 17           0  0.48  1  1    0  0   7     1   500
+sprd mple -23  2.16   0.0014652  G8VDQ IO91 37           0  0.22  3  1   16  0   0  8080  -187
+sprd mple  -6  0.62   0.0014891  WD4LHT EL89 30          0  0.66  1  1    0  0   2     1   539
+sprd mple  -1 -0.79   0.0015028  NM7J DM26 30            0  0.33  1  1    0  0  26     1    45
+sprd mple -21  0.54   0.0015174  KI7CI DM09 37           0  0.36  1  1    0  0   3     1   557
+sprd mple -18 -1.94   0.0015298  DJ6OL JO52 37           0  0.35  1  1    0  0  11     1   364
+sprd mple -11  0.83   0.0015868  W3HH EL89 30            0  0.73  1  1    0  0   0     1   734
+sprd mple -25  0.75   0.0015944  W3BI FN20 30            0  0.14  2  1    0  0  30  1223   -90</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It transforms it into a Python dictionary to make it easy to get the data we need to generate the reference signal.
+Using this file instead of the output of the <code>wsprd</code> program gives us 0.1 Hz accuracy in the reported frequency.</p>
+</div>
+<div class="paragraph">
+<p>You may also notice that the date is listed as <code>sprd</code> and time is listed as <code>mple</code>.
+That’s because the time is automatically derived from the filename.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usage"><a class="anchor" href="#_usage"></a><a class="link" href="#_usage">Usage</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">usage: wspr_spread.py [-h] [-d] wav_file all_wspr
+
+Calculates the Doppler spread (w50) of signals decoded by wsprd
+
+positional arguments:
+  wav_file     WAV file of WSPR audio (same format was wsprd)
+  all_wspr     ALL_WSPR.txt format file with wsprd output (defaults to ALL_WSPR.txt)
+
+optional arguments:
+  -h, --help   show this help message and exit
+  -d, --debug  Print debugging messages and create FFT graphs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Usage is pretty basic, it only needs information about the decoded signals (to build a reference signal) and a WAV file of the signal.
+You can see the sample ALL_WSPR.txt file and it’s corresponding WAV file, sample.wav, in the source directory.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_results"><a class="anchor" href="#_results"></a><a class="link" href="#_results">Results</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initially the results weren’t great, at least for the sample that I’ve was working with.
+They caused me to check and re-check my Python code to see if it actually makes sense.
+This delayed me for months.</p>
+</div>
+<div class="paragraph">
+<p>I actually ended up implementing a <code>wsprd.c</code> patch, which I was planning to do later, just to see if it had better results.
+I defined a <code>calc_g()</code> function to attempt to mimic that way <code>wsprd.c</code> computes it’s <code>c(t)</code> leaving some space at the beginning of the array.
+By carefully working on <code>wspr_spready.py</code> and <code>wsprd.c</code> I was able to get some better results out of <code>wspr_spread.py</code>.
+For more detail on the limitations and details see <a href="#_a_wsprd_c_patch">A wsprd.c Patch</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you enable the debug option, wspr_spread.py will use matplotlib to create several graphs to try and show what’s going on.
+Let’s take a look at a few.</p>
+</div>
+<div class="paragraph">
+<p>First of all, here’s the output for my sample. The last column is Doppler spread:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">$ python3 wspr_spread.py sample.wav ALL_WSPR.TXT
+  sprd mple  -9  1.13   0.0014463  ND6P DM04 30            0  0.68  1  1    0  0   0     1   612  0.171
+  sprd mple -15  0.07   0.0014604  W5BIT EL09 17           0  0.48  1  1    0  0   7     1   500  0.374
+  sprd mple -23  2.16   0.0014652  G8VDQ IO91 37           0  0.22  3  1   16  0   0  8080  -187  0.781
+  sprd mple  -6  0.62   0.0014891  WD4LHT EL89 30          0  0.66  1  1    0  0   2     1   539  0.203
+  sprd mple  -1 -0.79   0.0015028  NM7J DM26 30            0  0.33  1  1    0  0  26     1    45  0.545
+  sprd mple -21  0.54   0.0015174  KI7CI DM09 37           0  0.36  1  1    0  0   3     1   557  0.081
+  sprd mple -18 -1.94   0.0015298  DJ6OL JO52 37           0  0.35  1  1    0  0  11     1   364  0.472
+  sprd mple -11  0.83   0.0015868  W3HH EL89 30            0  0.73  1  1    0  0   0     1   734  0.041
+  sprd mple -25  0.75   0.0015944  W3BI FN20 30            0  0.14  2  1    0  0  30  1223   -90  0.545</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The FFT of the IQ data looks like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/wspr-spread/iq_dat_fft.png" alt="iq dat fft" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>As expected from the decoding information, we see a large signal close to 0 Hz offset, NM7J, and various other signals.
+I’ll start by taking a look at the NM7J signal.
+Here’s the FFT of a reference signal generated for the NM7J signal’s message and frequency:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/wspr-spread/NM7J_r_fft.png" alt="NM7J r fft" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>It’s centered around 3 Hz and occupies about 4 Hz of bandwidth.
+You can’t tell from the FFT, but in the time domain it’s scaled between -1 and 1.</p>
+</div>
+<div class="paragraph">
+<p>So far so good, let’s multiply our IQ data by the complex conjugate of our reference signal to get the estimated channel gain data (<em>g</em>).
+Here’s an FFT of g for the NM7J signal:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/wspr-spread/NM7J_g_fft.png" alt="NM7J g fft" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let’s take a look at the <em>region of interest</em> (-4 Hz to 4 Hz of <em>g</em>) after we’ve scaled it an subtracted out the noise:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/wspr-spread/NM7J_region_of_interest.png" alt="NM7J region of interest" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>That looks OK to me, centered on a signal with the power region between -1 and 1 Hz.
+It’s certainly not as tight was what <a href="https://using.tech/posts/fst4/">my FST4 sample was</a>, but I don’t know if that’s due to the sample, protocol, or anything else.</p>
+</div>
+<div class="paragraph">
+<p>The Doppler spread (<em>w50</em>, the bandwidth over which 50% of the power of the signal exists) ends up being 0.545 when you calculate it.</p>
+</div>
+<div class="paragraph">
+<p>Let’s take a look at the region of interest for the signal with the lowest Doppler spread, W3HH:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/wspr-spread/W3HH_region_of_interest.png" alt="W3HH region of interest" width="100%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>That looks more comparable to my FST4 sample.
+Sure enough when calculated it has a tight Doppler spread of 0.041.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_wsprd_c_patch"><a class="anchor" href="#_a_wsprd_c_patch"></a><a class="link" href="#_a_wsprd_c_patch">A wsprd.c Patch</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the process of trying to get <code>wsprd_spread.py</code> to work I ended up spending a lot of time modifying <code>wsprd.c</code>.
+By the time I was done, I had most of a <code>wsprd.c</code> patch for calculating Doppler spread implemented.</p>
+</div>
+<div class="paragraph">
+<p><code>wsprd.c</code> does parts of the Doppler spread calculation in its <code>subtract_signal2()</code> function as part of removing signals.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>
+Here’s a comment from that code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c">    <span class="cm">/******************************************************************************
+     Measured signal:                    s(t)=a(t)*exp( j*theta(t) )
+     Reference is:                       r(t) = exp( j*phi(t) )
+     Complex amplitude is estimated as:  c(t)=LPF[s(t)*conjugate(r(t))]
+     so c(t) has phase angle theta-phi
+     Multiply r(t) by c(t) and subtract from s(t), i.e. s&#39;(t)=s(t)-c(t)r(t)
+     *******************************************************************************/</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using their terminology we want <code>c(t)</code> which corresponds to our <em>g</em> (estimated channel gain data).
+<a href="https://github.com/rxt1077/wspr_spread/blob/main/wsprd.patch">This patch</a> adds Doppler spread data to the ALL_WSPR.txt output:
+I implemented a <code>dopsread()</code> function which uses the <code>c(t)</code> calculated as part of <code>wsprd.c</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="c"><span class="cm">/******************************************************************************
+  Calculate the doppler spread (w50) from g (estimated channel gain data, c(t))
+ *******************************************************************************/</span>
+<span class="kt">float</span> <span class="nf">dopspread</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">ci</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">cq</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nsym</span> <span class="o">=</span> <span class="mi">162</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">nspersym</span> <span class="o">=</span> <span class="mi">256</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">points</span> <span class="o">=</span> <span class="n">nsym</span> <span class="o">*</span> <span class="n">nspersym</span><span class="p">;</span>
+    <span class="n">fftwf_plan</span> <span class="n">plan</span><span class="p">;</span>
+    <span class="n">fftwf_complex</span> <span class="o">*</span><span class="n">g</span><span class="p">,</span> <span class="o">*</span><span class="n">g_fft</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="o">*</span><span class="n">roi</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">df</span> <span class="o">=</span> <span class="mi">375</span><span class="p">.</span><span class="mi">0</span><span class="o">/</span><span class="n">points</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">max_power</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">total_power</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">curr_power</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">roi_points</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">right_noise_points</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">left_noise_points</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">left_noise</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">right_noise</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="n">freq</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i25</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i75</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">doppler_spread</span><span class="p">;</span>
+
+    <span class="cm">/* take an FFT of c(t) from subtract_signal2() */</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">fftwf_complex</span><span class="o">*</span><span class="p">)</span> <span class="n">fftwf_malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">fftwf_complex</span><span class="p">)</span> <span class="o">*</span> <span class="n">points</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">points</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ci</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	<span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cq</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="n">g_fft</span> <span class="o">=</span> <span class="p">(</span><span class="n">fftwf_complex</span><span class="o">*</span><span class="p">)</span> <span class="n">fftwf_malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">fftwf_complex</span><span class="p">)</span> <span class="o">*</span> <span class="n">points</span><span class="p">);</span>
+    <span class="n">plan</span> <span class="o">=</span> <span class="n">fftwf_plan_dft_1d</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">g_fft</span><span class="p">,</span> <span class="n">FFTW_FORWARD</span><span class="p">,</span> <span class="n">PATIENCE</span><span class="p">);</span>
+    <span class="n">fftwf_execute</span><span class="p">(</span><span class="n">plan</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">187</span><span class="p">.</span><span class="mi">5</span> <span class="o">/</span> <span class="n">df</span><span class="p">);</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">187</span><span class="p">.</span><span class="mi">5</span> <span class="o">/</span> <span class="n">df</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">points</span><span class="p">;</span>
+	<span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* pull out the region of interest (-4 to 4 Hz), shift the zero freq
+     * component to the center of the array, convert to power, and find the
+     * maximum power between -1 and 1 Hz */</span>
+    <span class="n">roi</span> <span class="o">=</span> <span class="n">fftwf_malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">8</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="n">df</span><span class="p">)</span> <span class="o">+</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">));</span>
+    <span class="n">roi_points</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="n">df</span><span class="p">);</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">4</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="n">df</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">points</span><span class="p">;</span>
+	<span class="p">}</span>
+    	<span class="n">roi</span><span class="p">[</span><span class="n">roi_points</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">g_fft</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">g_fft</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">g_fft</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">g_fft</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+	<span class="k">if</span> <span class="p">((</span><span class="n">i</span> <span class="o">&gt;</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="n">df</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">/</span> <span class="n">df</span><span class="p">))</span> <span class="p">{</span>
+	    <span class="k">if</span> <span class="p">(</span><span class="n">roi</span><span class="p">[</span><span class="n">roi_points</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_power</span><span class="p">)</span> <span class="p">{</span>
+	        <span class="n">max_power</span> <span class="o">=</span> <span class="n">roi</span><span class="p">[</span><span class="n">roi_points</span><span class="p">];</span>
+	    <span class="p">}</span>
+        <span class="p">}</span>
+    	<span class="n">roi_points</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* scale the region of interest by the max power and find the average
+     * noise in the -4 and -2 Hz and 2 and 4 Hz regions */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">roi_points</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">max_power</span><span class="p">;</span>
+	<span class="n">freq</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">((</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">4</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">freq</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+	    <span class="n">left_noise</span> <span class="o">=</span> <span class="n">left_noise</span> <span class="o">+</span> <span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	    <span class="n">left_noise_points</span><span class="o">++</span><span class="p">;</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">freq</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">.</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+	    <span class="n">right_noise</span> <span class="o">=</span> <span class="n">right_noise</span> <span class="o">+</span> <span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	    <span class="n">right_noise_points</span><span class="o">++</span><span class="p">;</span>
+	<span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">left_noise</span> <span class="o">=</span> <span class="n">left_noise</span> <span class="o">/</span> <span class="n">left_noise_points</span><span class="p">;</span>
+    <span class="n">right_noise</span> <span class="o">=</span> <span class="n">right_noise</span> <span class="o">/</span> <span class="n">right_noise_points</span><span class="p">;</span>
+
+    <span class="cm">/* subtract out the noise using whichever noise side is lower and calculate
+     * the total power between -1 and 1 Hz */</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_noise</span> <span class="o">&gt;</span> <span class="n">right_noise</span><span class="p">)</span> <span class="o">?</span> <span class="n">right_noise</span> <span class="o">:</span> <span class="n">left_noise</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">roi_points</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">noise</span><span class="p">;</span>
+	<span class="n">freq</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">((</span><span class="n">freq</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">freq</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+	    <span class="n">total_power</span> <span class="o">+=</span> <span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	<span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* find the indexes where the power reaches 25% of the total and 75% */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="n">df</span><span class="p">);</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="n">df</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">curr_power</span> <span class="o">+=</span> <span class="n">roi</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	<span class="k">if</span> <span class="p">(((</span><span class="n">curr_power</span> <span class="o">/</span> <span class="n">total_power</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i25</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+	    <span class="n">i25</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(((</span><span class="n">curr_power</span> <span class="o">/</span> <span class="n">total_power</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">.</span><span class="mi">75</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i75</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+	    <span class="n">i75</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+	<span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Doppler spread is the frequency difference between those points */</span>
+    <span class="n">doppler_spread</span> <span class="o">=</span> <span class="p">(</span><span class="n">i75</span> <span class="o">-</span> <span class="n">i25</span><span class="p">)</span> <span class="o">*</span> <span class="n">df</span><span class="p">;</span>
+
+    <span class="n">fftwf_destroy_plan</span><span class="p">(</span><span class="n">plan</span><span class="p">);</span>
+    <span class="n">fftwf_free</span><span class="p">(</span><span class="n">g</span><span class="p">);</span>
+    <span class="n">fftwf_free</span><span class="p">(</span><span class="n">g_fft</span><span class="p">);</span>
+    <span class="n">fftwf_free</span><span class="p">(</span><span class="n">roi</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">doppler_spread</span><span class="p">;</span>
+<span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here’s the ALL_WSPR.txt output I get when I run the patched wsprd on my sample.
+Doppler spread is the last column.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">sprd mple  -9  1.13   0.0014463  ND6P DM04 30            0  0.68  1  1    0  0   0     1   612  0.145
+sprd mple -15  0.07   0.0014604  W5BIT EL09 17           0  0.48  1  1    0  0   7     1   500  0.127
+sprd mple -23  2.16   0.0014652  G8VDQ IO91 37           0  0.22  3  1   16  0  35  8080  -187  0.515
+sprd mple  -6  0.62   0.0014891  WD4LHT EL89 30          0  0.66  1  1    0  0   2     1   539  0.199
+sprd mple  -1 -0.79   0.0015028  NM7J DM26 30            0  0.33  1  1    0  0  26     1    45  0.570
+sprd mple -21  0.54   0.0015174  KI7CI DM09 37           0  0.36  1  1    0  0   3     1   557  0.081
+sprd mple -18 -1.94   0.0015298  DJ6OL JO52 37           0  0.35  1  1    0  0  11     1   364  0.443
+sprd mple -11  0.83   0.0015868  W3HH EL89 30            0  0.73  1  1    0  0   0     1   734  0.009
+sprd mple -25  0.75   0.0015944  W3BI FN20 30            0  0.14  2  1    0  0  30  1223   -90  0.488</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You’ll notice some big Doppler spread differences between what wspr_spread.py and the patched wsprd calculates.
+Here’s a side-by-side comparison:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Dopppler Spread Differences Between Implementations</caption>
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Callsign</th>
+<th class="tableblock halign-left valign-top">Patched wsprd</th>
+<th class="tableblock halign-left valign-top">wspr_spread.py</th>
+<th class="tableblock halign-left valign-top">% difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ND6P</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.145</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.171</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W5BIT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.127</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.374</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">99</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">G8VDQ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.515</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.781</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">41</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WD4LHT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.199</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.203</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NM7J</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.570</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.545</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">KI7CI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.081</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.081</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DJ6OL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.443</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.472</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W3HH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.009</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.041</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W3BI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.488</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.545</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>This begs the question, what’s going on with the W3HH and W5BIT signals?
+Let’s pull the regions of interest out of <code>dopspread()</code> in <code>wsprd.c</code> and compare them with the regions of interest from <code>wspr_spread.py</code>:</p>
+</div>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<img src="https://using.tech/wspr-spread/W3HH_region_of_interest.svg" alt="W3HH region of interest"/>
+</div>
+</div>
+<div class="imageblock left">
+<div class="content">
+<img src="https://using.tech/wspr-spread/W3HH_region_of_interest.png" alt="W3HH region of interest"/>
+</div>
+</div>
+</div>
+</div>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<img src="https://using.tech/wspr-spread/W5BIT_region_of_interest.svg" alt="W5BIT region of interest"/>
+</div>
+</div>
+<div class="imageblock left">
+<div class="content">
+<img src="https://using.tech/wspr-spread/W5BIT_region_of_interest.png" alt="W5BIT region of interest"/>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>They look similar, but noticeably different.
+This lead me down a rabbit hole of comparisons and debugging output that ate up even more time.
+I’ll save you the pain and just summarize with a list of reasons <code>wsprd.c</code> and <code>wspr_spread.py</code> yield very different results for some signals:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>wsprd.c</code> has access to more accurate frequency and time shift data. 0.1 Hz and 0.01 second resolution when reading from an ALL_WSPR.txt file does not yield great results.</p>
+</li>
+<li>
+<p><code>wsprd.c</code> uses a tone spacing of <code>1.5</code> instead of <code>12000 / 8192</code>.</p>
+</li>
+<li>
+<p>Because <code>dopspread()</code> is called from <code>subtract_signal2()</code>, <code>wsprd.c</code> will calculate the Doppler spread using IQ data that may have already had strong signals subtracted from it. In my testing this doesn’t seem to make a huge difference, but it’s certainly something to keep in mind.</p>
+</li>
+<li>
+<p><code>wsprd.c</code> will also calculate Doppler spread for signals who’s frequency drifts over time. This may not actually be a big deal as the reference signal is generated to follow the frequency shift (linearly) over time so the FFT of the resulting <em>g</em> should represent the actual signal. It’s worth noting that none of my testing samples had frequency drifts.</p>
+</li>
+<li>
+<p><code>wsprd.c</code> uses single precision (32 bit) floats while <code>wspr_spread.py</code> uses double precision floats (64 bits). This actually accounts for the majority of the difference you see (think W3HH and W5BIT). While it may seem inconsequential, the precision difference when generating a reference signal is compounded forty thousand times. You can make <code>wsprd_spread.py</code> get even closer to <code>wsprd.c</code> output (0.02 for the spread of the W3HH signal) if you judiciously use Numpy’s float32 type. It takes a lot of effort and it’s technically less accurate.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a><a class="link" href="#_conclusion">Conclusion</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pick one way of calculating Doppler spread from WSPR data and stick to it.
+The reasons you get different results are subtle and hard to debug.
+Some reasons lend themselves to making the <code>wspr_spread.py</code> result more accurate and others make <code>wsprd.c</code> more accurate.</p>
+</div>
+<div class="paragraph">
+<p>If you were really ambitious, you could rewrite <code>wsprd.c</code> to use double precision floats (constants in C are already double precision, you could use the default FFTW options).
+Likewise you could use <code>12000 / 8192</code> tone spacing in <code>subtract_signal2()</code>.
+Based on what I’ve seen, I don’t think it will make that much of a difference in wsprd’s ability to decode signals, and ultimately that’s the primary thing that wsprd does.</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr/>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. This will only calculate Doppler spread when subtraction is enabled in wsprd!
+</div>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      
+      
+      
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i = 0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+    
+    <link rel="stylesheet" href="https://using.tech/css/syntax.css">
+<link rel="stylesheet" href="https://using.tech/css/asciidoc.css">
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><a href='mailto:ryan@using.tech'>Email</a></p>
+    
+     © 2023
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

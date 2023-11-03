@@ -6,7 +6,17 @@
     <description>Recent content in wsprd on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/wsprd/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 01 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/wsprd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Calculating Doppler Spread from WSPR Data</title>
+      <link>https://using.tech/posts/wspr-spread/</link>
+      <pubDate>Wed, 01 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/posts/wspr-spread/</guid>
+      <description>Purpose After examining the Doppler spread (w50) algorithm from FST4 and trying to understand how wpsrd works I decided to take the plunge and see if I could calculate Doppler spread from WSPR data. My initial idea was to use the c2 files created by wsprd as a data source. Thanks to the wsjtx-devel list, I soon discovered c2 files didn’t have the data I thought they did.
+So what I ended up implementing is a Python program that takes a WAV file as well as the wsprd output and calculates the Doppler spread for each decoded signal.</description>
+    </item>
+    
     <item>
       <title>Dissecting wsprd</title>
       <link>https://using.tech/posts/dissecting-wsprd/</link>

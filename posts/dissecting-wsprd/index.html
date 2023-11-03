@@ -292,7 +292,7 @@ On Linux:
 By default the CMake build system clones a few repos to grab the actual sources that will be used including <a href="git://git.code.sf.net/u/bsomervi/hamlib)">a modified version of HamLib</a> and <a href="ssh://git@bitbucket.org/k1jt/wsjtx.git">the actual WSJTX code</a>.</p>
 </div>
 <div class="paragraph">
-<p>The make things a little easier on myself, I started by making <a href="https://github.com/rxt1077/wspr_spread">a Dockerfile and a few shell scripts</a> that could easily build the wsprd component of WSJT.
+<p>The make things a little easier on myself, I started by making <a href="https://github.com/rxt1077/dissecting_wsprd">a Dockerfile and a few shell scripts</a> that could easily build the wsprd component of WSJT.
 They can be found here.
 Now just by running <code>init.sh</code> I had an environment where I could modify <code>wsprd.c</code> locally, compile it with <code>make.sh</code> and test it on a <a href="https://sourceforge.net/projects/wsjt/files/samples/WSPR/">sample WAV</a> with <code>run.sh</code>.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
 </div>
@@ -1173,7 +1173,7 @@ It starts in a similar fashion by creating a reference signal including the time
 It then sets up a low pass filter, running average in groups of 360 points, which I believe also performs some windowing so the initial and final values are weighted slighly less.
 The complex amplitude is estimated as the received signal times the complex conjugate of the reference signal.
 This should have the effect of removing the reference signal, but the comments mention a phase shift issue.
-The low pass filter is applied and finally the <code>id</code> and <code>qd</code> arrays are set to the received signal (their original value) minus the complex amplited times the reference signal.</p>
+The low pass filter is applied and finally the <code>id</code> and <code>qd</code> arrays are set to the received signal (their original value) minus the complex amplitude times the reference signal.</p>
 </div>
 <div class="paragraph">
 <p>I will admit that I’m still slightly confused by the final steps of <code>subtract_signal2()</code> but it seems to perform much better than <code>subtract_signal()</code>.</p>
