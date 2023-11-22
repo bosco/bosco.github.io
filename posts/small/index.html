@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Ryan Tolboom">
+    <meta name="description" content="Ryan Tolboom&#39;s website">
+    <meta name="keywords" content="edtech,professor,blog,developer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Doppler Spread: It&#39;s the Small Things"/>
+<meta name="twitter:description" content="Overview Rob Robinett, AI6VN, recently reached out to me to let me know that he was seeing Doppler spreads of zero for some signals using the wsprd.c patch I wrote. I’d never seen that before, so Rob sent me a WAV file with some very, very clean signals that yielded a Doppler spread of zero. After taking a look at how they were processed, I learned a little bit more about why you have to pay particular attention to the FST4 algorithm for small Doppler spreads."/>
+
+    <meta property="og:title" content="Doppler Spread: It&#39;s the Small Things" />
+<meta property="og:description" content="Overview Rob Robinett, AI6VN, recently reached out to me to let me know that he was seeing Doppler spreads of zero for some signals using the wsprd.c patch I wrote. I’d never seen that before, so Rob sent me a WAV file with some very, very clean signals that yielded a Doppler spread of zero. After taking a look at how they were processed, I learned a little bit more about why you have to pay particular attention to the FST4 algorithm for small Doppler spreads." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://using.tech/posts/small/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-21T00:00:00+00:00" />
+
+
+    
+      <base href="https://using.tech/posts/small/">
+    
+    <title>
+  Doppler Spread: It&#39;s the Small Things · Ryan Tolboom
+</title>
+
+    
+      <link rel="canonical" href="https://using.tech/posts/small/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://using.tech/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://using.tech/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.111.2">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://using.tech">
+      Ryan Tolboom
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/consulting/">Consulting</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://github.com/rxt1077/resume">Resume</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Doppler Spread: It&#39;s the Small Things</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2023-11-21T00:00:00Z'>
+                November 21, 2023
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              4 minutes read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://using.tech/tags/wspr/">WSPR</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/wsprd/">wsprd</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/dsp/">DSP</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/radio/">radio</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        <div class="sect1">
+<h2 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">Overview</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Rob Robinett, AI6VN, recently reached out to me to let me know that he was seeing Doppler spreads of zero for some signals using <a href="https://github.com/rxt1077/wspr_spread">the wsprd.c patch I wrote</a>.
+I’d never seen that before, so Rob sent me a WAV file with some very, very clean signals that yielded a Doppler spread of zero.
+After taking a look at how they were processed, I learned a little bit more about why you have to pay particular attention to the <a href="https://using.tech/posts/fst4/">FST4 algorithm</a> for small Doppler spreads.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_overshoot_correction"><a class="anchor" href="#_overshoot_correction"></a><a class="link" href="#_overshoot_correction">Overshoot Correction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let’s take a look at a made-up, simplified FFT of <em>g</em> (channel gain, signal times the complex conjugate of a reference signal) for a signal.
+Remember that the FFT (whether it comes from FFTW or Numpy) is an array where each index represents a bin of frequencies:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="fft.svg" alt="fft" width="430" height="252"/>
+</div>
+</div>
+<div class="paragraph">
+<p>To calculate this spread we’d start by taking the total power, 15 (1 + 2 + 9 + 2 + 1), and find the bins where our sum reaches 25% of 15, 3.75, and 75% of 15, 11.25.</p>
+</div>
+<div class="paragraph">
+<p>Here’s a Python snippet:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python"><span class="n">total_power</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">i25</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">i75</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">curr_power</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">curr_power</span> <span class="o">+=</span> <span class="n">fft</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">curr_power</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">total_power</span> <span class="ow">and</span> <span class="n">i25</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="n">i25</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">if</span> <span class="n">curr_power</span> <span class="o">&gt;=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">total_power</span> <span class="ow">and</span> <span class="n">i75</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">i75</span> <span class="o">=</span> <span class="n">i</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we ran this on our example we’d get <code>i25</code> of <code>2</code> and an <code>i75</code> of <code>2</code>.
+Subtract them and you’d get zero.
+Multiply that difference by the frequency space each bin represents, <code>DF</code> (more on this number in <a href="#_small_value_fix">Small Value Fix</a>), and you’d still get zero!</p>
+</div>
+<div class="paragraph">
+<p>So what’s going on here?
+Well our algorithm is overshooting where the power actually reaches its mark because it’s quantized by the integer of the bin.
+What we really want is an estimation of where the power reaches its mark <em>in between the bins</em>.
+FST4 does this through linear interpolation of the data:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="interpolation.svg" alt="interpolation" width="370" height="266"/>
+</div>
+</div>
+<div class="paragraph">
+<p>So if we assume the power rises linearly between the bins we can generating a floating point number that does a better job of representing where we reach our power mark.
+FST4 does this with the following equation:</p>
+</div>
+$$OvershootCorrection = {(ExpectedPower - PreviousPower) \over (CurrentPower - PreviousPower)}$$
+<div class="paragraph">
+<p>It should be noted that as of the writing of this article, FST4 was using a slightly incorrect equation for this.
+<a href="https://sourceforge.net/p/wsjt/mailman/wsjt-devel/thread/CADamToioegm7KrqBExe01GxVF7z1S%2BCN%3DihQfpVgeLJFZCd3rw%40mail.gmail.com/#msg53976573">It will be fixed in the next version</a>.</p>
+</div>
+<div class="paragraph">
+<p>Now we can account for the overshoot correction from the previous index, remember our index travels <em>past</em> where we actually want to stop, and get a floating point number that should prevent our difference from being zero.
+Let’s add that to our example Python code and see what happens:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python"><span class="n">total_power</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">x25</span> <span class="o">=</span> <span class="bp">None</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="n">x75</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">curr_power</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">prev_power</span> <span class="o">=</span> <span class="mi">0</span> <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">curr_power</span> <span class="o">+=</span> <span class="n">fft</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">curr_power</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">total_power</span> <span class="ow">and</span> <span class="n">i25</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+	<span class="n">x25</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">curr_power</span> <span class="o">-</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">prev_power</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">curr_power</span> <span class="o">-</span> <span class="n">prev_power</span><span class="p">)</span> <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="k">if</span> <span class="n">curr_power</span> <span class="o">&gt;=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">total_power</span> <span class="ow">and</span> <span class="n">i75</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">x75</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">curr_power</span> <span class="o">-</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">prev_power</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">curr_power</span> <span class="o">-</span> <span class="n">prev_power</span><span class="p">)</span>
+    <span class="n">prev_power</span> <span class="o">=</span> <span class="n">curr_power</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tbody><tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Notice I changed the variable prefix to x as i being used for a non-integer pains me!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>We also need to track the previous power. This <em>may</em> not work as expected if <em>g</em> reaches 25% power in the first bin. In that case, it might be reasonable to assume the signal spread out of the power region.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Here is the overshoot correction</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>If we ran this for 25%, we would get an overshoot correction of:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">Overshoot Correction = (3.25 - 3) / (12 - 3) = 0.08
+x25 = 1.08</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And for 75%, we would get an overshoot correction of:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text">Overshoot Correction = (11.25 - 3) / (12 - 3) = 0.92
+x75 = 1.92</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This yields a difference of 0.84 which multiplied by DF will give us a non-zero Doppler Spread!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_small_value_fix"><a class="anchor" href="#_small_value_fix"></a><a class="link" href="#_small_value_fix">Small Value Fix</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FST4 has one more trick up it’s sleeve regarding small Doppler Spread.
+It uses the following equation (in two parts):</p>
+</div>
+$$w50 = \sqrt{1+diff^2}\times{df}$$
+<div class="paragraph">
+<p>The comment next to it states, &#34;Keep small values from fluctuating too widely.&#34;</p>
+</div>
+<div class="paragraph">
+<p>Recall that <a href="https://wsjt.sourceforge.io/EME2010_K1JT.pdf"> <em>w50</em> is another name for Doppler Spread</a> and <em>df</em> is the range of frequencies contained within each FFT bin.
+<em>df</em> can be calculated as the sample rate divided by the amount of samples, which for <code>wsprd.c</code> is 375/46080 and for FST4 is 12000/1440000.
+This equation will clamp down Doppler Spread values as they approach zero, such that the smallest Doppler Spread value will be <em>df</em>.
+So for WSPR, don’t expect a Doppler Spread smaller than 0.008.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a><a class="link" href="#_conclusion">Conclusion</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There’s one footnote in my <a href="https://using.tech/posts/fst4/">FST4 Doppler Spread Algorithm in WSJT-X article</a> regarding overshoot correction and it reads:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+I found this doesn’t make a huge difference and I left it out of my Python implementation.
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Boy was I wrong!
+I’ve added overshoot correction and the small value fix to my <a href="https://github.com/rxt1077/wspr_spread">WSPR patch and wspr_spread.py</a> scripts.</p>
+</div>
+</div>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      
+      
+      
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i = 0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+    
+    <link rel="stylesheet" href="https://using.tech/css/syntax.css">
+<link rel="stylesheet" href="https://using.tech/css/asciidoc.css">
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><a href='mailto:ryan@using.tech'>Email</a></p>
+    
+     © 2023
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

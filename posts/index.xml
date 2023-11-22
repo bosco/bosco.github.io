@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 01 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Doppler Spread: It&#39;s the Small Things</title>
+      <link>https://using.tech/posts/small/</link>
+      <pubDate>Tue, 21 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/posts/small/</guid>
+      <description>Overview Rob Robinett, AI6VN, recently reached out to me to let me know that he was seeing Doppler spreads of zero for some signals using the wsprd.c patch I wrote. I’d never seen that before, so Rob sent me a WAV file with some very, very clean signals that yielded a Doppler spread of zero. After taking a look at how they were processed, I learned a little bit more about why you have to pay particular attention to the FST4 algorithm for small Doppler spreads.</description>
+    </item>
+    
     <item>
       <title>Calculating Doppler Spread from WSPR Data</title>
       <link>https://using.tech/posts/wspr-spread/</link>
