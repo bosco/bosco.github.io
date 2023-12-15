@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dimd on Ryan Tolboom</title>
+    <link>https://using.tech/tags/dimd/</link>
+    <description>Recent content in dimd on Ryan Tolboom</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 14 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/dimd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dimd: A Leading-Edge AC Dimmer Daemon</title>
+      <link>https://using.tech/posts/dimd/</link>
+      <pubDate>Thu, 14 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/posts/dimd/</guid>
+      <description>TL;DR Use this dimmer with a Raspberry Pi via the GPIO pins with this software I wrote.
+Theory Let’s say you’ve got some swinging AC current driving a string of 100 LED diodes slapped on the side of your house to attract a certain portly gift giver. Now you want to dim these beautiful bulbs in time with some festive holiday music. You could do this the usual way, walk down to the hardware store, get yourself a dimmer, monkey, and start a behavioral training regiment until the monkey learns to adjust the lights accordingly.</description>
+    </item>
+    
+  </channel>
+</rss>
