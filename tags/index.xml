@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 14 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>aioc</title>
+      <link>https://using.tech/tags/aioc/</link>
+      <pubDate>Sun, 23 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/aioc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dsp</title>
+      <link>https://using.tech/tags/dsp/</link>
+      <pubDate>Sun, 23 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/dsp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>radio</title>
+      <link>https://using.tech/tags/radio/</link>
+      <pubDate>Sun, 23 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/tags/radio/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>dimd</title>
       <link>https://using.tech/tags/dimd/</link>
@@ -49,24 +76,6 @@
       <pubDate>Thu, 14 Dec 2023 00:00:00 +0000</pubDate>
       
       <guid>https://using.tech/tags/xmas/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>DSP</title>
-      <link>https://using.tech/tags/dsp/</link>
-      <pubDate>Tue, 21 Nov 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://using.tech/tags/dsp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>radio</title>
-      <link>https://using.tech/tags/radio/</link>
-      <pubDate>Tue, 21 Nov 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://using.tech/tags/radio/</guid>
       <description></description>
     </item>
     

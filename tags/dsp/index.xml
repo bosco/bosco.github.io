@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>DSP on Ryan Tolboom</title>
+    <title>dsp on Ryan Tolboom</title>
     <link>https://using.tech/tags/dsp/</link>
-    <description>Recent content in DSP on Ryan Tolboom</description>
+    <description>Recent content in dsp on Ryan Tolboom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 21 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/dsp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://using.tech/tags/dsp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fox Hunt Mode for the AIOC</title>
+      <link>https://using.tech/posts/aioc-fox/</link>
+      <pubDate>Sun, 23 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://using.tech/posts/aioc-fox/</guid>
+      <description>AIOC If you’re not familiar with the All in one Cable (AIOC), it’s a great project that uses a microcontroller, a Kenwood type connector, and a USB-C port to interface with an HT. The device presents itself on the USB bus as separate audio, serial, and HID devices. This means that with this one cable, you can:
+program the radio (CHIRP, etc.)
+send/receive audio from the radio
+control the PTT</description>
+    </item>
+    
     <item>
       <title>Doppler Spread: It&#39;s the Small Things</title>
       <link>https://using.tech/posts/small/</link>

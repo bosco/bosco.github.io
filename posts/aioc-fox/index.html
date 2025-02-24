@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Ryan Tolboom">
+    <meta name="description" content="Ryan Tolboom&#39;s website">
+    <meta name="keywords" content="edtech,professor,blog,developer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Fox Hunt Mode for the AIOC"/>
+<meta name="twitter:description" content="AIOC If you’re not familiar with the All in one Cable (AIOC), it’s a great project that uses a microcontroller, a Kenwood type connector, and a USB-C port to interface with an HT. The device presents itself on the USB bus as separate audio, serial, and HID devices. This means that with this one cable, you can:
+program the radio (CHIRP, etc.)
+send/receive audio from the radio
+control the PTT"/>
+
+    <meta property="og:title" content="Fox Hunt Mode for the AIOC" />
+<meta property="og:description" content="AIOC If you’re not familiar with the All in one Cable (AIOC), it’s a great project that uses a microcontroller, a Kenwood type connector, and a USB-C port to interface with an HT. The device presents itself on the USB bus as separate audio, serial, and HID devices. This means that with this one cable, you can:
+program the radio (CHIRP, etc.)
+send/receive audio from the radio
+control the PTT" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://using.tech/posts/aioc-fox/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-02-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-02-23T00:00:00+00:00" />
+
+
+    
+      <base href="https://using.tech/posts/aioc-fox/">
+    
+    <title>
+  Fox Hunt Mode for the AIOC · Ryan Tolboom
+</title>
+
+    
+      <link rel="canonical" href="https://using.tech/posts/aioc-fox/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://using.tech/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://using.tech/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://using.tech/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.111.2">
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://using.tech">
+      Ryan Tolboom
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/posts/">Blog</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://using.tech/consulting/">Consulting</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://github.com/rxt1077/resume">Resume</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Fox Hunt Mode for the AIOC</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2025-02-23T00:00:00Z'>
+                February 23, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              3 minutes read
+            </span>
+          </div>
+          
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://using.tech/tags/aioc/">aioc</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/dsp/">dsp</a>
+      <span class="separator">•</span>
+    <a href="https://using.tech/tags/radio/">radio</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        <div class="sect1">
+<h2 id="_aioc"><a class="anchor" href="#_aioc"></a><a class="link" href="#_aioc">AIOC</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you’re not familiar with the All in one Cable (AIOC), <a href="https://github.com/skuep/AIOC">it’s a great project</a> that uses a microcontroller, a Kenwood type connector, and a USB-C port to interface with an HT.
+The device presents itself on the USB bus as separate audio, serial, and HID devices.
+This means that with this <em>one</em> cable, you can:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>program the radio (<a href="https://chirpmyradio.com/projects/chirp/wiki/Home">CHIRP</a>, etc.)</p>
+</li>
+<li>
+<p>send/receive audio from the radio</p>
+</li>
+<li>
+<p>control the PTT</p>
+</li>
+<li>
+<p>store and retrieve AIOC settings and debug information</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>That’s a whole lot for a very little device!</p>
+</div>
+<div class="paragraph">
+<p>Forgive my messy desk, but here’s one of my AIOCs plugged into the <a href="https://spectrum.ieee.org/quansheng-uv-k5-hacking">venerable Quansheng UV-K5 (which could probably act as a fox in it’s own right with some modified firmware)</a>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/aioc-fox/aioc.jpg" alt="AIOC" width="50%"/>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_inspiration"><a class="anchor" href="#_inspiration"></a><a class="link" href="#_inspiration">Inspiration</a></h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/aioc-fox/k2mff.jpg" alt="K2MFF" width="75%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Recently my <a href="https://hamsci.org/sites/default/files/publications/2021_HamSCI/20210320_1700z-Gareth_Perry_KD2SAK.pdf">K2MFF</a> co-advisor and I met with an <a href="https://www.njit.edu/">NJIT</a> alumni who has a keen interest in the radio club.
+The alumnus mentioned that in his experience students really seem to enjoy fox hunts and that they enjoy learning about Morse code.
+This got me thinking that the AIOC could be programmed to periodically ID in Morse code and then an AIOC combined with a USB-C battery and a cheap HT could make a neat little fox hunt transmitter.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fox_hunt_mode"><a class="anchor" href="#_fox_hunt_mode"></a><a class="link" href="#_fox_hunt_mode">Fox Hunt Mode</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://github.com/skuep/AIOC/pull/103">Here’s my PR</a> for the new mode.</p>
+</div>
+<div class="paragraph">
+<p>The audio is synthesized using stored <code>uint16</code> samples of a 750 Hz sine wave.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>
+I realize that this would be a great application for <a href="https://en.wikipedia.org/wiki/Direct_memory_access">DMA</a> on the <a href="https://www.st.com/en/microcontrollers-microprocessors/stm32f3-series.html">STM32F3xx</a>, but currently I hook into the <code>TIM6</code> interrupt handler in <code>usb_audio.c</code> and push the waveform out sample-by-sample.
+I’m striving to be consistent with how the AIOC currently does things, but it’s worth noting <a href="https://github.com/skuep/AIOC/pull/85">there is a PR to start using DMA</a> with some excellent discussion in it.</p>
+</div>
+<div class="paragraph">
+<p>The fox mode is configured using the HID interface that Simon Küppers came up with.
+There is one <code>uint32</code> register to adjust how many seconds the device waits in-between IDing.<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup>
+There are four <code>uint32</code> registers to store your ID, which gives us 16 characters to work with.
+You will have to store the settings and restart the device for them to fully take effect</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_putting_it_all_together"><a class="anchor" href="#_putting_it_all_together"></a><a class="link" href="#_putting_it_all_together">Putting it All Together</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Armed with a \$20 Baofeng, a \$20 AIOC, \$15 extended battery, and a \$5 DC-DC buck regulator you get this for \$60.
+You’ll need to sacrifice a USB-C cable to wire up the power, but the payoff is a runtime of about 5 hours at a 50% duty cycle.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://using.tech/aioc-fox/fox.jpg" alt="Fox Hunt Transmitter" width="50%"/>
+</div>
+</div>
+<div class="paragraph">
+<p>Here’s a video of the whole thing in action.
+I start with an older version of the transmitter powered by a USB-C battery.
+I actually recorded the second half of the video with my &#34;helper&#34; Katie several weeks later (with the same transmitter but a built-in battery).
+You’ll notice that Katie didn’t want to hold the Yagi for me, but very much wanted to stand directly in front of it whenever possible.</p>
+</div>
+<iframe style="display:block;margin:auto;" width="560" height="315" src="https://www.youtube.com/embed/XwcV9fYojzY?si=iDP05GB2j_YBK9kY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div>
+</div>
+<div id="footnotes">
+<hr/>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. I believe the DAC is actually 12 bits, but the AIOC seems to use 16.
+</div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. Yes I realize being able to adjust the timeout up to 136 years is insane and if I ever need to store more bits for something else, like WPM, I’ll probably steal bits from this register.
+</div>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+      </footer>
+    </article>
+
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { extensions: ["AMSmath.js", "AMSsymbols.js"] }
+      }
+    });
+    MathJax.Hub.Queue(function() {
+      
+      
+      
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i = 0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+    
+    <link rel="stylesheet" href="https://using.tech/css/syntax.css">
+<link rel="stylesheet" href="https://using.tech/css/asciidoc.css">
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><a href='mailto:ryan@using.tech'>Email</a></p>
+    
+     © 2025
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
